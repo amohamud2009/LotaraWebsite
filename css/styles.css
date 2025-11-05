@@ -270,6 +270,7 @@ button {
     z-index: 1;
     max-width: 700px;
     text-align: center;
+    margin-top: 80px; /* Add spacing below navigation */
 }
 
 .hero-title {
