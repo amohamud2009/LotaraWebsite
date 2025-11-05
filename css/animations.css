@@ -1,0 +1,345 @@
+/* ============================================
+   LOTARA WEBSITE - SCROLL ANIMATIONS
+   Premium, smooth animations for scroll reveals
+   ============================================ */
+
+/* Base animation classes - hidden by default */
+.animate-fade-up,
+.animate-fade-down,
+.animate-fade-left,
+.animate-fade-right,
+.animate-scale-in {
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Fade Up Animation */
+.animate-fade-up {
+    transform: translateY(40px);
+}
+
+.animate-fade-up.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Fade Down Animation */
+.animate-fade-down {
+    transform: translateY(-30px);
+}
+
+.animate-fade-down.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Fade Left Animation */
+.animate-fade-left {
+    transform: translateX(-40px);
+}
+
+.animate-fade-left.animate-in {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Fade Right Animation */
+.animate-fade-right {
+    transform: translateX(40px);
+}
+
+.animate-fade-right.animate-in {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Scale In Animation */
+.animate-scale-in {
+    transform: scale(0.9);
+}
+
+.animate-scale-in.animate-in {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* ============================================
+   HERO ANIMATIONS
+   ============================================ */
+
+.hero-content {
+    animation: fadeInUp 1s ease-out 0.3s both;
+}
+
+.hero-title {
+    animation: fadeInUp 1s ease-out 0.5s both;
+}
+
+.hero-subtitle {
+    animation: fadeInUp 1s ease-out 0.7s both;
+}
+
+.hero-cta {
+    animation: fadeInUp 1s ease-out 0.9s both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   CARD HOVER ENHANCEMENTS
+   ============================================ */
+
+.feature-card,
+.premium-feature,
+.value-card {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.feature-card:hover,
+.premium-feature:hover,
+.value-card:hover {
+    transform: translateY(-8px) scale(1.02);
+}
+
+/* ============================================
+   BUTTON ANIMATIONS
+   ============================================ */
+
+.btn-primary,
+.cta-btn,
+.premium-cta-btn,
+.store-button {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-primary::before,
+.cta-btn::before,
+.premium-cta-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-primary:hover::before,
+.cta-btn:hover::before,
+.premium-cta-btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* ============================================
+   PARALLAX ENHANCEMENTS
+   ============================================ */
+
+.hero {
+    transition: transform 0.1s ease-out;
+    will-change: transform;
+}
+
+/* ============================================
+   SECTION TITLE ANIMATIONS
+   ============================================ */
+
+.section-title {
+    position: relative;
+    display: inline-block;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.6), transparent);
+    border-radius: 2px;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.section-title.animate-in::after {
+    transform: translateX(-50%) scaleX(1);
+}
+
+/* ============================================
+   STAGGER DELAYS (for multiple items)
+   ============================================ */
+
+.feature-card:nth-child(1) { transition-delay: 0.1s; }
+.feature-card:nth-child(2) { transition-delay: 0.2s; }
+.feature-card:nth-child(3) { transition-delay: 0.3s; }
+.feature-card:nth-child(4) { transition-delay: 0.4s; }
+.feature-card:nth-child(5) { transition-delay: 0.5s; }
+.feature-card:nth-child(6) { transition-delay: 0.6s; }
+
+/* ============================================
+   SMOOTH SCROLL BEHAVIOR
+   ============================================ */
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+/* ============================================
+   LOADING ANIMATIONS
+   ============================================ */
+
+.loading-shimmer {
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0.1) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* ============================================
+   ICON ANIMATIONS
+   ============================================ */
+
+.feature-icon,
+.premium-feature-icon,
+.value-icon,
+.mission-icon {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.feature-card:hover .feature-icon,
+.premium-feature:hover .premium-feature-icon,
+.value-card:hover .value-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Pulse animation for special icons */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+}
+
+.mission-icon {
+    animation: pulse 3s ease-in-out infinite;
+}
+
+/* ============================================
+   TEXT REVEAL ANIMATIONS
+   ============================================ */
+
+.animate-text-reveal {
+    overflow: hidden;
+}
+
+.animate-text-reveal span {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: textReveal 0.6s ease-out forwards;
+}
+
+@keyframes textReveal {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   FLOATING ANIMATIONS
+   ============================================ */
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.floating {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* ============================================
+   GRADIENT ANIMATIONS
+   ============================================ */
+
+@keyframes breathingGradient {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+/* ============================================
+   PERFORMANCE OPTIMIZATIONS
+   ============================================ */
+
+.animate-fade-up,
+.animate-fade-down,
+.animate-fade-left,
+.animate-fade-right,
+.animate-scale-in,
+.feature-card,
+.premium-feature,
+.value-card {
+    will-change: transform, opacity;
+}
+
+/* Remove will-change after animation completes */
+.animate-in {
+    will-change: auto;
+}
+

@@ -130,25 +130,63 @@ function initParallax() {
 
 function initScrollAnimations() {
     const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
+        threshold: 0.15,
+        rootMargin: '0px 0px -50px 0px'
     };
     
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
+                entry.target.classList.add('animate-in');
             }
         });
     }, observerOptions);
     
-    // Observe feature cards
+    // Animate feature cards with stagger
     document.querySelectorAll('.feature-card').forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(30px)';
-        card.style.transition = `all 0.6s ease ${index * 0.1}s`;
+        card.classList.add('animate-fade-up');
+        card.style.transitionDelay = `${index * 0.1}s`;
         observer.observe(card);
+    });
+    
+    // Animate premium feature cards
+    document.querySelectorAll('.premium-feature').forEach((feature, index) => {
+        feature.classList.add('animate-fade-up');
+        feature.style.transitionDelay = `${index * 0.08}s`;
+        observer.observe(feature);
+    });
+    
+    // Animate value cards (About page)
+    document.querySelectorAll('.value-card').forEach((card, index) => {
+        card.classList.add('animate-fade-up');
+        card.style.transitionDelay = `${index * 0.1}s`;
+        observer.observe(card);
+    });
+    
+    // Animate section titles
+    document.querySelectorAll('.section-title').forEach(title => {
+        title.classList.add('animate-fade-down');
+        observer.observe(title);
+    });
+    
+    // Animate text content blocks
+    document.querySelectorAll('.mission-text, .story-text p, .team-subtitle').forEach((text, index) => {
+        text.classList.add('animate-fade-up');
+        text.style.transitionDelay = `${index * 0.15}s`;
+        observer.observe(text);
+    });
+    
+    // Animate download buttons
+    document.querySelectorAll('.download-buttons').forEach(buttons => {
+        buttons.classList.add('animate-scale-in');
+        observer.observe(buttons);
+    });
+    
+    // Animate stats/numbers
+    document.querySelectorAll('.team-value').forEach((stat, index) => {
+        stat.classList.add('animate-fade-up');
+        stat.style.transitionDelay = `${index * 0.2}s`;
+        observer.observe(stat);
     });
 }
 
