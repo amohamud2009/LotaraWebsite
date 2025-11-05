@@ -123,9 +123,10 @@ button {
 }
 
 .logo-img {
-    height: 100px;
+    height: 120px;
     width: auto;
     transition: transform 0.3s ease;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2));
 }
 
 .logo-img:hover {
@@ -199,29 +200,72 @@ button {
     align-items: center;
     justify-content: center;
     padding: var(--spacing-xxl) var(--spacing-md);
-    background: linear-gradient(135deg, 
-        rgba(139, 92, 246, 0.9) 0%,
-        rgba(124, 58, 237, 0.85) 50%,
-        rgba(109, 40, 217, 0.9) 100%
-    ),
-    url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    background: linear-gradient(
+        135deg,
+        #8b5cf6 0%,      /* primaryDeep */
+        #a78bfa 25%,     /* primarySoft */
+        #6366f1 50%,     /* wisdom */
+        #8b5cf6 75%,     /* primaryDeep opacity */
+        #7c3aed 100%     /* Deep purple */
+    );
     color: var(--white);
     overflow: hidden;
+    animation: breathingGradient 20s ease-in-out infinite;
+}
+
+@keyframes breathingGradient {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
 }
 
 .hero::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at 20% 50%, rgba(167, 139, 250, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.2) 0%, transparent 50%);
+    top: -50%;
+    right: -20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(
+        circle,
+        rgba(99, 102, 241, 0.15) 0%,
+        transparent 50%,
+        rgba(139, 92, 246, 0.08) 100%
+    );
+    border-radius: 50%;
+    animation: breathing 8s ease-in-out infinite;
     pointer-events: none;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(
+        circle,
+        rgba(167, 139, 250, 0.12) 0%,
+        transparent 50%
+    );
+    border-radius: 50%;
+    animation: breathing 10s ease-in-out infinite reverse;
+    pointer-events: none;
+}
+
+@keyframes breathing {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
 }
 
 .hero-content {
