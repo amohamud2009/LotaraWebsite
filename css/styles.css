@@ -100,7 +100,7 @@ button {
 .nav-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 24px var(--spacing-md);
+    padding: 20px var(--spacing-md);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -123,7 +123,7 @@ button {
 }
 
 .logo-img {
-    height: 60px;
+    height: 100px;
     width: auto;
     transition: transform 0.3s ease;
 }
