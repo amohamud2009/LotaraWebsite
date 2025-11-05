@@ -5,13 +5,13 @@
 
 .premium {
     padding: var(--spacing-xxl) var(--spacing-md);
+    /* Exact match to PremiumHealthBackground from iOS app */
     background: linear-gradient(
         135deg,
-        #8b5cf6 0%,
-        #a78bfa 25%,
-        #6366f1 50%,
-        #8b5cf6 75%,
-        #7c3aed 100%
+        #1a1f36 0%,
+        #2d3561 25%,
+        #748ffc 50%,
+        #1a1f36 100%
     );
     background-size: 400% 400%;
     animation: breathingGradient 20s ease-in-out infinite;

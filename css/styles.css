@@ -197,13 +197,13 @@ button {
     align-items: center;
     justify-content: center;
     padding: var(--spacing-xxl) var(--spacing-md);
+    /* Exact match to PremiumHealthBackground from iOS app */
     background: linear-gradient(
         135deg,
-        #8b5cf6 0%,      /* primaryDeep */
-        #a78bfa 25%,     /* primarySoft */
-        #6366f1 50%,     /* wisdom */
-        #8b5cf6 75%,     /* primaryDeep opacity */
-        #7c3aed 100%     /* Deep purple */
+        #1a1f36 0%,      /* primaryDeep - Deep navy */
+        #2d3561 25%,     /* primarySoft - Soft navy */
+        #748ffc 50%,     /* wisdom - Wise indigo */
+        #1a1f36 100%     /* primaryDeep - Deep navy */
     );
     color: var(--white);
     overflow: hidden;
@@ -347,13 +347,13 @@ button {
 .features {
     position: relative;
     padding: var(--spacing-xxl) var(--spacing-md);
+    /* Exact match to PremiumHealthBackground from iOS app */
     background: linear-gradient(
         135deg,
-        #8b5cf6 0%,
-        #a78bfa 25%,
-        #6366f1 50%,
-        #8b5cf6 75%,
-        #7c3aed 100%
+        #1a1f36 0%,
+        #2d3561 25%,
+        #748ffc 50%,
+        #1a1f36 100%
     );
     background-size: 200% 200%;
     animation: breathingGradient 20s ease-in-out infinite;
@@ -503,13 +503,13 @@ button {
 .download {
     position: relative;
     padding: var(--spacing-xxl) var(--spacing-md);
+    /* Exact match to PremiumHealthBackground from iOS app */
     background: linear-gradient(
         135deg,
-        #8b5cf6 0%,
-        #a78bfa 25%,
-        #6366f1 50%,
-        #8b5cf6 75%,
-        #7c3aed 100%
+        #1a1f36 0%,
+        #2d3561 25%,
+        #748ffc 50%,
+        #1a1f36 100%
     );
     background-size: 200% 200%;
     animation: breathingGradient 20s ease-in-out infinite;
