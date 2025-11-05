@@ -86,16 +86,16 @@ button {
     left: 0;
     right: 0;
     z-index: 1000;
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .nav-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 12px var(--spacing-md);
+    padding: 16px var(--spacing-md);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -104,6 +104,17 @@ button {
 .logo-link {
     display: flex;
     align-items: center;
+}
+
+.logo-icon {
+    height: 44px;
+    width: 44px;
+    transition: transform 0.3s ease;
+    border-radius: 10px;
+}
+
+.logo-icon:hover {
+    transform: scale(1.05);
 }
 
 .logo-img {
@@ -444,6 +455,13 @@ button {
     width: auto;
     margin-bottom: var(--spacing-sm);
     filter: brightness(0) invert(1); /* Makes logo white */
+}
+
+.footer-icon {
+    height: 60px;
+    width: 60px;
+    margin-bottom: var(--spacing-sm);
+    border-radius: 12px;
 }
 
 .footer-brand p {
