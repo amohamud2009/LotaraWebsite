@@ -1,0 +1,291 @@
+/* ============================================
+   PREMIUM AESTHETIC ENHANCEMENTS
+   Additional polish for Lotara website
+   ============================================ */
+
+/* Enhanced Typography */
+.hero-title {
+    letter-spacing: -2px !important;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+}
+
+.hero-subtitle {
+    letter-spacing: 0.3px;
+    line-height: 1.8 !important;
+}
+
+/* Premium Button Hover Effects */
+.action-btn {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.action-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.action-btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.action-btn:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 40px rgba(139, 92, 246, 0.3);
+}
+
+.action-btn:active {
+    transform: translateY(-2px) scale(0.98);
+}
+
+/* Enhanced Feature Cards with Glassmorphism */
+.feature-card {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.feature-card:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 
+        0 20px 60px rgba(139, 92, 246, 0.2),
+        0 0 0 1px rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(30px);
+}
+
+.feature-card:hover .feature-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.feature-icon {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth Scroll Reveal Animations */
+.feature-card,
+.action-btn {
+    opacity: 0;
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+.feature-card:nth-child(1) { animation-delay: 0.1s; }
+.feature-card:nth-child(2) { animation-delay: 0.2s; }
+.feature-card:nth-child(3) { animation-delay: 0.3s; }
+.feature-card:nth-child(4) { animation-delay: 0.4s; }
+.feature-card:nth-child(5) { animation-delay: 0.5s; }
+.feature-card:nth-child(6) { animation-delay: 0.6s; }
+
+.action-btn:nth-child(1) { animation-delay: 0.2s; }
+.action-btn:nth-child(2) { animation-delay: 0.3s; }
+.action-btn:nth-child(3) { animation-delay: 0.4s; }
+.action-btn:nth-child(4) { animation-delay: 0.5s; }
+.action-btn:nth-child(5) { animation-delay: 0.6s; }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Enhanced Section Titles */
+.section-title {
+    letter-spacing: -1px;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+    position: relative;
+    display: inline-block;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--purple-primary), transparent);
+    border-radius: 2px;
+}
+
+/* Premium App Store Button */
+.app-store-btn {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.app-store-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.6s;
+}
+
+.app-store-btn:hover::before {
+    left: 100%;
+}
+
+.app-store-btn:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 12px 40px rgba(139, 92, 246, 0.4);
+}
+
+/* Subtle Parallax Effect for Hero Content */
+.hero-content {
+    animation: gentleFloat 6s ease-in-out infinite;
+}
+
+@keyframes gentleFloat {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Enhanced Navigation Blur */
+.nav.scrolled {
+    backdrop-filter: blur(30px) saturate(180%);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Premium Footer Styling */
+.footer {
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footer-logo {
+    transition: all 0.3s ease;
+}
+
+.footer-logo:hover {
+    transform: scale(1.05);
+    filter: brightness(1.2);
+}
+
+/* Smooth Link Hover Effects */
+.footer-column a,
+.nav-links a {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.footer-column a::after,
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: currentColor;
+    transition: width 0.3s ease;
+}
+
+.footer-column a:hover::after,
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/* Enhanced Download Section */
+.download {
+    position: relative;
+}
+
+.download::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+}
+
+/* Subtle Glow on Interactive Elements */
+.action-btn:hover,
+.feature-card:hover,
+.app-store-btn:hover {
+    box-shadow: 
+        0 0 40px rgba(139, 92, 246, 0.3),
+        0 20px 60px rgba(139, 92, 246, 0.2);
+}
+
+/* Enhanced Logo Animation */
+.logo-img {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logo-img:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 4px 20px rgba(139, 92, 246, 0.4));
+}
+
+/* Smooth Color Transitions */
+* {
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+}
+
+/* Premium Selection Styling */
+::selection {
+    background-color: rgba(139, 92, 246, 0.3);
+    color: white;
+}
+
+::-moz-selection {
+    background-color: rgba(139, 92, 246, 0.3);
+    color: white;
+}
+
+/* Smooth Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--purple-primary), var(--purple-deep));
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--purple-deep);
+}
+
+/* Reduced Motion for Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
