@@ -87,14 +87,20 @@ button {
     right: 0;
     z-index: 1000;
     background: transparent;
-    transition: background 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .nav.scrolled {
-    background: rgba(255, 255, 255, 0.95);
+    background: linear-gradient(
+        135deg,
+        rgba(139, 92, 246, 0.95),
+        rgba(167, 139, 250, 0.95),
+        rgba(99, 102, 241, 0.95)
+    );
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .nav-container {
@@ -155,10 +161,6 @@ button {
     opacity: 0.9;
 }
 
-.nav.scrolled .nav-links a {
-    color: var(--gray-dark);
-}
-
 .nav-links a:hover {
     opacity: 1;
 }
@@ -175,11 +177,6 @@ button {
     border-radius: var(--radius-pill);
     font-weight: 500;
     transition: all 0.3s ease;
-}
-
-.nav.scrolled .btn-primary {
-    background: var(--purple-primary);
-    border: 1px solid var(--purple-primary);
 }
 
 .btn-primary:hover {
