@@ -123,7 +123,7 @@ button {
 }
 
 .logo-img {
-    height: 80px;
+    height: 60px;
     width: auto;
     transition: transform 0.3s ease;
 }
@@ -468,10 +468,9 @@ button {
 }
 
 .footer-logo {
-    height: 50px;
+    height: 70px;
     width: auto;
     margin-bottom: var(--spacing-sm);
-    filter: brightness(0) invert(1); /* Makes logo white */
 }
 
 .footer-icon {
