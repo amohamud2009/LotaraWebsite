@@ -77,7 +77,18 @@
 /* Mission Section */
 .about-mission {
     padding: var(--spacing-xxl) var(--spacing-md);
-    background: white;
+    background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+    position: relative;
+}
+
+.about-mission::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(116, 143, 252, 0.3), transparent);
 }
 
 .mission-content {
@@ -104,11 +115,19 @@
 }
 
 .mission-text {
-    font-size: 18px;
-    line-height: 1.8;
-    color: var(--gray-dark);
+    font-size: 20px;
+    line-height: 1.9;
+    color: #495057;
     margin-bottom: var(--spacing-lg);
-    text-align: left;
+    text-align: center;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+}
+
+.mission-text:first-of-type {
+    font-size: 22px;
+    font-weight: 500;
+    color: #2d3561;
 }
 
 /* Values Section */
@@ -189,7 +208,18 @@
 /* Story Section */
 .about-story {
     padding: var(--spacing-xxl) var(--spacing-md);
-    background: white;
+    background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+    position: relative;
+}
+
+.about-story::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(116, 143, 252, 0.3), transparent);
 }
 
 .story-content {
@@ -202,10 +232,19 @@
 }
 
 .story-text p {
-    font-size: 18px;
-    line-height: 1.8;
-    color: var(--gray-dark);
+    font-size: 20px;
+    line-height: 1.9;
+    color: #495057;
     margin-bottom: var(--spacing-lg);
+    text-align: center;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+}
+
+.story-text p:first-child {
+    font-size: 22px;
+    font-weight: 500;
+    color: #2d3561;
 }
 
 /* Team Section */
@@ -262,8 +301,19 @@
 /* CTA Section */
 .about-cta {
     padding: var(--spacing-xxl) var(--spacing-md);
-    background: white;
+    background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
     text-align: center;
+    position: relative;
+}
+
+.about-cta::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(116, 143, 252, 0.3), transparent);
 }
 
 .cta-title {
