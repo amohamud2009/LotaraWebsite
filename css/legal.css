@@ -23,16 +23,15 @@
 .nav-legal .btn-back-home {
     background: transparent !important;
     color: #666666 !important;
-    border: 1px solid #e5e7eb !important;
-    padding: 8px 16px !important;
+    border: none !important;
+    padding: 0 !important;
     font-size: 15px;
     font-weight: 400;
 }
 
 .nav-legal .btn-back-home:hover {
-    background: #f9fafb !important;
+    background: transparent !important;
     color: #000000 !important;
-    border-color: #d1d5db !important;
 }
 
 .logo-img-legal {
