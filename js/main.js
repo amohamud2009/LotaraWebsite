@@ -160,11 +160,9 @@ window.addEventListener('scroll', () => {
     const nav = document.querySelector('.nav');
     
     if (window.scrollY > 50) {
-        nav.style.background = 'rgba(255, 255, 255, 0.95)';
-        nav.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)';
+        nav.classList.add('scrolled');
     } else {
-        nav.style.background = 'rgba(255, 255, 255, 0.8)';
-        nav.style.boxShadow = 'none';
+        nav.classList.remove('scrolled');
     }
 });
 
