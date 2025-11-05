@@ -77,7 +77,12 @@
 /* Mission Section */
 .about-mission {
     padding: var(--spacing-xxl) var(--spacing-md);
-    background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+    background: linear-gradient(
+        180deg,
+        rgba(26, 31, 54, 0.03) 0%,
+        rgba(116, 143, 252, 0.05) 50%,
+        rgba(26, 31, 54, 0.03) 100%
+    );
     position: relative;
 }
 
@@ -87,8 +92,8 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(116, 143, 252, 0.3), transparent);
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(116, 143, 252, 0.2), transparent);
 }
 
 .mission-content {
@@ -98,26 +103,50 @@
 }
 
 .mission-icon {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     margin: 0 auto var(--spacing-lg);
     display: flex;
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, #748ffc, #a29bfe);
     border-radius: 50%;
+    box-shadow: 0 8px 32px rgba(116, 143, 252, 0.3);
+    position: relative;
+}
+
+.mission-icon::before {
+    content: '';
+    position: absolute;
+    inset: -10px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(116, 143, 252, 0.2), rgba(162, 155, 254, 0.2));
+    z-index: -1;
+    animation: pulse 3s ease-in-out infinite;
 }
 
 .mission-icon svg {
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     stroke: white;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
 }
 
 .mission-text {
     font-size: 20px;
     line-height: 1.9;
-    color: #495057;
+    color: #3d4451;
     margin-bottom: var(--spacing-lg);
     text-align: center;
     font-weight: 400;
@@ -125,9 +154,13 @@
 }
 
 .mission-text:first-of-type {
-    font-size: 22px;
-    font-weight: 500;
-    color: #2d3561;
+    font-size: 24px;
+    font-weight: 600;
+    color: #1a1f36;
+    background: linear-gradient(135deg, #1a1f36, #2d3561);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 /* Values Section */
@@ -208,7 +241,12 @@
 /* Story Section */
 .about-story {
     padding: var(--spacing-xxl) var(--spacing-md);
-    background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+    background: linear-gradient(
+        180deg,
+        rgba(116, 143, 252, 0.05) 0%,
+        rgba(162, 155, 254, 0.08) 50%,
+        rgba(116, 143, 252, 0.05) 100%
+    );
     position: relative;
 }
 
@@ -218,8 +256,8 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(116, 143, 252, 0.3), transparent);
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(116, 143, 252, 0.2), transparent);
 }
 
 .story-content {
@@ -234,7 +272,7 @@
 .story-text p {
     font-size: 20px;
     line-height: 1.9;
-    color: #495057;
+    color: #3d4451;
     margin-bottom: var(--spacing-lg);
     text-align: center;
     font-weight: 400;
@@ -242,9 +280,13 @@
 }
 
 .story-text p:first-child {
-    font-size: 22px;
-    font-weight: 500;
-    color: #2d3561;
+    font-size: 24px;
+    font-weight: 600;
+    color: #1a1f36;
+    background: linear-gradient(135deg, #2d3561, #748ffc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 /* Team Section */
@@ -301,7 +343,11 @@
 /* CTA Section */
 .about-cta {
     padding: var(--spacing-xxl) var(--spacing-md);
-    background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+    background: linear-gradient(
+        180deg,
+        rgba(26, 31, 54, 0.02) 0%,
+        rgba(116, 143, 252, 0.03) 100%
+    );
     text-align: center;
     position: relative;
 }
@@ -312,22 +358,26 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(116, 143, 252, 0.3), transparent);
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(116, 143, 252, 0.2), transparent);
 }
 
 .cta-title {
     font-size: clamp(36px, 5vw, 48px);
     font-weight: 600;
-    color: var(--black);
     margin-bottom: var(--spacing-md);
     letter-spacing: -1px;
+    background: linear-gradient(135deg, #1a1f36, #748ffc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .cta-subtitle {
     font-size: 20px;
-    color: var(--gray-dark);
+    color: #3d4451;
     margin-bottom: var(--spacing-xl);
+    font-weight: 400;
 }
 
 .cta-btn {
