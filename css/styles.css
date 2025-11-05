@@ -101,6 +101,21 @@ button {
     align-items: center;
 }
 
+.logo-link {
+    display: flex;
+    align-items: center;
+}
+
+.logo-img {
+    height: 40px;
+    width: auto;
+    transition: transform 0.3s ease;
+}
+
+.logo-img:hover {
+    transform: scale(1.05);
+}
+
 .logo {
     font-size: 28px;
     font-weight: 500;
@@ -422,6 +437,13 @@ button {
     grid-template-columns: 2fr 3fr;
     gap: var(--spacing-xl);
     margin-bottom: var(--spacing-lg);
+}
+
+.footer-logo {
+    height: 50px;
+    width: auto;
+    margin-bottom: var(--spacing-sm);
+    filter: brightness(0) invert(1); /* Makes logo white */
 }
 
 .footer-brand p {
