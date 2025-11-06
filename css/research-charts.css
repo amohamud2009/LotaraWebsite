@@ -356,10 +356,18 @@
 
 .legend-item {
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+.legend-item:before {
+    content: '•';
+    color: #8b5cf6;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 /* ============================================
@@ -395,7 +403,7 @@
     background: rgba(139, 92, 246, 0.1);
     border: 1px solid rgba(139, 92, 246, 0.2);
     border-radius: 16px;
-    padding: 32px 24px;
+    padding: 40px 32px;
     text-align: center;
     transition: all 0.3s ease;
 }
@@ -406,16 +414,11 @@
     background: rgba(139, 92, 246, 0.15);
 }
 
-.engagement-icon {
-    font-size: 48px;
-    margin-bottom: 16px;
-}
-
 .engagement-stat {
-    font-size: 42px;
+    font-size: 56px;
     font-weight: 700;
     color: white;
-    margin-bottom: 8px;
+    margin-bottom: 16px;
     background: linear-gradient(135deg, #8b5cf6, #6366f1);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -423,16 +426,16 @@
 }
 
 .engagement-label {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
     color: white;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
 }
 
 .engagement-desc {
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.6);
-    line-height: 1.4;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.5;
 }
 
 /* ============================================
@@ -486,12 +489,16 @@
         grid-template-columns: 1fr;
     }
 
-    .engagement-icon {
-        font-size: 36px;
+    .engagement-stat {
+        font-size: 42px;
     }
 
-    .engagement-stat {
-        font-size: 32px;
+    .engagement-label {
+        font-size: 16px;
+    }
+
+    .engagement-desc {
+        font-size: 13px;
     }
 }
 
