@@ -1,0 +1,355 @@
+/* ============================================
+   LOTARA WEBSITE - COMPARISON TABLE
+   Clean, premium comparison styling
+   ============================================ */
+
+.comparison-section {
+    padding: 120px 0;
+    background: transparent;
+}
+
+.comparison-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
+}
+
+.comparison-header {
+    text-align: center;
+    margin-bottom: 80px;
+}
+
+.comparison-title {
+    font-size: 48px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+}
+
+.comparison-subtitle {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* ============================================
+   COMPARISON TABLE
+   ============================================ */
+
+.comparison-table {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+/* Table Header */
+.comparison-header-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 0;
+    background: rgba(139, 92, 246, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.comparison-header-cell {
+    padding: 32px 24px;
+    text-align: center;
+}
+
+.comparison-header-cell:first-child {
+    text-align: left;
+}
+
+.tier-name {
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 8px;
+}
+
+.tier-price {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 500;
+}
+
+.tier-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+/* Table Body */
+.comparison-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.comparison-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background 0.3s ease;
+}
+
+.comparison-row:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.comparison-row:last-child {
+    border-bottom: none;
+}
+
+.comparison-cell {
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.comparison-cell:first-child {
+    justify-content: flex-start;
+}
+
+.feature-name {
+    font-size: 16px;
+    color: white;
+    font-weight: 500;
+}
+
+.feature-description {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 4px;
+}
+
+/* Check/X Icons */
+.check-icon,
+.x-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.check-icon {
+    color: #10b981;
+}
+
+.x-icon {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.limited-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: rgba(251, 191, 36, 0.1);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    border-radius: 12px;
+    color: #fbbf24;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* ============================================
+   CTA SECTION
+   ============================================ */
+
+.comparison-cta {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 0;
+    background: rgba(139, 92, 246, 0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.comparison-cta-cell {
+    padding: 32px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.comparison-cta-cell:first-child {
+    justify-content: flex-start;
+}
+
+.cta-text {
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+}
+
+.comparison-cta-btn {
+    padding: 14px 32px;
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    color: white;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+}
+
+.comparison-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+}
+
+.comparison-cta-btn.secondary {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: none;
+}
+
+.comparison-cta-btn.secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================
+   COMPETITOR COMPARISON
+   ============================================ */
+
+.competitor-comparison {
+    margin-top: 80px;
+}
+
+.competitor-table {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.competitor-header-row {
+    display: grid;
+    grid-template-columns: 2fr repeat(3, 1fr);
+    gap: 0;
+    background: rgba(139, 92, 246, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.competitor-row {
+    display: grid;
+    grid-template-columns: 2fr repeat(3, 1fr);
+    gap: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background 0.3s ease;
+}
+
+.competitor-row:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.competitor-row:last-child {
+    border-bottom: none;
+}
+
+.competitor-name {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.competitor-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.lotara-highlight {
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+    .comparison-section {
+        padding: 80px 0;
+    }
+
+    .comparison-title {
+        font-size: 32px;
+    }
+
+    .comparison-subtitle {
+        font-size: 16px;
+    }
+
+    .comparison-header-row,
+    .comparison-row,
+    .comparison-cta,
+    .competitor-header-row,
+    .competitor-row {
+        grid-template-columns: 1fr;
+    }
+
+    .comparison-header-cell:first-child,
+    .comparison-cell:first-child,
+    .comparison-cta-cell:first-child {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .comparison-cell,
+    .comparison-cta-cell {
+        justify-content: flex-start;
+        padding: 16px 24px;
+    }
+
+    .tier-name {
+        font-size: 20px;
+    }
+
+    .comparison-header-cell {
+        padding: 24px;
+    }
+
+    /* Hide competitor comparison on mobile */
+    .competitor-comparison {
+        display: none;
+    }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+.comparison-table,
+.competitor-table {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.comparison-table.animate-in,
+.competitor-table.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+

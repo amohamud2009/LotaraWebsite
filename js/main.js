@@ -188,6 +188,12 @@ function initScrollAnimations() {
         stat.style.transitionDelay = `${index * 0.2}s`;
         observer.observe(stat);
     });
+    
+    // Animate comparison tables
+    document.querySelectorAll('.comparison-table, .competitor-table').forEach(table => {
+        table.classList.add('animate-fade-up');
+        observer.observe(table);
+    });
 }
 
 // ============================================
