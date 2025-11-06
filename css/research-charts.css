@@ -220,20 +220,20 @@
 }
 
 .stat-card {
-    background: rgba(139, 92, 246, 0.2);
+    background: rgba(45, 53, 97, 0.4);
     backdrop-filter: blur(20px);
     border-radius: 20px;
-    border: 1px solid rgba(139, 92, 246, 0.4);
+    border: 1px solid rgba(116, 143, 252, 0.2);
     padding: 48px 32px;
     text-align: center;
     transition: all 0.3s ease;
 }
 
 .stat-card:hover {
-    border-color: rgba(139, 92, 246, 0.6);
+    border-color: rgba(116, 143, 252, 0.4);
     transform: translateY(-8px);
-    background: rgba(139, 92, 246, 0.3);
-    box-shadow: 0 20px 60px rgba(139, 92, 246, 0.4);
+    background: rgba(45, 53, 97, 0.6);
+    box-shadow: 0 20px 60px rgba(116, 143, 252, 0.2);
 }
 
 .stat-number {
@@ -470,20 +470,20 @@
 }
 
 .engagement-metric {
-    background: rgba(139, 92, 246, 0.2);
-    border: 1px solid rgba(139, 92, 246, 0.4);
+    background: rgba(45, 53, 97, 0.4);
+    border: 1px solid rgba(116, 143, 252, 0.2);
     border-radius: 20px;
     padding: 48px 32px;
     text-align: center;
     transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(20px);
 }
 
 .engagement-metric:hover {
     transform: translateY(-8px);
-    border-color: rgba(139, 92, 246, 0.6);
-    background: rgba(139, 92, 246, 0.3);
-    box-shadow: 0 20px 60px rgba(139, 92, 246, 0.4);
+    border-color: rgba(116, 143, 252, 0.4);
+    background: rgba(45, 53, 97, 0.6);
+    box-shadow: 0 20px 60px rgba(116, 143, 252, 0.2);
 }
 
 .engagement-stat {
