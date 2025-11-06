@@ -280,6 +280,7 @@
 
 .radial-progress-item {
     text-align: center;
+    opacity: 1 !important;
 }
 
 .radial-progress-bar {
@@ -480,6 +481,7 @@
     text-align: center;
     transition: all 0.3s ease;
     backdrop-filter: blur(20px);
+    opacity: 1 !important;
 }
 
 .engagement-metric:hover {
@@ -582,7 +584,6 @@
    ============================================ */
 
 .chart-card,
-.radial-progress-item,
 .stat-card {
     opacity: 0;
     transform: translateY(30px);
@@ -590,7 +591,6 @@
 }
 
 .chart-card.animate-in,
-.radial-progress-item.animate-in,
 .stat-card.animate-in {
     opacity: 1;
     transform: translateY(0);
