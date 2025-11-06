@@ -5,8 +5,26 @@
 
 .comparison-section {
     padding: 120px 0;
-    background: transparent;
     position: relative;
+    /* Exact match to PremiumHealthBackground from iOS app */
+    background: linear-gradient(
+        135deg,
+        #1a1f36 0%,      /* primaryDeep - Deep navy */
+        #2d3561 25%,     /* primarySoft - Soft navy */
+        #748ffc 50%,     /* wisdom - Wise indigo */
+        #1a1f36 100%     /* primaryDeep - Deep navy */
+    );
+    background-size: 200% 200%;
+    animation: breathingGradient 20s ease-in-out infinite;
+}
+
+@keyframes breathingGradient {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
 }
 
 .comparison-container {
