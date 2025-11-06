@@ -344,50 +344,72 @@
                 </div>
             </div>
 
-            <!-- Clinical Trial Results -->
-            <div class="bar-chart-card">
-                <h3 class="bar-chart-title">Meta-Analysis: Clinical Efficacy (2025 Peer-Reviewed Studies)</h3>
-                <p class="chart-source">Source: Humayun et al., 2025 | Fatouros et al., Nature 2025</p>
-                <div class="bar-chart">
-                    <div class="bar-item">
-                        <div class="bar-label">Depression Reduction</div>
-                        <div class="bar-container">
-                            <div class="bar-fill" style="--width: 74%">
-                                <span class="bar-value">74%</span>
-                            </div>
+            <!-- Clinical Trial Results - Circular Charts -->
+            <div class="clinical-results-section">
+                <h3 class="clinical-title">Meta-Analysis: Clinical Efficacy</h3>
+                <p class="clinical-subtitle">2025 Peer-Reviewed Studies</p>
+                
+                <div class="clinical-grid">
+                    <div class="chart-card">
+                        <div class="circular-chart" data-progress="74">
+                            <svg viewBox="0 0 200 200">
+                                <defs>
+                                    <linearGradient id="gradient4" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#6366f1;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <circle class="circular-chart-bg" cx="100" cy="100" r="90"></circle>
+                                <circle class="circular-chart-progress" cx="100" cy="100" r="90" style="--progress: 418; stroke: url(#gradient4)"></circle>
+                            </svg>
+                            <div class="chart-percentage">74%</div>
                         </div>
+                        <div class="chart-label">Depression Reduction</div>
+                        <div class="chart-description">Significant improvement in clinical trials</div>
                     </div>
-                    <div class="bar-item">
-                        <div class="bar-label">Anxiety Reduction</div>
-                        <div class="bar-container">
-                            <div class="bar-fill" style="--width: 62%">
-                                <span class="bar-value">62%</span>
-                            </div>
+
+                    <div class="chart-card">
+                        <div class="circular-chart" data-progress="62">
+                            <svg viewBox="0 0 200 200">
+                                <defs>
+                                    <linearGradient id="gradient5" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#a78bfa;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <circle class="circular-chart-bg" cx="100" cy="100" r="90"></circle>
+                                <circle class="circular-chart-progress" cx="100" cy="100" r="90" style="--progress: 350; stroke: url(#gradient5)"></circle>
+                            </svg>
+                            <div class="chart-percentage">62%</div>
                         </div>
+                        <div class="chart-label">Anxiety Reduction</div>
+                        <div class="chart-description">Measurable decrease in anxiety symptoms</div>
                     </div>
-                    <div class="bar-item">
-                        <div class="bar-label">Treatment Adherence</div>
-                        <div class="bar-container">
-                            <div class="bar-fill" style="--width: 60%">
-                                <span class="bar-value">+60%</span>
-                            </div>
+
+                    <div class="chart-card">
+                        <div class="circular-chart" data-progress="60">
+                            <svg viewBox="0 0 200 200">
+                                <defs>
+                                    <linearGradient id="gradient6" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#4f46e5;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <circle class="circular-chart-bg" cx="100" cy="100" r="90"></circle>
+                                <circle class="circular-chart-progress" cx="100" cy="100" r="90" style="--progress: 339; stroke: url(#gradient6)"></circle>
+                            </svg>
+                            <div class="chart-percentage">60%</div>
                         </div>
-                    </div>
-                    <div class="bar-item">
-                        <div class="bar-label">Emergency Visit Reduction</div>
-                        <div class="bar-container">
-                            <div class="bar-fill" style="--width: 23%">
-                                <span class="bar-value">-23%</span>
-                            </div>
-                        </div>
+                        <div class="chart-label">Treatment Adherence</div>
+                        <div class="chart-description">Increased engagement with wellness practices</div>
                     </div>
                 </div>
             </div>
 
             <!-- Timeline Improvement Chart -->
             <div class="timeline-chart-card">
-                <h3 class="timeline-title">Progressive Wellness Improvement: 16-Week Clinical Trial</h3>
-                <p class="chart-source">Randomized Controlled Trial | N=200 participants | Nature Digital Medicine, 2025</p>
+                <h3 class="timeline-title">Progressive Wellness Improvement</h3>
+                <p class="timeline-subtitle">16-Week Clinical Trial</p>
                 <div class="timeline-chart">
                     <div class="timeline-item">
                         <div class="timeline-week">Week 2</div>
@@ -439,7 +461,6 @@
             <!-- Engagement vs Outcomes -->
             <div class="engagement-chart-card">
                 <h3 class="engagement-title">User Engagement Correlation with Clinical Outcomes</h3>
-                <p class="chart-source">Systematic Review | 31 Studies | Frontiers in Digital Health, 2025</p>
                 <div class="engagement-grid">
                     <div class="engagement-metric">
                         <div class="engagement-stat">89%</div>
