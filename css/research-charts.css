@@ -254,32 +254,79 @@
 }
 
 /* ============================================
-   CLINICAL RESULTS SECTION
+   CLINICAL RESULTS SECTION - RADIAL PROGRESS
    ============================================ */
 
 .clinical-results-section {
-    margin-top: 60px;
+    margin: 80px 0;
 }
 
 .clinical-title {
-    font-size: 32px;
+    font-size: 36px;
     font-weight: 700;
     color: white;
     text-align: center;
-    margin-bottom: 8px;
+    margin-bottom: 64px;
+    letter-spacing: -0.5px;
 }
 
-.clinical-subtitle {
-    font-size: 16px;
-    color: rgba(255, 255, 255, 0.7);
-    text-align: center;
-    margin-bottom: 48px;
-}
-
-.clinical-grid {
+.radial-progress-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 48px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.radial-progress-item {
+    text-align: center;
+}
+
+.radial-progress-bar {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 24px;
+}
+
+.radial-progress-bar svg {
+    transform: rotate(-90deg);
+    width: 100%;
+    height: 100%;
+}
+
+.radial-progress-circle {
+    transition: stroke-dashoffset 2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.radial-progress-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.radial-progress-number {
+    font-size: 48px;
+    font-weight: 700;
+    color: white;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.radial-progress-label {
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.radial-progress-desc {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.4;
 }
 
 .timeline-subtitle {
@@ -299,17 +346,18 @@
     backdrop-filter: blur(20px);
     border-radius: 24px;
     border: 1px solid rgba(139, 92, 246, 0.2);
-    padding: 40px;
+    padding: 56px 48px;
     grid-column: 1 / -1;
-    margin-top: 40px;
+    margin-top: 56px;
 }
 
 .timeline-title {
-    font-size: 28px;
+    font-size: 32px;
     font-weight: 700;
     color: white;
-    margin-bottom: 0;
+    margin-bottom: 48px;
     text-align: center;
+    letter-spacing: -0.5px;
 }
 
 .timeline-chart {
@@ -403,17 +451,18 @@
     backdrop-filter: blur(20px);
     border-radius: 24px;
     border: 1px solid rgba(139, 92, 246, 0.2);
-    padding: 40px;
+    padding: 56px 48px;
     grid-column: 1 / -1;
-    margin-top: 40px;
+    margin-top: 56px;
 }
 
 .engagement-title {
-    font-size: 28px;
+    font-size: 32px;
     font-weight: 700;
     color: white;
-    margin-bottom: 40px;
+    margin-bottom: 48px;
     text-align: center;
+    letter-spacing: -0.5px;
 }
 
 .engagement-grid {
@@ -531,6 +580,7 @@
    ============================================ */
 
 .chart-card,
+.radial-progress-item,
 .bar-chart-card,
 .timeline-chart-card,
 .engagement-chart-card,
@@ -541,6 +591,7 @@
 }
 
 .chart-card.animate-in,
+.radial-progress-item.animate-in,
 .bar-chart-card.animate-in,
 .timeline-chart-card.animate-in,
 .engagement-chart-card.animate-in,

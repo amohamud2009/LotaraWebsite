@@ -17,6 +17,12 @@ function initResearchCharts() {
                     animateCircularChart(entry.target);
                 }
                 
+                // Animate radial progress items
+                if (entry.target.classList.contains('radial-progress-item')) {
+                    entry.target.classList.add('animate-in');
+                    animateRadialProgress(entry.target);
+                }
+                
                 // Animate bar chart
                 if (entry.target.classList.contains('bar-chart-card')) {
                     entry.target.classList.add('animate-in');
@@ -32,6 +38,7 @@ function initResearchCharts() {
                 // Animate engagement chart
                 if (entry.target.classList.contains('engagement-chart-card')) {
                     entry.target.classList.add('animate-in');
+                    setTimeout(() => animateEngagementStats(), 300);
                 }
                 
                 // Animate stat cards
@@ -48,7 +55,7 @@ function initResearchCharts() {
     });
 
     // Observe all chart elements
-    document.querySelectorAll('.chart-card, .bar-chart-card, .timeline-chart-card, .engagement-chart-card, .stat-card').forEach(el => {
+    document.querySelectorAll('.chart-card, .radial-progress-item, .bar-chart-card, .timeline-chart-card, .engagement-chart-card, .stat-card').forEach(el => {
         observer.observe(el);
     });
 }
@@ -58,6 +65,44 @@ function animateCircularChart(card) {
     if (chart) {
         chart.classList.add('animate');
     }
+}
+
+function animateRadialProgress(item) {
+    const circle = item.querySelector('.radial-progress-circle');
+    const numberEl = item.querySelector('.radial-progress-number');
+    if (!circle || !numberEl) return;
+    
+    // Get target percentage
+    const targetText = numberEl.textContent;
+    const hasPlus = targetText.includes('+');
+    const targetPercent = parseFloat(targetText.replace(/[^0-9]/g, ''));
+    
+    // Calculate stroke-dashoffset (circumference = 2 * π * r = 2 * π * 80 = 502)
+    const circumference = 502;
+    const targetOffset = circumference - (targetPercent / 100 * circumference);
+    
+    // Animate the circle
+    setTimeout(() => {
+        circle.style.strokeDashoffset = targetOffset;
+    }, 100);
+    
+    // Animate the number
+    let currentNumber = 0;
+    const duration = 2000;
+    const increment = targetPercent / (duration / 16);
+    
+    const timer = setInterval(() => {
+        currentNumber += increment;
+        if (currentNumber >= targetPercent) {
+            currentNumber = targetPercent;
+            clearInterval(timer);
+        }
+        
+        let displayText = Math.floor(currentNumber) + '%';
+        if (hasPlus) displayText = '+' + displayText;
+        
+        numberEl.textContent = displayText;
+    }, 16);
 }
 
 function animateBarChart() {
@@ -78,8 +123,17 @@ function animateTimelineChart() {
     });
 }
 
+function animateEngagementStats() {
+    const stats = document.querySelectorAll('.engagement-stat');
+    stats.forEach((stat, index) => {
+        setTimeout(() => {
+            animateStatNumber({ querySelector: () => stat });
+        }, index * 200);
+    });
+}
+
 function animateStatNumber(card) {
-    const numberEl = card.querySelector('.stat-number');
+    const numberEl = card.querySelector('.stat-number') || card.querySelector('.engagement-stat');
     if (!numberEl) return;
     
     const targetText = numberEl.textContent;

@@ -344,72 +344,76 @@
                 </div>
             </div>
 
-            <!-- Clinical Trial Results - Circular Charts -->
+            <!-- Clinical Results - Radial Progress Bars -->
             <div class="clinical-results-section">
-                <h3 class="clinical-title">Meta-Analysis: Clinical Efficacy</h3>
-                <p class="clinical-subtitle">2025 Peer-Reviewed Studies</p>
+                <h3 class="clinical-title">Clinical Outcomes</h3>
                 
-                <div class="clinical-grid">
-                    <div class="chart-card">
-                        <div class="circular-chart" data-progress="74">
+                <div class="radial-progress-grid">
+                    <div class="radial-progress-item">
+                        <div class="radial-progress-bar">
                             <svg viewBox="0 0 200 200">
                                 <defs>
-                                    <linearGradient id="gradient4" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
-                                        <stop offset="100%" style="stop-color:#6366f1;stop-opacity:1" />
+                                    <linearGradient id="radial-gradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#8b5cf6" />
+                                        <stop offset="100%" style="stop-color:#6366f1" />
                                     </linearGradient>
                                 </defs>
-                                <circle class="circular-chart-bg" cx="100" cy="100" r="90"></circle>
-                                <circle class="circular-chart-progress" cx="100" cy="100" r="90" style="--progress: 418; stroke: url(#gradient4)"></circle>
+                                <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="20"/>
+                                <circle class="radial-progress-circle" cx="100" cy="100" r="80" fill="none" stroke="url(#radial-gradient1)" stroke-width="20" stroke-linecap="round" style="--progress: 74; stroke-dasharray: 502; stroke-dashoffset: 131;"/>
                             </svg>
-                            <div class="chart-percentage">74%</div>
+                            <div class="radial-progress-content">
+                                <div class="radial-progress-number">74%</div>
+                                <div class="radial-progress-label">Depression</div>
+                            </div>
                         </div>
-                        <div class="chart-label">Depression Reduction</div>
-                        <div class="chart-description">Significant improvement in clinical trials</div>
+                        <div class="radial-progress-desc">Significant symptom reduction</div>
                     </div>
 
-                    <div class="chart-card">
-                        <div class="circular-chart" data-progress="62">
+                    <div class="radial-progress-item">
+                        <div class="radial-progress-bar">
                             <svg viewBox="0 0 200 200">
                                 <defs>
-                                    <linearGradient id="gradient5" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" style="stop-color:#a78bfa;stop-opacity:1" />
-                                        <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                                    <linearGradient id="radial-gradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#a78bfa" />
+                                        <stop offset="100%" style="stop-color:#8b5cf6" />
                                     </linearGradient>
                                 </defs>
-                                <circle class="circular-chart-bg" cx="100" cy="100" r="90"></circle>
-                                <circle class="circular-chart-progress" cx="100" cy="100" r="90" style="--progress: 350; stroke: url(#gradient5)"></circle>
+                                <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="20"/>
+                                <circle class="radial-progress-circle" cx="100" cy="100" r="80" fill="none" stroke="url(#radial-gradient2)" stroke-width="20" stroke-linecap="round" style="--progress: 62; stroke-dasharray: 502; stroke-dashoffset: 191;"/>
                             </svg>
-                            <div class="chart-percentage">62%</div>
+                            <div class="radial-progress-content">
+                                <div class="radial-progress-number">62%</div>
+                                <div class="radial-progress-label">Anxiety</div>
+                            </div>
                         </div>
-                        <div class="chart-label">Anxiety Reduction</div>
-                        <div class="chart-description">Measurable decrease in anxiety symptoms</div>
+                        <div class="radial-progress-desc">Measurable improvement</div>
                     </div>
 
-                    <div class="chart-card">
-                        <div class="circular-chart" data-progress="60">
+                    <div class="radial-progress-item">
+                        <div class="radial-progress-bar">
                             <svg viewBox="0 0 200 200">
                                 <defs>
-                                    <linearGradient id="gradient6" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
-                                        <stop offset="100%" style="stop-color:#4f46e5;stop-opacity:1" />
+                                    <linearGradient id="radial-gradient3" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#6366f1" />
+                                        <stop offset="100%" style="stop-color:#4f46e5" />
                                     </linearGradient>
                                 </defs>
-                                <circle class="circular-chart-bg" cx="100" cy="100" r="90"></circle>
-                                <circle class="circular-chart-progress" cx="100" cy="100" r="90" style="--progress: 339; stroke: url(#gradient6)"></circle>
+                                <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="20"/>
+                                <circle class="radial-progress-circle" cx="100" cy="100" r="80" fill="none" stroke="url(#radial-gradient3)" stroke-width="20" stroke-linecap="round" style="--progress: 60; stroke-dasharray: 502; stroke-dashoffset: 201;"/>
                             </svg>
-                            <div class="chart-percentage">60%</div>
+                            <div class="radial-progress-content">
+                                <div class="radial-progress-number">+60%</div>
+                                <div class="radial-progress-label">Adherence</div>
+                            </div>
                         </div>
-                        <div class="chart-label">Treatment Adherence</div>
-                        <div class="chart-description">Increased engagement with wellness practices</div>
+                        <div class="radial-progress-desc">Treatment consistency</div>
                     </div>
                 </div>
             </div>
 
             <!-- Timeline Improvement Chart -->
             <div class="timeline-chart-card">
-                <h3 class="timeline-title">Progressive Wellness Improvement</h3>
-                <p class="timeline-subtitle">16-Week Clinical Trial</p>
+                <h3 class="timeline-title">Progressive Improvement Over Time</h3>
                 <div class="timeline-chart">
                     <div class="timeline-item">
                         <div class="timeline-week">Week 2</div>
@@ -460,7 +464,7 @@
 
             <!-- Engagement vs Outcomes -->
             <div class="engagement-chart-card">
-                <h3 class="engagement-title">User Engagement Correlation with Clinical Outcomes</h3>
+                <h3 class="engagement-title">Engagement Impact on Outcomes</h3>
                 <div class="engagement-grid">
                     <div class="engagement-metric">
                         <div class="engagement-stat">89%</div>
