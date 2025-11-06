@@ -258,6 +258,7 @@
 
 .clinical-results-section {
     margin: 80px 0;
+    opacity: 1;
 }
 
 .clinical-title {
@@ -348,6 +349,7 @@
     padding: 56px 48px;
     grid-column: 1 / -1;
     margin-top: 56px;
+    opacity: 1;
 }
 
 .timeline-title {
@@ -451,6 +453,7 @@
     padding: 56px 48px;
     grid-column: 1 / -1;
     margin-top: 56px;
+    opacity: 1;
 }
 
 .engagement-title {
@@ -580,9 +583,6 @@
 
 .chart-card,
 .radial-progress-item,
-.bar-chart-card,
-.timeline-chart-card,
-.engagement-chart-card,
 .stat-card {
     opacity: 0;
     transform: translateY(30px);
@@ -591,9 +591,6 @@
 
 .chart-card.animate-in,
 .radial-progress-item.animate-in,
-.bar-chart-card.animate-in,
-.timeline-chart-card.animate-in,
-.engagement-chart-card.animate-in,
 .stat-card.animate-in {
     opacity: 1;
     transform: translateY(0);
