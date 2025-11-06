@@ -214,43 +214,42 @@
 
 .stats-row {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 32px;
-    margin-top: 60px;
+    margin-top: 80px;
 }
 
 .stat-card {
-    background: rgba(26, 31, 54, 0.4);
-    backdrop-filter: blur(10px);
-    border-radius: 16px;
-    border: 1px solid rgba(139, 92, 246, 0.15);
-    padding: 32px;
+    background: rgba(139, 92, 246, 0.15);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    padding: 48px 32px;
     text-align: center;
     transition: all 0.3s ease;
 }
 
 .stat-card:hover {
-    border-color: rgba(139, 92, 246, 0.3);
-    transform: translateY(-4px);
+    border-color: rgba(139, 92, 246, 0.5);
+    transform: translateY(-8px);
+    background: rgba(139, 92, 246, 0.2);
+    box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
 }
 
 .stat-number {
-    font-size: 48px;
+    font-size: 56px;
     font-weight: 700;
     color: white;
-    margin-bottom: 8px;
-    background: linear-gradient(135deg, #8b5cf6, #6366f1);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    margin-bottom: 16px;
+    text-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
 }
 
 .stat-label {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.95);
+    color: white;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
 }
 
 /* ============================================
