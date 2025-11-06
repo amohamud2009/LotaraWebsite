@@ -23,6 +23,17 @@ function initResearchCharts() {
                     setTimeout(() => animateBarChart(), 300);
                 }
                 
+                // Animate timeline chart
+                if (entry.target.classList.contains('timeline-chart-card')) {
+                    entry.target.classList.add('animate-in');
+                    setTimeout(() => animateTimelineChart(), 300);
+                }
+                
+                // Animate engagement chart
+                if (entry.target.classList.contains('engagement-chart-card')) {
+                    entry.target.classList.add('animate-in');
+                }
+                
                 // Animate stat cards
                 if (entry.target.classList.contains('stat-card')) {
                     entry.target.classList.add('animate-in');
@@ -37,7 +48,7 @@ function initResearchCharts() {
     });
 
     // Observe all chart elements
-    document.querySelectorAll('.chart-card, .bar-chart-card, .stat-card').forEach(el => {
+    document.querySelectorAll('.chart-card, .bar-chart-card, .timeline-chart-card, .engagement-chart-card, .stat-card').forEach(el => {
         observer.observe(el);
     });
 }
@@ -58,6 +69,15 @@ function animateBarChart() {
     });
 }
 
+function animateTimelineChart() {
+    const bars = document.querySelectorAll('.timeline-bar');
+    bars.forEach((bar, index) => {
+        setTimeout(() => {
+            bar.classList.add('animate');
+        }, index * 300);
+    });
+}
+
 function animateStatNumber(card) {
     const numberEl = card.querySelector('.stat-number');
     if (!numberEl) return;
@@ -65,7 +85,9 @@ function animateStatNumber(card) {
     const targetText = numberEl.textContent;
     const hasPlus = targetText.includes('+');
     const hasPercent = targetText.includes('%');
-    const targetNumber = parseInt(targetText.replace(/[^0-9]/g, ''));
+    const hasDot = targetText.includes('.');
+    const hasX = targetText.includes('x');
+    const targetNumber = parseFloat(targetText.replace(/[^0-9.]/g, ''));
     
     let currentNumber = 0;
     const duration = 2000;
@@ -78,9 +100,10 @@ function animateStatNumber(card) {
             clearInterval(timer);
         }
         
-        let displayText = Math.floor(currentNumber).toString();
+        let displayText = hasDot ? currentNumber.toFixed(1) : Math.floor(currentNumber).toString();
         if (hasPlus) displayText += '+';
         if (hasPercent) displayText += '%';
+        if (hasX) displayText += 'x';
         
         numberEl.textContent = displayText;
     }, 16);
