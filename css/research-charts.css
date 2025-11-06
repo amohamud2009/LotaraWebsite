@@ -1,0 +1,307 @@
+/* ============================================
+   RESEARCH & IMPACT SECTION
+   Beautiful animated charts with research data
+   ============================================ */
+
+.research-section {
+    padding: 120px 0;
+    position: relative;
+    background: linear-gradient(
+        135deg,
+        #1a1f36 0%,
+        #2d3561 25%,
+        rgba(116, 143, 252, 0.8) 50%,
+        rgba(26, 31, 54, 0.3) 100%
+    );
+    animation: breathingGradient 20s ease-in-out infinite;
+}
+
+.research-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
+}
+
+.research-header {
+    text-align: center;
+    margin-bottom: 80px;
+}
+
+.research-title {
+    font-size: 48px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+}
+
+.research-subtitle {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* ============================================
+   CHARTS GRID
+   ============================================ */
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    margin-bottom: 80px;
+}
+
+/* ============================================
+   CIRCULAR PROGRESS CHARTS
+   ============================================ */
+
+.chart-card {
+    background: rgba(26, 31, 54, 0.6);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    padding: 40px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.chart-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(139, 92, 246, 0.4);
+    box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
+}
+
+.circular-chart {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 24px;
+}
+
+.circular-chart svg {
+    transform: rotate(-90deg);
+    width: 100%;
+    height: 100%;
+}
+
+.circular-chart-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.1);
+    stroke-width: 12;
+}
+
+.circular-chart-progress {
+    fill: none;
+    stroke: url(#gradient);
+    stroke-width: 12;
+    stroke-linecap: round;
+    stroke-dasharray: 0 565;
+    transition: stroke-dasharray 2s ease-in-out;
+}
+
+.circular-chart.animate .circular-chart-progress {
+    animation: fillCircle 2s ease-in-out forwards;
+}
+
+@keyframes fillCircle {
+    to {
+        stroke-dasharray: var(--progress) 565;
+    }
+}
+
+.chart-percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 48px;
+    font-weight: 700;
+    color: white;
+}
+
+.chart-label {
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 8px;
+}
+
+.chart-description {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.5;
+}
+
+/* ============================================
+   BAR CHART
+   ============================================ */
+
+.bar-chart-card {
+    background: rgba(26, 31, 54, 0.6);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    padding: 40px;
+    grid-column: 1 / -1;
+}
+
+.bar-chart-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 32px;
+    text-align: center;
+}
+
+.bar-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.bar-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.bar-label {
+    min-width: 180px;
+    font-size: 16px;
+    font-weight: 500;
+    color: white;
+}
+
+.bar-container {
+    flex: 1;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+.bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #8b5cf6, #6366f1);
+    border-radius: 20px;
+    width: 0%;
+    transition: width 2s ease-out;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 16px;
+}
+
+.bar-fill.animate {
+    width: var(--width);
+}
+
+.bar-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+    min-width: 60px;
+    text-align: right;
+}
+
+/* ============================================
+   STATS ROW
+   ============================================ */
+
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 32px;
+    margin-top: 60px;
+}
+
+.stat-card {
+    background: rgba(26, 31, 54, 0.4);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: 1px solid rgba(139, 92, 246, 0.15);
+    padding: 32px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    border-color: rgba(139, 92, 246, 0.3);
+    transform: translateY(-4px);
+}
+
+.stat-number {
+    font-size: 48px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.stat-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+    .research-section {
+        padding: 80px 0;
+    }
+
+    .research-title {
+        font-size: 32px;
+    }
+
+    .research-subtitle {
+        font-size: 16px;
+    }
+
+    .charts-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .bar-label {
+        min-width: 120px;
+        font-size: 14px;
+    }
+
+    .stats-row {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+.chart-card,
+.bar-chart-card,
+.stat-card {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chart-card.animate-in,
+.bar-chart-card.animate-in,
+.stat-card.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+

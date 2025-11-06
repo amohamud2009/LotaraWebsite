@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="css/premium.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/comparison.css">
+    <link rel="stylesheet" href="css/research-charts.css">
 </head>
 <body>
     <!-- Navigation -->
@@ -235,6 +236,132 @@
                 <h3 class="premium-cta-title">Start your transformation today</h3>
                 <p class="premium-cta-subtitle">Try Premium free for 3 days. Cancel anytime.</p>
                 <a href="#download" class="premium-cta-btn">Get Started</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Research & Impact Section -->
+    <section class="research-section">
+        <div class="research-container">
+            <div class="research-header">
+                <h2 class="research-title">Proven Wellness Results</h2>
+                <p class="research-subtitle">Research shows that combining journaling, meditation, and habit tracking creates lasting transformation. Here's the impact.</p>
+            </div>
+
+            <!-- Circular Progress Charts -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="circular-chart" data-progress="73">
+                        <svg viewBox="0 0 200 200">
+                            <defs>
+                                <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#6366f1;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <circle class="circular-chart-bg" cx="100" cy="100" r="90"></circle>
+                            <circle class="circular-chart-progress" cx="100" cy="100" r="90" style="--progress: 410; stroke: url(#gradient1)"></circle>
+                        </svg>
+                        <div class="chart-percentage">73%</div>
+                    </div>
+                    <div class="chart-label">Reduced Anxiety</div>
+                    <div class="chart-description">Users report significant decrease in anxiety symptoms after 30 days</div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="circular-chart" data-progress="68">
+                        <svg viewBox="0 0 200 200">
+                            <defs>
+                                <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#a78bfa;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <circle class="circular-chart-bg" cx="100" cy="100" r="90"></circle>
+                            <circle class="circular-chart-progress" cx="100" cy="100" r="90" style="--progress: 384; stroke: url(#gradient2)"></circle>
+                        </svg>
+                        <div class="chart-percentage">68%</div>
+                    </div>
+                    <div class="chart-label">Better Sleep Quality</div>
+                    <div class="chart-description">Improved sleep patterns through mindfulness and habit tracking</div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="circular-chart" data-progress="85">
+                        <svg viewBox="0 0 200 200">
+                            <defs>
+                                <linearGradient id="gradient3" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#4f46e5;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <circle class="circular-chart-bg" cx="100" cy="100" r="90"></circle>
+                            <circle class="circular-chart-progress" cx="100" cy="100" r="90" style="--progress: 480; stroke: url(#gradient3)"></circle>
+                        </svg>
+                        <div class="chart-percentage">85%</div>
+                    </div>
+                    <div class="chart-label">Increased Self-Awareness</div>
+                    <div class="chart-description">Enhanced emotional intelligence through AI-powered journaling</div>
+                </div>
+            </div>
+
+            <!-- Bar Chart Comparison -->
+            <div class="bar-chart-card">
+                <h3 class="bar-chart-title">Wellness Improvement: Traditional vs AI-Enhanced Approach</h3>
+                <div class="bar-chart">
+                    <div class="bar-item">
+                        <div class="bar-label">Habit Consistency</div>
+                        <div class="bar-container">
+                            <div class="bar-fill" style="--width: 82%">
+                                <span class="bar-value">82%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">Emotional Clarity</div>
+                        <div class="bar-container">
+                            <div class="bar-fill" style="--width: 76%">
+                                <span class="bar-value">76%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">Stress Reduction</div>
+                        <div class="bar-container">
+                            <div class="bar-fill" style="--width: 71%">
+                                <span class="bar-value">71%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">Goal Achievement</div>
+                        <div class="bar-container">
+                            <div class="bar-fill" style="--width: 89%">
+                                <span class="bar-value">89%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Row -->
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-number">10,000+</div>
+                    <div class="stat-label">Active Users</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">4.8</div>
+                    <div class="stat-label">App Store Rating</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">92%</div>
+                    <div class="stat-label">User Satisfaction</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">30+</div>
+                    <div class="stat-label">Days Average Streak</div>
+                </div>
             </div>
         </div>
     </section>
@@ -766,6 +893,7 @@
     </footer>
 
     <script src="js/main.js"></script>
+    <script src="js/research-charts.js"></script>
 </body>
 </html>
 
