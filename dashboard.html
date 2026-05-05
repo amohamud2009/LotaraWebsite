@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Lotara</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-system);
+            background: #0f1124;
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            width: 220px;
+            min-height: 100vh;
+            background: rgba(255,255,255,0.04);
+            border-right: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            flex-shrink: 0;
+            position: fixed;
+            top: 0; left: 0; bottom: 0;
+        }
+
+        .sidebar-logo {
+            padding: 20px 20px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .sidebar-logo img {
+            height: 48px;
+            width: auto;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+        }
+
+        .sidebar-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b5cf6, #748ffc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .user-info { overflow: hidden; }
+        .user-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .user-plan { font-size: 11px; color: #8b5cf6; font-weight: 500; }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 12px 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-radius: 0;
+            position: relative;
+        }
+
+        .nav-item:hover { color: var(--white); background: rgba(255,255,255,0.04); }
+
+        .nav-item.active {
+            color: var(--white);
+            background: rgba(139,92,246,0.12);
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 6px; bottom: 6px;
+            width: 3px;
+            background: #8b5cf6;
+            border-radius: 0 3px 3px 0;
+        }
+
+        .nav-dot {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .btn-app {
+            display: block;
+            text-align: center;
+            padding: 10px;
+            background: linear-gradient(135deg, #8b5cf6, #748ffc);
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-app:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(139,92,246,0.4); }
+
+        .btn-signout {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.35);
+            font-size: 13px;
+            cursor: pointer;
+            font-family: var(--font-system);
+            padding: 4px 0;
+            text-align: center;
+            width: 100%;
+            transition: color 0.2s;
+        }
+
+        .btn-signout:hover { color: rgba(255,255,255,0.65); }
+
+        /* ── Main ── */
+        .main {
+            margin-left: 220px;
+            flex: 1;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            padding: 20px 28px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+
+        .greeting { font-size: 22px; font-weight: 700; }
+        .greeting-date { font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+
+        .streak-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: rgba(139,92,246,0.12);
+            border: 1px solid rgba(139,92,246,0.25);
+            border-radius: 999px;
+            font-size: 13px;
+        }
+
+        .streak-dot {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: #ffd43b;
+            animation: pulseDot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseDot {
+            0%,100% { opacity:1; transform:scale(1); }
+            50% { opacity:0.6; transform:scale(0.8); }
+        }
+
+        .streak-count { font-weight: 700; color: white; }
+        .streak-label { color: rgba(255,255,255,0.5); font-size: 12px; }
+
+        .content { padding: 24px 28px; }
+
+        /* ── Cards ── */
+        .card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 18px;
+            padding: 20px 22px;
+        }
+
+        .card-title {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 16px;
+        }
+
+        /* ── Momentum bar ── */
+        .momentum-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 18px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(116,143,252,0.12));
+            border: 1px solid rgba(139,92,246,0.2);
+        }
+
+        .momentum-cell {
+            padding: 20px 22px;
+            background: transparent;
+        }
+
+        .momentum-cell:not(:last-child) {
+            border-right: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .momentum-value {
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .momentum-label {
+            font-size: 12px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* ── Weekly wins ── */
+        .wins-card {
+            background: rgba(81,207,102,0.07);
+            border: 1px solid rgba(81,207,102,0.2);
+            border-radius: 18px;
+            padding: 20px 22px;
+            margin-bottom: 20px;
+        }
+
+        .wins-tag {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #51cf66;
+            margin-bottom: 10px;
+        }
+
+        .wins-summary {
+            font-size: 15px;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.55;
+            font-family: Georgia, serif;
+            margin-bottom: 14px;
+        }
+
+        .wins-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+
+        .win-pill {
+            padding: 4px 12px;
+            background: rgba(81,207,102,0.12);
+            border: 1px solid rgba(81,207,102,0.2);
+            border-radius: 999px;
+            font-size: 12px;
+            color: #74e88a;
+        }
+
+        /* ── 2-col grid ── */
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+
+        /* ── Habits card ── */
+        .habit-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .habit-row:last-child { border-bottom: none; }
+
+        .habit-ring-wrap { flex-shrink: 0; }
+
+        .habit-ring-svg { width: 36px; height: 36px; }
+
+        .habit-info { flex: 1; min-width: 0; }
+        .habit-name { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .habit-dots { display: flex; gap: 4px; margin-top: 4px; }
+
+        .day-dot {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+        }
+
+        .day-dot.done { background: #8b5cf6; }
+
+        .habit-streak {
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.5);
+            flex-shrink: 0;
+        }
+
+        /* ── Mood SVG chart ── */
+        .mood-chart-wrap {
+            width: 100%;
+            height: 80px;
+            margin-bottom: 10px;
+        }
+
+        .mood-chart-wrap svg { width: 100%; height: 100%; overflow: visible; }
+
+        .mood-trend {
+            font-size: 12px;
+            color: rgba(255,255,255,0.45);
+        }
+
+        /* ── Journal card ── */
+        .journal-date { font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 8px; }
+
+        .mood-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .journal-preview {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+            font-family: Georgia, serif;
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .journal-link {
+            display: inline-block;
+            margin-top: 12px;
+            font-size: 13px;
+            color: #8b5cf6;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .journal-link:hover { opacity: 0.75; }
+
+        /* ── App CTA ── */
+        .cta-card {
+            background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(116,143,252,0.1));
+            border: 1px solid rgba(139,92,246,0.25);
+            border-radius: 18px;
+            padding: 22px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .cta-text h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+        .cta-text p { font-size: 13px; color: rgba(255,255,255,0.5); }
+
+        .btn-cta {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #8b5cf6, #748ffc);
+            color: white;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(139,92,246,0.4); }
+
+        /* ── Empty / loading states ── */
+        .skeleton {
+            background: rgba(255,255,255,0.06);
+            border-radius: 8px;
+            animation: shimmer 1.5s ease-in-out infinite;
+        }
+
+        @keyframes shimmer { 0%,100%{opacity:0.4} 50%{opacity:0.7} }
+
+        .empty-state {
+            color: rgba(255,255,255,0.3);
+            font-size: 13px;
+            padding: 16px 0;
+            text-align: center;
+        }
+
+        /* ── Mobile sidebar ── */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: 56px;
+                min-height: unset;
+                flex-direction: row;
+                top: auto; bottom: 0; left: 0; right: 0;
+                border-right: none;
+                border-top: 1px solid rgba(255,255,255,0.08);
+                padding: 0;
+                z-index: 100;
+            }
+            .sidebar-logo, .sidebar-user, .sidebar-footer { display: none; }
+            .sidebar-nav {
+                display: flex;
+                flex-direction: row;
+                padding: 0;
+                width: 100%;
+                justify-content: space-around;
+            }
+            .nav-item {
+                flex-direction: column;
+                gap: 3px;
+                padding: 8px 4px;
+                font-size: 10px;
+                flex: 1;
+                text-align: center;
+                justify-content: center;
+            }
+            .nav-item.active::before { display: none; }
+            .nav-item.active { background: rgba(139,92,246,0.1); }
+            .nav-dot { display: none; }
+            .main { margin-left: 0; padding-bottom: 64px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+        <img src="assets/images/lotara-logo.png" alt="Lotara">
+    </div>
+    <div class="sidebar-user" id="sidebar-user">
+        <div class="user-avatar" id="user-avatar">?</div>
+        <div class="user-info">
+            <div class="user-name" id="user-name">Loading…</div>
+            <div class="user-plan">Premium</div>
+        </div>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-item active">
+            <span class="nav-dot" style="background:#8b5cf6"></span> Dashboard
+        </a>
+        <a href="habits.html" class="nav-item">
+            <span class="nav-dot" style="background:#74c0fc"></span> Habits
+        </a>
+        <a href="journal.html" class="nav-item">
+            <span class="nav-dot" style="background:#ff8cc8"></span> Journal
+        </a>
+        <a href="mood.html" class="nav-item">
+            <span class="nav-dot" style="background:#51cf66"></span> Mood
+        </a>
+        <a href="progress.html" class="nav-item">
+            <span class="nav-dot" style="background:#ffd43b"></span> Progress
+        </a>
+        <a href="settings.html" class="nav-item">
+            <span class="nav-dot" style="background:rgba(255,255,255,0.4)"></span> Settings
+        </a>
+    </nav>
+    <div class="sidebar-footer">
+        <a href="https://apps.apple.com/us/app/lotara/id6749601041" class="btn-app" target="_blank" rel="noopener">Open in App</a>
+        <button class="btn-signout" id="btn-signout">Sign out</button>
+    </div>
+</aside>
+
+<!-- Main -->
+<main class="main">
+    <div class="topbar">
+        <div>
+            <div class="greeting" id="greeting">Good morning</div>
+            <div class="greeting-date" id="greeting-date"></div>
+        </div>
+        <div class="streak-pill">
+            <div class="streak-dot"></div>
+            <span class="streak-count" id="streak-count">—</span>
+            <span style="font-size:13px;color:rgba(255,255,255,0.7)">day streak</span>
+            <span class="streak-label">Keep going</span>
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Momentum bar -->
+        <div class="momentum-grid" id="momentum-bar">
+            <div class="momentum-cell">
+                <div class="momentum-value" id="m-streak" style="color:#8b5cf6">—</div>
+                <div class="momentum-label">Day streak</div>
+            </div>
+            <div class="momentum-cell">
+                <div class="momentum-value" id="m-days" style="color:#ffd43b">—</div>
+                <div class="momentum-label">Days active this month</div>
+            </div>
+            <div class="momentum-cell">
+                <div class="momentum-value" id="m-rate" style="color:#51cf66">—%</div>
+                <div class="momentum-label">Habit completion rate</div>
+            </div>
+        </div>
+
+        <!-- Weekly wins -->
+        <div class="wins-card">
+            <div class="wins-tag">Your week in review</div>
+            <div class="wins-summary serif" id="wins-summary">Loading your wellness data…</div>
+            <div class="wins-pills" id="wins-pills"></div>
+        </div>
+
+        <!-- Habits + Mood row -->
+        <div class="two-col">
+            <div class="card">
+                <div class="card-title">Top habits</div>
+                <div id="habits-list"><div class="skeleton" style="height:70px;margin-bottom:8px"></div><div class="skeleton" style="height:70px;margin-bottom:8px"></div><div class="skeleton" style="height:70px"></div></div>
+            </div>
+            <div class="card">
+                <div class="card-title">Mood — last 7 days</div>
+                <div class="mood-chart-wrap">
+                    <svg id="mood-svg" viewBox="0 0 200 80" preserveAspectRatio="none"></svg>
+                </div>
+                <div class="mood-trend" id="mood-trend">Loading…</div>
+            </div>
+        </div>
+
+        <!-- Latest journal -->
+        <div class="card" style="margin-bottom:20px" id="journal-card">
+            <div class="card-title">Latest journal entry</div>
+            <div class="skeleton" style="height:80px"></div>
+        </div>
+
+        <!-- App CTA -->
+        <div class="cta-card">
+            <div class="cta-text">
+                <h3>Your full journey lives in the app</h3>
+                <p>Deep insights, guided meditations, and more</p>
+            </div>
+            <a href="https://apps.apple.com/us/app/lotara/id6749601041" class="btn-cta" target="_blank" rel="noopener">Open Lotara</a>
+        </div>
+
+    </div>
+</main>
+
+<!-- Firebase SDK v9 compat (CDN) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/auth.js"></script>
+<script>
+    firebase.initializeApp(FIREBASE_CONFIG);
+    const db = firebase.firestore();
+
+    // ── Greeting & date ──
+    function setGreeting(name) {
+        const h = new Date().getHours();
+        const time = h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening';
+        document.getElementById('greeting').textContent = `Good ${time}, ${name || 'there'}`;
+    }
+
+    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const now = new Date();
+    document.getElementById('greeting-date').textContent =
+        `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
+
+    // ── Habit ring SVG ──
+    function habitRingSVG(pct, color) {
+        const r = 14, c = 18, circ = 2 * Math.PI * r;
+        const dash = (pct / 100) * circ;
+        return `<svg class="habit-ring-svg" viewBox="0 0 36 36">
+            <circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="3"/>
+            <circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="${color}" stroke-width="3"
+                stroke-dasharray="${dash} ${circ}" stroke-dashoffset="${circ * 0.25}"
+                stroke-linecap="round" transform="rotate(-90 18 18)"/>
+        </svg>`;
+    }
+
+    // ── Mood chart SVG ──
+    function renderMoodChart(scores) {
+        const svg = document.getElementById('mood-svg');
+        if (!scores || scores.length < 2) {
+            svg.innerHTML = '<text x="100" y="40" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="11" font-family="system-ui">Not enough data yet</text>';
+            document.getElementById('mood-trend').textContent = '';
+            return;
+        }
+        const W = 200, H = 80, pad = 10;
+        const min = Math.min(...scores), max = Math.max(...scores);
+        const range = max - min || 1;
+        const pts = scores.map((v, i) => {
+            const x = pad + (i / (scores.length - 1)) * (W - pad * 2);
+            const y = H - pad - ((v - min) / range) * (H - pad * 2);
+            return [x, y];
+        });
+        const linePts = pts.map(p => p.join(',')).join(' ');
+        const areaD = `M${pts[0][0]},${H} ` + pts.map(p => `L${p[0]},${p[1]}`).join(' ') + ` L${pts[pts.length-1][0]},${H} Z`;
+        svg.innerHTML = `
+            <defs>
+                <linearGradient id="mg" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.3"/>
+                    <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+                </linearGradient>
+            </defs>
+            <path d="${areaD}" fill="url(#mg)"/>
+            <polyline points="${linePts}" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        `;
+        const slope = pts[pts.length-1][1] - pts[0][1];
+        const trendEl = document.getElementById('mood-trend');
+        if (slope < -5) trendEl.innerHTML = '<span style="color:#51cf66">Trending up</span>';
+        else if (slope > 5) trendEl.innerHTML = '<span style="color:#74c0fc">Trending down</span>';
+        else trendEl.innerHTML = '<span style="color:rgba(255,255,255,0.4)">Stable</span>';
+    }
+
+    // ── Streak calculation ──
+    function calcStreak(habits, completions) {
+        if (!completions || completions.length === 0) return 0;
+        const todayStr = new Date().toISOString().slice(0, 10);
+        const dateSet = new Set(completions.map(c => {
+            const d = c.completedAt?.toDate ? c.completedAt.toDate() : new Date(c.completedAt);
+            return d.toISOString().slice(0, 10);
+        }));
+        let streak = 0, d = new Date();
+        while (true) {
+            const s = d.toISOString().slice(0, 10);
+            if (dateSet.has(s)) { streak++; d.setDate(d.getDate() - 1); }
+            else break;
+        }
+        return streak;
+    }
+
+    // ── Render habits list ──
+    function renderHabits(habits, completions) {
+        const el = document.getElementById('habits-list');
+        if (!habits || habits.length === 0) {
+            el.innerHTML = '<div class="empty-state">No habits yet — start in the app</div>';
+            return;
+        }
+        const colors = ['#8b5cf6','#74c0fc','#ff8cc8','#51cf66','#ffd43b','#748ffc'];
+        const today = new Date();
+        const top3 = habits.slice(0, 3);
+        el.innerHTML = top3.map((h, i) => {
+            const color = colors[i % colors.length];
+            const habitCompletions = completions.filter(c => c.habitId === (h.id || h.habitId));
+            // 7-day history
+            const dots = Array.from({length: 7}, (_, j) => {
+                const d = new Date(today); d.setDate(today.getDate() - (6 - j));
+                const ds = d.toISOString().slice(0, 10);
+                const done = habitCompletions.some(c => {
+                    const cd = c.completedAt?.toDate ? c.completedAt.toDate() : new Date(c.completedAt);
+                    return cd.toISOString().slice(0, 10) === ds;
+                });
+                return `<div class="day-dot${done ? ' done' : ''}" style="${done ? 'background:' + color : ''}"></div>`;
+            }).join('');
+            // Month completion
+            const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+            const monthDays = today.getDate();
+            const monthDone = habitCompletions.filter(c => {
+                const cd = c.completedAt?.toDate ? c.completedAt.toDate() : new Date(c.completedAt);
+                return cd >= monthStart;
+            }).length;
+            const pct = Math.round(Math.min(100, (monthDone / monthDays) * 100));
+            // streak
+            let streak = 0, dd = new Date(today);
+            while (true) {
+                const ds = dd.toISOString().slice(0, 10);
+                const done = habitCompletions.some(c => {
+                    const cd = c.completedAt?.toDate ? c.completedAt.toDate() : new Date(c.completedAt);
+                    return cd.toISOString().slice(0, 10) === ds;
+                });
+                if (done) { streak++; dd.setDate(dd.getDate() - 1); } else break;
+            }
+            return `<div class="habit-row">
+                <div class="habit-ring-wrap">${habitRingSVG(pct, color)}</div>
+                <div class="habit-info">
+                    <div class="habit-name">${h.name || h.title || 'Habit'}</div>
+                    <div class="habit-dots">${dots}</div>
+                </div>
+                <div class="habit-streak">${streak}d</div>
+            </div>`;
+        }).join('');
+    }
+
+    // ── Render journal ──
+    function renderJournal(entries) {
+        const el = document.getElementById('journal-card');
+        if (!entries || entries.length === 0) {
+            el.innerHTML = '<div class="card-title">Latest journal entry</div><div class="empty-state">No journal entries yet — start writing in the app</div>';
+            return;
+        }
+        const e = entries[0];
+        const d = e.timestamp?.toDate ? e.timestamp.toDate() : (e.createdAt?.toDate ? e.createdAt.toDate() : new Date(e.timestamp || e.createdAt));
+        const dateStr = d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }) + ', ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+        const moodColors = { happy: '#51cf66', calm: '#74c0fc', motivated: '#ffd43b', tired: '#ff8cc8', reflective: '#8b5cf6', sad: '#748ffc', anxious: '#ff8cc8' };
+        const moodColor = moodColors[e.mood] || '#8b5cf6';
+        const text = e.content || e.text || e.body || '';
+        el.innerHTML = `
+            <div class="card-title">Latest journal entry</div>
+            <div class="journal-date">${dateStr}</div>
+            ${e.mood ? `<span class="mood-tag" style="background:${moodColor}22;color:${moodColor};border:1px solid ${moodColor}44">${e.mood}</span>` : ''}
+            <div class="journal-preview">${text}</div>
+            <a href="journal.html" class="journal-link">Read more in journal →</a>
+        `;
+    }
+
+    // ── Main data load ──
+    requireAuth('/signin.html').then(async (user) => {
+        // User display name
+        const firstName = (user.displayName || user.email || '').split(' ')[0].split('@')[0];
+        setGreeting(firstName);
+        document.getElementById('user-name').textContent = user.displayName || user.email || 'User';
+        document.getElementById('user-avatar').textContent = (user.displayName || user.email || 'U').charAt(0).toUpperCase();
+
+        const uid = user.uid;
+
+        // Load in parallel
+        const [habitsSnap, completionsSnap, moodsSnap, journalSnap] = await Promise.all([
+            db.collection(`users/${uid}/habits`).get(),
+            db.collection('habitCompletions').where('userId', '==', uid).orderBy('completedAt', 'desc').limit(200).get().catch(() =>
+                db.collection(`users/${uid}/habitCompletions`).orderBy('completedAt', 'desc').limit(200).get().catch(() => ({ docs: [] }))
+            ),
+            db.collection(`users/${uid}/moods`).orderBy('date', 'desc').limit(30).get().catch(() => ({ docs: [] })),
+            db.collection(`users/${uid}/journal`).orderBy('timestamp', 'desc').limit(10).get().catch(() =>
+                db.collection(`users/${uid}/journalEntries`).orderBy('createdAt', 'desc').limit(10).get().catch(() => ({ docs: [] }))
+            ),
+        ]);
+
+        const habits = habitsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+        const completions = completionsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+        const moods = moodsSnap.docs.map(d => d.data());
+        const journals = journalSnap.docs.map(d => d.data());
+
+        // ── Streak ──
+        const streak = calcStreak(habits, completions);
+        document.getElementById('streak-count').textContent = streak;
+        document.getElementById('m-streak').textContent = streak;
+
+        // ── Days active this month ──
+        const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+        const activeDays = new Set(completions.filter(c => {
+            const d = c.completedAt?.toDate ? c.completedAt.toDate() : new Date(c.completedAt);
+            return d >= monthStart;
+        }).map(c => {
+            const d = c.completedAt?.toDate ? c.completedAt.toDate() : new Date(c.completedAt);
+            return d.toISOString().slice(0, 10);
+        }));
+        document.getElementById('m-days').textContent = activeDays.size;
+
+        // ── Habit completion rate (this month) ──
+        const monthDays = now.getDate();
+        const totalPossible = habits.length * monthDays;
+        const monthCompletions = completions.filter(c => {
+            const d = c.completedAt?.toDate ? c.completedAt.toDate() : new Date(c.completedAt);
+            return d >= monthStart;
+        }).length;
+        const rate = totalPossible > 0 ? Math.round((monthCompletions / totalPossible) * 100) : 0;
+        document.getElementById('m-rate').textContent = rate + '%';
+
+        // ── Weekly wins ──
+        const weekAgo = new Date(now); weekAgo.setDate(now.getDate() - 7);
+        const weekJournals = journals.filter(j => {
+            const d = j.timestamp?.toDate ? j.timestamp.toDate() : new Date(j.timestamp || j.createdAt);
+            return d >= weekAgo;
+        }).length;
+        const weekCompletions = completions.filter(c => {
+            const d = c.completedAt?.toDate ? c.completedAt.toDate() : new Date(c.completedAt);
+            return d >= weekAgo;
+        });
+        const topHabit = habits.length > 0 ? (habits[0].name || habits[0].title || 'your habit') : 'your habit';
+        const topHabitDays = habits.length > 0 ? Math.min(7, new Set(weekCompletions.filter(c => c.habitId === habits[0].id).map(c => {
+            const d = c.completedAt?.toDate ? c.completedAt.toDate() : new Date(c.completedAt);
+            return d.toISOString().slice(0,10);
+        })).size) : 0;
+
+        document.getElementById('wins-summary').textContent =
+            `This week you journaled ${weekJournals} time${weekJournals !== 1 ? 's' : ''} and hit your ${topHabit} goal ${topHabitDays} out of 7 days. Keep building momentum.`;
+
+        const pills = [];
+        if (weekJournals > 0) pills.push(`${weekJournals} journal ${weekJournals === 1 ? 'entry' : 'entries'}`);
+        if (streak > 0) pills.push(`${streak} day streak`);
+        if (rate >= 70) pills.push('Strong completion rate');
+        if (activeDays.size >= 5) pills.push('Active all week');
+        document.getElementById('wins-pills').innerHTML = pills.map(p => `<span class="win-pill">${p}</span>`).join('');
+
+        // ── Habits ──
+        renderHabits(habits, completions);
+
+        // ── Mood chart ──
+        const moodScores = moods.slice(0, 7).reverse().map(m => m.score || m.value || m.mood || 5);
+        renderMoodChart(moodScores);
+
+        // ── Journal ──
+        renderJournal(journals);
+    });
+
+    // Sign out
+    document.getElementById('btn-signout').addEventListener('click', async () => {
+        await firebase.auth().signOut();
+        window.location.href = '/signin.html';
+    });
+</script>
+</body>
+</html>

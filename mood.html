@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood — Lotara</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:var(--font-system);background:#0f1124;color:#fff;min-height:100vh;display:flex}
+        .sidebar{width:220px;min-height:100vh;background:rgba(255,255,255,0.04);border-right:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0}
+        .sidebar-logo{padding:20px 20px 16px;border-bottom:1px solid rgba(255,255,255,0.08)}
+        .sidebar-logo img{height:48px;width:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.3))}
+        .sidebar-nav{flex:1;padding:12px 0}
+        .nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:14px;color:rgba(255,255,255,0.6);text-decoration:none;transition:all .2s;position:relative}
+        .nav-item:hover{color:#fff;background:rgba(255,255,255,0.04)}
+        .nav-item.active{color:#fff;background:rgba(139,92,246,0.12)}
+        .nav-item.active::before{content:'';position:absolute;left:0;top:6px;bottom:6px;width:3px;background:#8b5cf6;border-radius:0 3px 3px 0}
+        .nav-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+        .sidebar-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,0.08)}
+        .btn-app{display:block;text-align:center;padding:10px;background:linear-gradient(135deg,#8b5cf6,#748ffc);color:#fff;font-size:13px;font-weight:600;border-radius:10px;text-decoration:none;transition:all .3s}
+        .btn-signout{background:none;border:none;color:rgba(255,255,255,0.35);font-size:13px;cursor:pointer;font-family:var(--font-system);padding:4px 0;text-align:center;width:100%;margin-top:8px;transition:color .2s}
+        .btn-signout:hover{color:rgba(255,255,255,.65)}
+        .main{margin-left:220px;flex:1;min-height:100vh;display:flex;align-items:center;justify-content:center}
+        .coming-soon{text-align:center;padding:48px 24px}
+        .coming-soon h1{font-size:28px;font-weight:700;margin-bottom:12px}
+        .coming-soon p{font-size:15px;color:rgba(255,255,255,0.45);margin-bottom:28px}
+        .pill{display:inline-block;padding:6px 18px;background:rgba(116,192,252,0.12);border:1px solid rgba(116,192,252,0.25);border-radius:999px;font-size:13px;color:#74c0fc}
+        @media(max-width:768px){.sidebar{display:none}.main{margin-left:0}}
+    </style>
+</head>
+<body>
+<aside class="sidebar">
+    <div class="sidebar-logo"><img src="assets/images/lotara-logo.png" alt="Lotara"></div>
+    <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-item"><span class="nav-dot" style="background:#8b5cf6"></span>Dashboard</a>
+        <a href="habits.html" class="nav-item"><span class="nav-dot" style="background:#74c0fc"></span>Habits</a>
+        <a href="journal.html" class="nav-item"><span class="nav-dot" style="background:#ff8cc8"></span>Journal</a>
+        <a href="mood.html" class="nav-item active"><span class="nav-dot" style="background:#51cf66"></span>Mood</a>
+        <a href="progress.html" class="nav-item"><span class="nav-dot" style="background:#ffd43b"></span>Progress</a>
+        <a href="settings.html" class="nav-item"><span class="nav-dot" style="background:rgba(255,255,255,0.4)"></span>Settings</a>
+    </nav>
+    <div class="sidebar-footer">
+        <a href="https://apps.apple.com/us/app/lotara/id6749601041" class="btn-app" target="_blank">Open in App</a>
+        <button class="btn-signout" id="btn-signout">Sign out</button>
+    </div>
+</aside>
+<main class="main">
+    <div class="coming-soon">
+        <div class="pill" style="margin-bottom:20px;background:#51cf6622;border-color:#51cf6644;color:#51cf66">Mood</div>
+        <h1>Coming soon</h1>
+        <p>Full mood page is on its way.<br>Track and manage your habits in the Lotara app in the meantime.</p>
+        <a href="https://apps.apple.com/us/app/lotara/id6749601041" style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#8b5cf6,#748ffc);color:#fff;border-radius:12px;font-size:14px;font-weight:600;text-decoration:none;transition:all .3s" target="_blank">Open Lotara App</a>
+    </div>
+</main>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/auth.js"></script>
+<script>
+    firebase.initializeApp(FIREBASE_CONFIG);
+    requireAuth('/signin.html');
+    document.getElementById('btn-signout').addEventListener('click',async()=>{await firebase.auth().signOut();window.location.href='/signin.html'});
+</script>
+</body>
+</html>

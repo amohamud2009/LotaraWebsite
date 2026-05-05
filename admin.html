@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — Lotara</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-system);
+            background: #0f1124;
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* ── Sidebar (same as dashboard) ── */
+        .sidebar {
+            width: 220px;
+            min-height: 100vh;
+            background: rgba(255,255,255,0.04);
+            border-right: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0; left: 0; bottom: 0;
+            flex-shrink: 0;
+        }
+        .sidebar-logo { padding: 20px 20px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .sidebar-logo img { height: 48px; width: auto; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3)); }
+        .admin-badge {
+            margin: 14px 20px 0;
+            padding: 5px 12px;
+            background: rgba(255,212,59,0.1);
+            border: 1px solid rgba(255,212,59,0.3);
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #ffd43b;
+            text-align: center;
+            letter-spacing: 0.06em;
+        }
+        .sidebar-nav { flex: 1; padding: 16px 0; }
+        .nav-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 20px; font-size: 14px; font-weight: 400;
+            color: rgba(255,255,255,0.6); text-decoration: none;
+            transition: all 0.2s ease; position: relative;
+        }
+        .nav-item:hover { color: var(--white); background: rgba(255,255,255,0.04); }
+        .nav-item.active { color: var(--white); background: rgba(139,92,246,0.12); }
+        .nav-item.active::before {
+            content: ''; position: absolute; left: 0; top: 6px; bottom: 6px;
+            width: 3px; background: #8b5cf6; border-radius: 0 3px 3px 0;
+        }
+        .sidebar-footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.08); }
+        .btn-signout {
+            background: none; border: none; color: rgba(255,255,255,0.35);
+            font-size: 13px; cursor: pointer; font-family: var(--font-system);
+            padding: 4px 0; text-align: center; width: 100%; transition: color 0.2s;
+        }
+        .btn-signout:hover { color: rgba(255,255,255,0.65); }
+
+        /* ── Main ── */
+        .main { margin-left: 220px; flex: 1; min-height: 100vh; }
+
+        .topbar {
+            padding: 20px 28px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .page-title { font-size: 22px; font-weight: 700; }
+        .page-sub { font-size: 13px; color: rgba(255,255,255,0.45); margin-top: 2px; }
+        .live-badge {
+            display: flex; align-items: center; gap: 7px;
+            padding: 6px 14px;
+            background: rgba(81,207,102,0.1);
+            border: 1px solid rgba(81,207,102,0.25);
+            border-radius: 999px; font-size: 12px; color: #74e88a;
+        }
+        .live-dot {
+            width: 7px; height: 7px; border-radius: 50%; background: #51cf66;
+            animation: pulseDot 2s ease-in-out infinite;
+        }
+        @keyframes pulseDot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(0.8)} }
+
+        .content { padding: 24px 28px; }
+
+        /* ── Stat grid ── */
+        .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+        .stat-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px; padding: 18px 20px;
+        }
+        .stat-value { font-size: 26px; font-weight: 700; margin-bottom: 4px; }
+        .stat-label { font-size: 12px; color: rgba(255,255,255,0.45); }
+
+        /* ── Filters & search ── */
+        .controls {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 18px; flex-wrap: wrap;
+        }
+        .filter-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+        .filter-pill {
+            padding: 6px 14px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 999px; font-size: 12px; font-weight: 500;
+            color: rgba(255,255,255,0.6); cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-pill.active {
+            background: rgba(139,92,246,0.15);
+            border-color: rgba(139,92,246,0.4);
+            color: var(--white);
+        }
+        .search-input {
+            flex: 1; min-width: 180px;
+            padding: 8px 14px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px; font-size: 13px;
+            color: var(--white); font-family: var(--font-system);
+            outline: none; transition: border-color 0.2s;
+        }
+        .search-input::placeholder { color: rgba(255,255,255,0.3); }
+        .search-input:focus { border-color: rgba(139,92,246,0.5); }
+
+        /* ── Submission list ── */
+        .submission-list { display: flex; flex-direction: column; gap: 10px; }
+
+        .submission-row {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 14px; padding: 14px 18px;
+            cursor: pointer; transition: all 0.2s;
+            display: flex; align-items: flex-start; gap: 14px;
+        }
+        .submission-row:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.12); }
+        .submission-row.resolved { opacity: 0.45; }
+
+        .type-badge {
+            padding: 3px 10px;
+            border-radius: 999px; font-size: 11px; font-weight: 600;
+            flex-shrink: 0; margin-top: 2px;
+        }
+        .type-feedback { background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.3); }
+        .type-bug { background: rgba(239,68,68,0.12); color: #fca5a5; border: 1px solid rgba(239,68,68,0.25); }
+        .type-suggestion { background: rgba(116,192,252,0.12); color: #93c5fd; border: 1px solid rgba(116,192,252,0.25); }
+
+        .sub-preview { flex: 1; min-width: 0; }
+        .sub-text {
+            font-size: 14px; color: rgba(255,255,255,0.75);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            margin-bottom: 6px;
+        }
+        .sub-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .sub-time { font-size: 11px; color: rgba(255,255,255,0.3); }
+        .sub-area {
+            padding: 2px 8px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 999px; font-size: 11px;
+            color: rgba(255,255,255,0.4);
+        }
+        .stars { font-size: 12px; color: #ffd43b; }
+
+        .resolved-tag {
+            font-size: 11px; color: #51cf66;
+            background: rgba(81,207,102,0.1);
+            padding: 2px 8px; border-radius: 999px;
+            flex-shrink: 0; margin-top: 2px;
+        }
+
+        .empty-state { text-align: center; color: rgba(255,255,255,0.3); padding: 40px 0; font-size: 14px; }
+
+        /* ── Side panel ── */
+        .panel-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200; display: none;
+        }
+        .panel-overlay.open { display: block; }
+
+        .side-panel {
+            position: fixed; right: 0; top: 0; bottom: 0;
+            width: 360px; max-width: 95vw;
+            background: #181b2e;
+            border-left: 1px solid rgba(255,255,255,0.1);
+            z-index: 201; padding: 24px;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+            display: flex; flex-direction: column; gap: 16px;
+        }
+        .side-panel.open { transform: translateX(0); }
+
+        .panel-close {
+            position: absolute; top: 16px; right: 16px;
+            background: rgba(255,255,255,0.08);
+            border: none; border-radius: 50%;
+            width: 30px; height: 30px; cursor: pointer;
+            color: var(--white); font-size: 16px;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s;
+        }
+        .panel-close:hover { background: rgba(255,255,255,0.15); }
+
+        .panel-type { margin-bottom: 4px; }
+        .panel-time { font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 4px; }
+        .panel-area { font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 12px; }
+        .panel-body {
+            font-size: 15px; color: rgba(255,255,255,0.8);
+            font-family: Georgia, serif; line-height: 1.7;
+            flex: 1;
+        }
+        .panel-actions { display: flex; gap: 10px; margin-top: 8px; }
+        .btn-resolve {
+            flex: 1; padding: 10px;
+            background: rgba(81,207,102,0.12);
+            border: 1px solid rgba(81,207,102,0.3);
+            border-radius: 10px; font-size: 13px; font-weight: 600;
+            color: #74e88a; cursor: pointer; font-family: var(--font-system);
+            transition: all 0.2s;
+        }
+        .btn-resolve:hover { background: rgba(81,207,102,0.2); }
+        .btn-resolve:disabled { opacity: 0.45; cursor: not-allowed; }
+
+        .btn-archive {
+            padding: 10px 16px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px; font-size: 13px;
+            color: rgba(255,255,255,0.5); cursor: pointer; font-family: var(--font-system);
+            transition: all 0.2s;
+        }
+        .btn-archive:hover { background: rgba(255,255,255,0.09); }
+
+        /* ── Toast ── */
+        .toast {
+            position: fixed; bottom: 24px; right: 24px; z-index: 300;
+            background: #181b2e;
+            border: 1px solid rgba(139,92,246,0.4);
+            border-radius: 12px; padding: 12px 18px;
+            font-size: 13px; color: var(--white);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            transform: translateY(20px); opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main { margin-left: 0; }
+            .stat-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+    <div class="sidebar-logo">
+        <img src="assets/images/lotara-logo.png" alt="Lotara">
+    </div>
+    <div class="admin-badge">ADMIN</div>
+    <nav class="sidebar-nav">
+        <a href="admin.html" class="nav-item active">Overview</a>
+        <a href="dashboard.html" class="nav-item">User Dashboard</a>
+    </nav>
+    <div class="sidebar-footer">
+        <button class="btn-signout" id="btn-signout">Sign out</button>
+    </div>
+</aside>
+
+<!-- Main -->
+<main class="main">
+    <div class="topbar">
+        <div>
+            <div class="page-title">Feedback Dashboard</div>
+            <div class="page-sub">Real-time submissions from Lotara users</div>
+        </div>
+        <div class="live-badge"><div class="live-dot"></div>Live</div>
+    </div>
+
+    <div class="content">
+        <!-- Stats -->
+        <div class="stat-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="stat-total" style="color:#8b5cf6">—</div>
+                <div class="stat-label">Total submissions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-rating" style="color:#ffd43b">—</div>
+                <div class="stat-label">Average rating</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-bugs" style="color:#fca5a5">—</div>
+                <div class="stat-label">Open bugs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-feedback" style="color:#74c0fc">—</div>
+                <div class="stat-label">Feedback items</div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <div class="filter-pills">
+                <button class="filter-pill active" data-filter="all">All</button>
+                <button class="filter-pill" data-filter="feedback">Feedback</button>
+                <button class="filter-pill" data-filter="bug">Bugs</button>
+                <button class="filter-pill" data-filter="suggestion">Suggestions</button>
+                <button class="filter-pill" data-filter="unresolved">Unresolved</button>
+            </div>
+            <input type="text" class="search-input" id="search-input" placeholder="Search submissions…">
+        </div>
+
+        <!-- List -->
+        <div class="submission-list" id="submission-list">
+            <div class="empty-state">Loading submissions…</div>
+        </div>
+    </div>
+</main>
+
+<!-- Side panel -->
+<div class="panel-overlay" id="panel-overlay"></div>
+<div class="side-panel" id="side-panel">
+    <button class="panel-close" id="panel-close">✕</button>
+    <div class="panel-type" id="panel-type"></div>
+    <div class="panel-time" id="panel-time"></div>
+    <div class="panel-area" id="panel-area"></div>
+    <div class="panel-body serif" id="panel-body"></div>
+    <div class="panel-actions">
+        <button class="btn-resolve" id="btn-resolve">Mark resolved</button>
+        <button class="btn-archive" id="btn-archive">Archive</button>
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">New submission received</div>
+
+<!-- Firebase SDK v9 compat (CDN) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/auth.js"></script>
+<script>
+    firebase.initializeApp(FIREBASE_CONFIG);
+    const db = firebase.firestore();
+
+    let allSubmissions = [];
+    let activeFilter = 'all';
+    let searchQuery = '';
+    let selectedDocId = null;
+    let knownIds = null; // set after first load so we don't toast on initial render
+
+    function timeAgo(date) {
+        const s = Math.floor((Date.now() - date.getTime()) / 1000);
+        if (s < 60) return 'just now';
+        if (s < 3600) return Math.floor(s/60) + 'm ago';
+        if (s < 86400) return Math.floor(s/3600) + 'h ago';
+        return Math.floor(s/86400) + 'd ago';
+    }
+
+    function starsHtml(n) {
+        if (!n) return '';
+        return '★'.repeat(Math.round(n)) + '☆'.repeat(Math.max(0, 5 - Math.round(n)));
+    }
+
+    function typeBadge(type) {
+        const t = (type || 'feedback').toLowerCase();
+        const cls = t === 'bug' ? 'type-bug' : t === 'suggestion' ? 'type-suggestion' : 'type-feedback';
+        return `<span class="type-badge ${cls}">${t}</span>`;
+    }
+
+    function filtered() {
+        return allSubmissions.filter(s => {
+            if (activeFilter === 'unresolved') return !s.resolved && !s.archived;
+            if (activeFilter !== 'all' && (s.type || 'feedback').toLowerCase() !== activeFilter) return false;
+            if (s.archived) return false;
+            if (searchQuery) {
+                const q = searchQuery.toLowerCase();
+                return (s.openText || s.text || '').toLowerCase().includes(q) ||
+                       (s.area || '').toLowerCase().includes(q);
+            }
+            return true;
+        });
+    }
+
+    function renderList() {
+        const items = filtered();
+        const el = document.getElementById('submission-list');
+        if (items.length === 0) {
+            el.innerHTML = '<div class="empty-state">No submissions match your filter</div>';
+            return;
+        }
+        el.innerHTML = items.map(s => {
+            const text = s.openText || s.text || s.body || '(no text)';
+            const d = s.createdAt?.toDate ? s.createdAt.toDate() : new Date(s.createdAt || Date.now());
+            return `<div class="submission-row${s.resolved ? ' resolved' : ''}" data-id="${s.id}">
+                ${typeBadge(s.type)}
+                <div class="sub-preview">
+                    <div class="sub-text">${text}</div>
+                    <div class="sub-meta">
+                        ${s.rating ? `<span class="stars">${starsHtml(s.rating)}</span>` : ''}
+                        ${s.area ? `<span class="sub-area">${s.area}</span>` : ''}
+                        <span class="sub-time">${timeAgo(d)}</span>
+                    </div>
+                </div>
+                ${s.resolved ? '<span class="resolved-tag">Resolved</span>' : ''}
+            </div>`;
+        }).join('');
+
+        el.querySelectorAll('.submission-row').forEach(row => {
+            row.addEventListener('click', () => openPanel(row.dataset.id));
+        });
+    }
+
+    function updateStats() {
+        const all = allSubmissions.filter(s => !s.archived);
+        document.getElementById('stat-total').textContent = all.length;
+        const rated = all.filter(s => s.rating);
+        const avg = rated.length > 0 ? (rated.reduce((a,s) => a + s.rating, 0) / rated.length).toFixed(1) : '—';
+        document.getElementById('stat-rating').textContent = avg;
+        document.getElementById('stat-bugs').textContent = all.filter(s => (s.type||'').toLowerCase() === 'bug' && !s.resolved).length;
+        document.getElementById('stat-feedback').textContent = all.filter(s => (s.type||'feedback').toLowerCase() === 'feedback').length;
+    }
+
+    function openPanel(id) {
+        const s = allSubmissions.find(x => x.id === id);
+        if (!s) return;
+        selectedDocId = id;
+        const d = s.createdAt?.toDate ? s.createdAt.toDate() : new Date(s.createdAt || Date.now());
+        document.getElementById('panel-type').innerHTML = typeBadge(s.type);
+        document.getElementById('panel-time').textContent = d.toLocaleString('en-US', { dateStyle:'medium', timeStyle:'short' });
+        document.getElementById('panel-area').textContent = s.area ? 'Area: ' + s.area : '';
+        document.getElementById('panel-body').textContent = s.openText || s.text || s.body || '(no text)';
+        const resolveBtn = document.getElementById('btn-resolve');
+        resolveBtn.disabled = !!s.resolved;
+        resolveBtn.textContent = s.resolved ? 'Already resolved' : 'Mark resolved';
+        document.getElementById('panel-overlay').classList.add('open');
+        document.getElementById('side-panel').classList.add('open');
+    }
+
+    function closePanel() {
+        document.getElementById('panel-overlay').classList.remove('open');
+        document.getElementById('side-panel').classList.remove('open');
+        selectedDocId = null;
+    }
+
+    function showToast(msg) {
+        const el = document.getElementById('toast');
+        el.textContent = msg;
+        el.classList.add('show');
+        setTimeout(() => el.classList.remove('show'), 3500);
+    }
+
+    // Panel actions
+    document.getElementById('panel-close').addEventListener('click', closePanel);
+    document.getElementById('panel-overlay').addEventListener('click', closePanel);
+
+    document.getElementById('btn-resolve').addEventListener('click', async () => {
+        if (!selectedDocId) return;
+        await db.collection('feedback').doc(selectedDocId).update({ resolved: true });
+        showToast('Marked as resolved');
+        closePanel();
+    });
+
+    document.getElementById('btn-archive').addEventListener('click', async () => {
+        if (!selectedDocId) return;
+        await db.collection('feedback').doc(selectedDocId).update({ archived: true });
+        showToast('Archived');
+        closePanel();
+    });
+
+    // Filters
+    document.querySelectorAll('.filter-pill').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeFilter = btn.dataset.filter;
+            renderList();
+        });
+    });
+
+    document.getElementById('search-input').addEventListener('input', (e) => {
+        searchQuery = e.target.value.trim();
+        renderList();
+    });
+
+    document.getElementById('btn-signout').addEventListener('click', async () => {
+        await firebase.auth().signOut();
+        window.location.href = '/signin.html';
+    });
+
+    // Auth guard + real-time listener
+    requireAdmin().then(() => {
+        db.collection('feedback')
+            .orderBy('createdAt', 'desc')
+            .onSnapshot((snap) => {
+                const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                // Toast for new items after initial load
+                if (knownIds !== null) {
+                    docs.forEach(d => {
+                        if (!knownIds.has(d.id)) showToast('New submission received');
+                    });
+                }
+                knownIds = new Set(docs.map(d => d.id));
+                allSubmissions = docs;
+                updateStats();
+                renderList();
+            }, (err) => {
+                console.error('Feedback listener error:', err);
+                document.getElementById('submission-list').innerHTML =
+                    '<div class="empty-state">Could not load feedback. Check Firestore rules.</div>';
+            });
+    });
+</script>
+</body>
+</html>
