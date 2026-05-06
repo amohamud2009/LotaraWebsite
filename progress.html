@@ -5,67 +5,200 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Progress — Lotara</title>
     <link rel="stylesheet" href="css/styles.css">
-    <style>
-        html,body{height:100%;overflow:hidden}
-        body{background:linear-gradient(135deg,#1a1f36 0%,#2d3561 30%,#3d3575 60%,#1a1f36 100%);background-size:400% 400%;animation:breathingGradient 20s ease-in-out infinite;display:flex;position:relative}
-        body::before{content:'';position:fixed;top:-20%;right:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(99,102,241,0.12) 0%,transparent 60%);border-radius:50%;animation:breathing 10s ease-in-out infinite;pointer-events:none;z-index:0}
-        @keyframes breathingGradient{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-        @keyframes breathing{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.1);opacity:0.8}}
-        .sidebar{width:230px;min-height:100vh;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:10;background:rgba(255,255,255,0.07);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-right:1px solid rgba(255,255,255,0.15)}
-        .sidebar-logo{padding:22px 22px 18px;border-bottom:1px solid rgba(255,255,255,0.12)}
-        .sidebar-logo img{height:52px;width:auto;filter:drop-shadow(0 2px 10px rgba(0,0,0,0.3))}
-        .sidebar-nav{flex:1;padding:16px 0}
-        .nav-item{display:flex;align-items:center;gap:12px;padding:11px 22px;font-size:15px;font-weight:300;color:rgba(255,255,255,0.65);text-decoration:none;transition:all .25s ease;position:relative}
-        .nav-item:hover{color:#fff;background:rgba(255,255,255,0.06)}
-        .nav-item.active{color:#fff;background:rgba(255,255,255,0.1);font-weight:400}
-        .nav-item.active::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:3px;background:linear-gradient(180deg,#8b5cf6,#748ffc);border-radius:0 3px 3px 0}
-        .nav-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-        .sidebar-footer{padding:18px 22px;border-top:1px solid rgba(255,255,255,0.1);display:flex;flex-direction:column;gap:10px}
-        .btn-app{display:block;text-align:center;padding:11px 20px;background:linear-gradient(135deg,#8b5cf6,#748ffc);color:#fff;font-size:14px;font-weight:500;border-radius:999px;text-decoration:none;transition:all .3s ease}
-        .btn-signout{background:none;border:none;color:rgba(255,255,255,0.4);font-size:14px;font-weight:300;cursor:pointer;font-family:var(--font-system);padding:4px 0;text-align:center;width:100%;transition:color .2s}
-        .btn-signout:hover{color:rgba(255,255,255,.7)}
-        .main{margin-left:230px;flex:1;height:100vh;overflow-y:auto;position:relative;z-index:1;display:flex;align-items:center;justify-content:center}
-        .coming-soon{text-align:center;padding:48px 32px;color:#fff}
-        .coming-pill{display:inline-block;padding:6px 20px;border-radius:999px;font-size:13px;font-weight:400;margin-bottom:24px;background:#ffd43b18;border:1px solid #ffd43b40;color:#ffd43b}
-        .coming-soon h1{font-size:36px;font-weight:300;letter-spacing:-0.5px;margin-bottom:10px}
-        .coming-soon p{font-size:16px;font-weight:300;color:rgba(255,255,255,0.55);margin-bottom:32px;line-height:1.6}
-        .btn-open{display:inline-block;padding:14px 32px;background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:999px;font-size:15px;font-weight:500;text-decoration:none;transition:all .3s ease}
-        .btn-open:hover{background:#fff;color:#8b5cf6;transform:translateY(-2px)}
-        @media(max-width:768px){.sidebar{display:none}.main{margin-left:0}}
-    </style>
+    <link rel="stylesheet" href="css/portal.css">
 </head>
 <body>
+
 <aside class="sidebar">
-    <div class="sidebar-logo"><img src="assets/images/lotara-logo.png" alt="Lotara"></div>
-    <nav class="sidebar-nav">
+    <div class="sb-logo"><img src="assets/images/lotara-logo.png" alt="Lotara"></div>
+    <div class="sb-user">
+        <div class="sb-avatar" id="sb-avatar">?</div>
+        <div><div class="sb-name" id="sb-name">Loading…</div><div class="sb-plan">Premium</div></div>
+    </div>
+    <nav class="sb-nav">
         <a href="dashboard.html" class="nav-item"><span class="nav-dot" style="background:#8b5cf6"></span>Dashboard</a>
-        <a href="habits.html" class="nav-item"><span class="nav-dot" style="background:#74c0fc"></span>Habits</a>
-        <a href="journal.html" class="nav-item"><span class="nav-dot" style="background:#ff8cc8"></span>Journal</a>
-        <a href="mood.html" class="nav-item"><span class="nav-dot" style="background:#4ade80"></span>Mood</a>
-        <a href="progress.html" class="nav-item active"><span class="nav-dot" style="background:#ffd43b"></span>Progress</a>
-        <a href="settings.html" class="nav-item"><span class="nav-dot" style="background:rgba(255,255,255,0.4)"></span>Settings</a>
+        <a href="habits.html"    class="nav-item"><span class="nav-dot" style="background:#74c0fc"></span>Habits</a>
+        <a href="journal.html"   class="nav-item"><span class="nav-dot" style="background:#ff8cc8"></span>Journal</a>
+        <a href="mood.html"      class="nav-item"><span class="nav-dot" style="background:#4ade80"></span>Mood</a>
+        <a href="progress.html"  class="nav-item active"><span class="nav-dot" style="background:#ffd43b"></span>Progress</a>
+        <a href="settings.html"  class="nav-item"><span class="nav-dot" style="background:rgba(255,255,255,0.35)"></span>Settings</a>
     </nav>
-    <div class="sidebar-footer">
-        <a href="https://apps.apple.com/us/app/lotara/id6749601041" class="btn-app" target="_blank">Open in App</a>
-        <button class="btn-signout" id="btn-signout">Sign out</button>
+    <div class="sb-footer">
+        <a href="https://apps.apple.com/us/app/lotara/id6749601041" class="btn-app" target="_blank" rel="noopener">Open in App</a>
+        <button class="btn-signout">Sign out</button>
     </div>
 </aside>
+
 <main class="main">
-    <div class="coming-soon">
-        <div class="coming-pill">Progress</div>
-        <h1>Coming soon</h1>
-        <p>The full progress page is on its way.<br>Track your progress in the Lotara app in the meantime.</p>
-        <a href="https://apps.apple.com/us/app/lotara/id6749601041" class="btn-open" target="_blank">Open Lotara App</a>
+    <div class="topbar">
+        <div>
+            <div class="topbar-greeting" id="topbar-greeting">Progress</div>
+            <div class="topbar-date" id="topbar-date"></div>
+        </div>
+        <div class="streak-pill">
+            <div class="streak-dot"></div>
+            <span id="streak-val" style="font-weight:400">—</span>&nbsp;<span style="opacity:.7">day streak</span>
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Stats grid -->
+        <div class="stat-row" id="stat-row">
+            <div class="card skeleton" style="height:90px"></div>
+            <div class="card skeleton" style="height:90px"></div>
+            <div class="card skeleton" style="height:90px"></div>
+            <div class="card skeleton" style="height:90px"></div>
+        </div>
+
+        <!-- Activity bars -->
+        <div class="card" style="margin-bottom:20px">
+            <div class="card-label">This month's activity</div>
+            <div id="activity-bars">
+                <div class="skeleton" style="height:16px;margin-bottom:14px"></div>
+                <div class="skeleton" style="height:16px;margin-bottom:14px"></div>
+                <div class="skeleton" style="height:16px;margin-bottom:14px"></div>
+                <div class="skeleton" style="height:16px"></div>
+            </div>
+        </div>
+
+        <!-- Milestones -->
+        <div class="card">
+            <div class="card-label">Milestones</div>
+            <div id="milestones-list">
+                <div class="skeleton" style="height:54px;margin-bottom:10px"></div>
+                <div class="skeleton" style="height:54px;margin-bottom:10px"></div>
+                <div class="skeleton" style="height:54px"></div>
+            </div>
+        </div>
+
     </div>
 </main>
+
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="js/firebase-config.js"></script>
 <script src="js/auth.js"></script>
+<script src="js/portal-data.js"></script>
 <script>
-    firebase.initializeApp(FIREBASE_CONFIG);
-    requireAuth('/signin.html');
-    document.getElementById('btn-signout').addEventListener('click',async()=>{await firebase.auth().signOut();window.location.href='/signin.html'});
+firebase.initializeApp(FIREBASE_CONFIG);
+const db = firebase.firestore();
+
+requireAuth('/signin.html').then(async user => {
+    setupSidebar(user);
+    setupTopbar(user);
+    const uid = user.uid;
+
+    const [hSnap, cSnap, mSnap, jSnap, medSnap] = await Promise.all([
+        db.collection(`users/${uid}/habits`).get(),
+        db.collection('habitCompletions').where('userId','==',uid).orderBy('date','desc').limit(500).get().catch(()=>({docs:[]})),
+        db.collection(`users/${uid}/moods`).orderBy('timestamp','desc').limit(100).get().catch(()=>({docs:[]})),
+        db.collection(`users/${uid}/journal`).orderBy('date','desc').limit(200).get().catch(()=>({docs:[]})),
+        db.collection(`users/${uid}/meditation`).orderBy('date','desc').limit(100).get().catch(()=>({docs:[]})),
+    ]);
+
+    const habits      = hSnap.docs.map(d=>({id:d.id,...d.data()}));
+    const completions = cSnap.docs.map(d=>({id:d.id,...d.data()}));
+    const moods       = mSnap.docs.map(d=>d.data());
+    const journals    = jSnap.docs.map(d=>d.data());
+    const meditations = medSnap.docs.map(d=>d.data());
+
+    const streak = calcOverallStreak(completions);
+    document.getElementById('streak-val').textContent = streak;
+
+    // ── Longest streak (walk all dates) ──
+    const allDays = [...new Set(completions.map(c => toDateStr(c.date)))].sort();
+    let longestStreak = 0, cur = 0;
+    for (let i = 0; i < allDays.length; i++) {
+        if (i === 0) { cur = 1; }
+        else {
+            const prev = new Date(allDays[i-1]), next = new Date(allDays[i]);
+            const diff = (next - prev) / 86400000;
+            cur = diff === 1 ? cur + 1 : 1;
+        }
+        longestStreak = Math.max(longestStreak, cur);
+    }
+
+    // ── Days on Lotara (first habit created) ──
+    const firstDate = habits.length > 0
+        ? habits.reduce((min, h) => {
+            const d = toJS(h.createdAt || h.date || null);
+            return (d && d < min) ? d : min;
+        }, new Date())
+        : null;
+    const daysOnLotara = firstDate && firstDate.getTime() > 0
+        ? Math.max(1, Math.floor((Date.now() - firstDate.getTime()) / 86400000))
+        : journals.length > 0
+            ? Math.max(1, Math.floor((Date.now() - toJS(journals[journals.length-1].date).getTime()) / 86400000))
+            : 0;
+
+    // ── This month stats ──
+    const now = new Date();
+    const ms  = new Date(now.getFullYear(), now.getMonth(), 1);
+    const monthJ   = journals.filter(j => toJS(j.date) >= ms).length;
+    const monthMed = meditations.filter(m => toJS(m.date) >= ms).length;
+    const monthMood= moods.filter(m => toJS(m.timestamp) >= ms).length;
+    const monthC   = completions.filter(c => toJS(c.date) >= ms).length;
+    const rate     = habits.length > 0 ? Math.round((monthC / (habits.length * now.getDate())) * 100) : 0;
+
+    // ── Stat row ──
+    document.getElementById('stat-row').innerHTML = [
+        { val: daysOnLotara || '—', lbl: 'Days on Lotara', color: '#a78bfa' },
+        { val: longestStreak,        lbl: 'Longest streak',  color: '#ffd43b' },
+        { val: journals.length,      lbl: 'Journal entries', color: '#ff8cc8' },
+        { val: habits.length,        lbl: 'Active habits',   color: '#4ade80' },
+    ].map(s => `<div class="card">
+        <div class="stat-value" style="color:${s.color}">${s.val}</div>
+        <div class="stat-label">${s.lbl}</div>
+    </div>`).join('');
+
+    // ── Activity bars ──
+    const bars = [
+        { label: 'Journal entries this month',   val: monthJ,    max: Math.max(monthJ, 30),    color: '#ff8cc8' },
+        { label: 'Habit completion rate',         val: rate,      max: 100,                     color: '#a78bfa', suffix: '%' },
+        { label: 'Meditation sessions',           val: monthMed,  max: Math.max(monthMed, 10),  color: '#74c0fc' },
+        { label: 'Mood check-ins',                val: monthMood, max: Math.max(monthMood, 30), color: '#4ade80' },
+    ];
+    document.getElementById('activity-bars').innerHTML = bars.map(b => {
+        const pct = b.max > 0 ? Math.round((b.val / b.max) * 100) : 0;
+        return `<div class="progress-bar-wrap">
+            <div class="progress-bar-top">
+                <span class="progress-bar-label">${b.label}</span>
+                <span class="progress-bar-value" style="color:${b.color}">${b.val}${b.suffix||''}</span>
+            </div>
+            <div class="progress-bar-track">
+                <div class="progress-bar-fill" style="width:${pct}%;background:linear-gradient(90deg,${b.color},${b.color}aa)"></div>
+            </div>
+        </div>`;
+    }).join('');
+
+    // ── Milestones ──
+    const totalJ = journals.length, totalMed = meditations.length;
+    const MILESTONES = [
+        { icon: '🔥', title: '7-day streak',      target: 7,   current: longestStreak, unit: 'streak days',      color: '#ffd43b' },
+        { icon: '⚡️', title: '30-day streak',     target: 30,  current: longestStreak, unit: 'streak days',      color: '#a78bfa' },
+        { icon: '📖', title: 'First 10 journals',  target: 10,  current: totalJ,        unit: 'journal entries',  color: '#ff8cc8' },
+        { icon: '🧘', title: '10 meditations',     target: 10,  current: totalMed,      unit: 'meditation sessions', color: '#74c0fc' },
+        { icon: '✍️', title: '50 journal entries', target: 50,  current: totalJ,        unit: 'journal entries',  color: '#ff8cc8' },
+        { icon: '💯', title: '100 days on Lotara', target: 100, current: daysOnLotara,  unit: 'days',             color: '#4ade80' },
+    ];
+    document.getElementById('milestones-list').innerHTML = MILESTONES.map(m => {
+        const done  = m.current >= m.target;
+        const close = !done && m.current >= m.target * 0.7;
+        const badge = done  ? `<span class="milestone-badge badge-done">Done</span>`
+                    : close ? `<span class="milestone-badge badge-close">${m.target - m.current} away</span>`
+                    :         `<span class="milestone-badge badge-current">${m.current}/${m.target}</span>`;
+        return `<div class="milestone-row">
+            <div class="milestone-icon" style="background:${m.color}15">${m.icon}</div>
+            <div class="milestone-info">
+                <div class="milestone-title">${m.title}</div>
+                <div class="milestone-date">${done ? 'Achieved' : m.current + ' ' + m.unit + ' so far'}</div>
+            </div>
+            ${badge}
+        </div>`;
+    }).join('');
+});
 </script>
 </body>
 </html>
