@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mood — Lotara</title>
-    <link rel="stylesheet" href="css/styles.css?v=5">
-    <link rel="stylesheet" href="css/portal.css?v=5">
+    <link rel="stylesheet" href="css/styles.css?v=6">
+    <link rel="stylesheet" href="css/portal.css?v=6">
 </head>
 <body>
 
@@ -33,8 +33,8 @@
             </div>
 
             <div class="mood-chart-wrap">
-                <svg id="mood-svg-big" viewBox="0 0 800 200" preserveAspectRatio="none"
-                     style="width:100%;height:200px;overflow:visible;display:block"></svg>
+                <svg id="mood-svg-big" viewBox="0 0 800 160" preserveAspectRatio="none"
+                     style="width:100%;height:160px;overflow:visible;display:block"></svg>
             </div>
 
             <div class="mood-stats" id="mood-stats">
@@ -66,10 +66,10 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="js/firebase-config.js?v=5"></script>
-<script src="js/auth.js?v=5"></script>
-<script src="js/portal-data.js?v=5"></script>
-<script src="js/portal-shell.js?v=5"></script>
+<script src="js/firebase-config.js?v=6"></script>
+<script src="js/auth.js?v=6"></script>
+<script src="js/portal-data.js?v=6"></script>
+<script src="js/portal-shell.js?v=6"></script>
 <script>
 firebase.initializeApp(FIREBASE_CONFIG);
 const db = firebase.firestore();
@@ -140,21 +140,27 @@ requireAuth('/signin.html').then(async user => {
     }
 
     // ──────────────────────────────────────────────────────────
-    // Smooth premium chart (cubic-bezier curve, animated draw-in)
+    // Calm, soft mood chart — same DNA as the dashboard chart users love.
+    // Smoothed curve, single soft-purple area fill, no dots, no glow.
     // ──────────────────────────────────────────────────────────
     const svg = document.getElementById('mood-svg-big');
     if (moods.length >= 2) {
         const scores = moods.slice().reverse().map(m => m.value || 5);
-        const W = 800, H = 200, padX = 16, padY = 22;
-        const min = Math.max(1, Math.min(...scores) - 1);
-        const max = Math.min(10, Math.max(...scores) + 1);
+        const W = 800, H = 160, padX = 12, padY = 18;
+        // Smoothing: rolling avg (window 2) so single bad days don't look like cliffs
+        const smoothed = scores.map((_, i, arr) => {
+            const a = i === 0 ? arr[0] : arr[i-1];
+            const b = arr[i];
+            return (a + b) / 2;
+        });
+        const min = Math.max(1, Math.min(...smoothed) - 0.5);
+        const max = Math.min(10, Math.max(...smoothed) + 0.5);
         const range = max - min || 1;
-        const pts = scores.map((v, i) => [
-            padX + (i / (scores.length - 1)) * (W - padX * 2),
+        const pts = smoothed.map((v, i) => [
+            padX + (i / (smoothed.length - 1)) * (W - padX * 2),
             H - padY - ((v - min) / range) * (H - padY * 2)
         ]);
 
-        // Cubic bezier smooth curve through points (Catmull-Rom-ish)
         function smoothPath(points) {
             if (points.length < 2) return '';
             let d = `M ${points[0][0]} ${points[0][1]}`;
@@ -163,12 +169,12 @@ requireAuth('/signin.html').then(async user => {
                 const p1 = points[i];
                 const p2 = points[i + 1];
                 const p3 = points[i + 2] || p2;
-                const t = 0.22; // tension — lower = smoother
+                const t = 0.20;
                 const cp1x = p1[0] + (p2[0] - p0[0]) * t;
                 const cp1y = p1[1] + (p2[1] - p0[1]) * t;
                 const cp2x = p2[0] - (p3[0] - p1[0]) * t;
                 const cp2y = p2[1] - (p3[1] - p1[1]) * t;
-                d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2[0]} ${p2[1]}`;
+                d += ` C ${cp1x.toFixed(1)} ${cp1y.toFixed(1)}, ${cp2x.toFixed(1)} ${cp2y.toFixed(1)}, ${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`;
             }
             return d;
         }
@@ -176,60 +182,28 @@ requireAuth('/signin.html').then(async user => {
         const linePath = smoothPath(pts);
         const areaPath = `${linePath} L ${pts[pts.length-1][0]} ${H} L ${pts[0][0]} ${H} Z`;
 
-        // Horizontal grid lines (5 / 10)
-        const gridLines = [3, 5, 7, 10].map(g => {
-            const y = H - padY - ((g - min) / range) * (H - padY * 2);
-            if (y < 0 || y > H) return '';
-            return `<line x1="0" y1="${y}" x2="${W}" y2="${y}" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 5"/>`;
-        }).join('');
-
         svg.innerHTML = `
             <defs>
-                <linearGradient id="mg-area" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%"   stop-color="#c4b5fd" stop-opacity="0.55"/>
-                    <stop offset="40%"  stop-color="#a78bfa" stop-opacity="0.30"/>
-                    <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+                <linearGradient id="mg-area-soft" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%"   stop-color="#a78bfa" stop-opacity="0.32"/>
+                    <stop offset="100%" stop-color="#a78bfa" stop-opacity="0"/>
                 </linearGradient>
-                <linearGradient id="mg-stroke" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0%"   stop-color="#c4b5fd"/>
-                    <stop offset="50%"  stop-color="#a78bfa"/>
-                    <stop offset="100%" stop-color="#8b5cf6"/>
-                </linearGradient>
-                <filter id="mg-glow" x="-30%" y="-30%" width="160%" height="160%">
-                    <feGaussianBlur stdDeviation="3"/>
-                    <feMerge>
-                        <feMergeNode/>
-                        <feMergeNode in="SourceGraphic"/>
-                    </feMerge>
-                </filter>
             </defs>
 
-            ${gridLines}
-
-            <path d="${areaPath}" fill="url(#mg-area)" opacity="0">
-                <animate attributeName="opacity" from="0" to="1" dur="0.9s" begin="0.1s" fill="freeze"/>
+            <path d="${areaPath}" fill="url(#mg-area-soft)" opacity="0">
+                <animate attributeName="opacity" from="0" to="1" dur="1.2s" begin="0.1s" fill="freeze"/>
             </path>
 
-            <path id="mood-line" d="${linePath}" fill="none"
-                  stroke="url(#mg-stroke)" stroke-width="2.5"
+            <path d="${linePath}" fill="none"
+                  stroke="#a78bfa" stroke-width="2.2"
                   stroke-linecap="round" stroke-linejoin="round"
-                  filter="url(#mg-glow)"
-                  pathLength="1" stroke-dasharray="1" stroke-dashoffset="1">
-                <animate attributeName="stroke-dashoffset" from="1" to="0" dur="1.4s" begin="0s" fill="freeze"/>
+                  pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"
+                  opacity="0.95">
+                <animate attributeName="stroke-dashoffset" from="1" to="0" dur="1.6s" begin="0s" fill="freeze"/>
             </path>
-
-            ${pts.map((p, i) => {
-                const score = scores[i];
-                const c = moodColor(score);
-                return `<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="${c}"
-                    stroke="rgba(10,5,30,0.6)" stroke-width="2" opacity="0">
-                    <animate attributeName="opacity" from="0" to="0.95"
-                        dur="0.4s" begin="${1.0 + i * 0.02}s" fill="freeze"/>
-                </circle>`;
-            }).join('')}
         `;
     } else {
-        svg.innerHTML = `<text x="400" y="100" text-anchor="middle"
+        svg.innerHTML = `<text x="400" y="80" text-anchor="middle"
             fill="rgba(255,255,255,0.3)" font-size="13" font-family="system-ui">
             Track moods daily to see your trend</text>`;
     }
@@ -252,19 +226,32 @@ requireAuth('/signin.html').then(async user => {
     const best  = all.length ? Math.max(...all) : null;
     const worst = all.length ? Math.min(...all) : null;
 
-    const fmt = v => v === null ? '—' : (typeof v === 'number' ? (Number.isInteger(v) ? v : v.toFixed(1)) : v);
+    const fmt = v => v === null ? '—' : (typeof v === 'number' ? (Number.isInteger(v) ? String(v) : v.toFixed(1)) : v);
     const tiles = [
-        { val: fmt(avg),   lbl: 'Avg this month',  color: avg !== null ? moodColor(Math.round(avg)) : '#a78bfa', icon: ICONS.activity },
+        { val: fmt(avg),
+          lbl: 'Avg this month',
+          accent: avg !== null ? moodColor(Math.round(avg)) : '#a78bfa',
+          icon: ICONS.activity },
         { val: delta === null ? '—' : (delta > 0 ? '+' : '') + delta,
-          lbl: 'vs last month',   color: delta === null ? '#a78bfa' : delta > 0 ? '#4ade80' : delta < 0 ? '#74c0fc' : 'rgba(255,255,255,0.5)',
+          lbl: 'vs last month',
+          accent: delta === null ? '#a78bfa' : delta > 0 ? '#4ade80' : delta < 0 ? '#74c0fc' : 'rgba(255,255,255,0.5)',
           icon: delta === null ? ICONS.minus : delta > 0 ? ICONS.arrowUp : delta < 0 ? ICONS.arrowDown : ICONS.minus },
-        { val: fmt(best),  lbl: 'Best day',       color: best !== null ? moodColor(best) : '#ffd43b', icon: ICONS.star },
-        { val: fmt(worst), lbl: 'Lowest day',     color: worst !== null ? moodColor(worst) : '#74c0fc', icon: ICONS.heart },
+        { val: fmt(best),
+          lbl: 'Best day',
+          accent: best !== null ? moodColor(best) : '#ffd43b',
+          icon: ICONS.star },
+        { val: fmt(worst),
+          lbl: 'Lowest day',
+          accent: worst !== null ? moodColor(worst) : '#74c0fc',
+          icon: ICONS.heart },
     ];
     document.getElementById('mood-stats').innerHTML = tiles.map(t => `
         <div class="mood-stat-tile">
-            <div class="mood-stat-icon" style="color:${t.color}">${t.icon}</div>
-            <div class="mood-stat-value" style="color:${t.color}">${t.val}</div>
+            <div class="mood-stat-head">
+                <div class="mood-stat-icon" style="color:${t.accent}">${t.icon}</div>
+                <span class="mood-stat-dot" style="background:${t.accent};box-shadow:0 0 8px ${t.accent}99"></span>
+            </div>
+            <div class="mood-stat-value">${t.val}</div>
             <div class="mood-stat-label">${t.lbl}</div>
         </div>`).join('');
 
