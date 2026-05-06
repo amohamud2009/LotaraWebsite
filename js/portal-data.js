@@ -110,21 +110,31 @@ function habitRingSVG(pct, color, size = 40) {
     </svg>`;
 }
 
-// ── Mood color from score (Int 1-10) ──
+// ── Mood color/label — matches iOS CalmMoodTrackerView 1:1 ──
+//    (relies on MOOD_SCALE defined in portal-shell.js)
 function moodColor(score) {
-    if (score <= 2) return '#748ffc';
-    if (score <= 4) return '#74c0fc';
-    if (score <= 6) return '#4ade80';
-    if (score <= 8) return '#ffd43b';
+    if (typeof MOOD_SCALE !== 'undefined') {
+        const s = Math.max(1, Math.min(10, Math.round(score)));
+        return MOOD_SCALE[s].color;
+    }
+    // fallback if shell hasn't loaded yet
+    if (score <= 2) return '#ff5959';
+    if (score <= 4) return '#cc8866';
+    if (score <= 6) return '#a3b8b8';
+    if (score <= 8) return '#74c0fc';
     return '#ff8cc8';
 }
 
 function moodLabel(score) {
-    if (score <= 2) return 'Low';
-    if (score <= 4) return 'Okay';
-    if (score <= 6) return 'Good';
-    if (score <= 8) return 'Great';
-    return 'Amazing';
+    if (typeof MOOD_SCALE !== 'undefined') {
+        const s = Math.max(1, Math.min(10, Math.round(score)));
+        return MOOD_SCALE[s].label;
+    }
+    if (score <= 2) return 'Anxious';
+    if (score <= 4) return 'Low';
+    if (score <= 6) return 'Okay';
+    if (score <= 8) return 'Happy';
+    return 'Joyful';
 }
 
 // ── Simple SVG mood face (self-contained) ──

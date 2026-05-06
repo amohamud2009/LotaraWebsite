@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mood — Lotara</title>
-    <link rel="stylesheet" href="css/styles.css?v=6">
-    <link rel="stylesheet" href="css/portal.css?v=6">
+    <link rel="stylesheet" href="css/styles.css?v=7">
+    <link rel="stylesheet" href="css/portal.css?v=7">
 </head>
 <body>
 
@@ -18,46 +18,50 @@
             <div class="page-sub">How you've been feeling over time</div>
         </div>
 
-        <!-- Hero: current mood orb + chart -->
-        <div class="card mood-hero" id="mood-hero">
-            <div class="mood-hero-top">
-                <div class="mood-hero-orb-wrap">
-                    <div class="mood-hero-orb" id="mood-orb"></div>
-                    <div class="mood-hero-orb-pulse" id="mood-orb-pulse"></div>
-                </div>
-                <div class="mood-hero-meta">
-                    <div class="mood-hero-tag" id="mood-hero-tag">Last check-in</div>
-                    <div class="mood-hero-label" id="mood-hero-label">—</div>
-                    <div class="mood-hero-sub"   id="mood-hero-sub">—</div>
-                </div>
-            </div>
+        <!-- Latest check-in: a slim, calm card (no orb) -->
+        <div class="card mood-latest" id="mood-latest">
+            <div class="skeleton" style="height:64px;border-radius:14px"></div>
+        </div>
 
-            <div class="mood-chart-wrap">
-                <svg id="mood-svg-big" viewBox="0 0 800 160" preserveAspectRatio="none"
-                     style="width:100%;height:160px;overflow:visible;display:block"></svg>
+        <!-- 30-day trend chart — same DNA as dashboard chart -->
+        <div class="card" style="margin-bottom:22px">
+            <div class="card-label" id="lbl-trend"></div>
+            <div class="mood-trend-chart">
+                <svg id="mood-svg-big" viewBox="0 0 800 140" preserveAspectRatio="none"
+                     style="width:100%;height:140px;overflow:visible;display:block"></svg>
             </div>
-
-            <div class="mood-stats" id="mood-stats">
-                <div class="skeleton" style="height:60px;border-radius:14px"></div>
-                <div class="skeleton" style="height:60px;border-radius:14px"></div>
-                <div class="skeleton" style="height:60px;border-radius:14px"></div>
-                <div class="skeleton" style="height:60px;border-radius:14px"></div>
+            <div class="mood-trend-stats" id="mood-stats">
+                <div class="skeleton" style="height:48px;border-radius:12px"></div>
+                <div class="skeleton" style="height:48px;border-radius:12px"></div>
+                <div class="skeleton" style="height:48px;border-radius:12px"></div>
+                <div class="skeleton" style="height:48px;border-radius:12px"></div>
             </div>
         </div>
 
-        <!-- Mood spectrum legend -->
-        <div class="card mood-spectrum-card">
-            <div class="card-label" id="lbl-spectrum"></div>
-            <div class="mood-spectrum" id="mood-spectrum"></div>
+        <!-- 30-day calendar heatmap — beautiful at-a-glance overview -->
+        <div class="card" style="margin-bottom:22px">
+            <div class="card-label" id="lbl-cal"></div>
+            <div class="mood-cal-weekdays" id="mood-cal-weekdays"></div>
+            <div class="mood-cal-grid" id="mood-cal-grid"></div>
+            <div class="mood-cal-legend">
+                <span class="mood-cal-legend-label">Less</span>
+                <span class="mood-cal-legend-cell" style="background:rgba(255,255,255,0.06)"></span>
+                <span class="mood-cal-legend-cell" style="background:#ff595933;border-color:#ff595955"></span>
+                <span class="mood-cal-legend-cell" style="background:#cc886633;border-color:#cc886655"></span>
+                <span class="mood-cal-legend-cell" style="background:#a3b8b833;border-color:#a3b8b855"></span>
+                <span class="mood-cal-legend-cell" style="background:#74c0fc44;border-color:#74c0fc66"></span>
+                <span class="mood-cal-legend-cell" style="background:#ff8cc844;border-color:#ff8cc866"></span>
+                <span class="mood-cal-legend-label">More</span>
+            </div>
         </div>
 
         <!-- Recent check-ins -->
         <div class="card">
             <div class="card-label" id="lbl-recent"></div>
             <div id="mood-list">
-                <div class="skeleton" style="height:64px;margin-bottom:10px;border-radius:14px"></div>
-                <div class="skeleton" style="height:64px;margin-bottom:10px;border-radius:14px"></div>
-                <div class="skeleton" style="height:64px;border-radius:14px"></div>
+                <div class="skeleton" style="height:60px;margin-bottom:8px;border-radius:12px"></div>
+                <div class="skeleton" style="height:60px;margin-bottom:8px;border-radius:12px"></div>
+                <div class="skeleton" style="height:60px;border-radius:12px"></div>
             </div>
         </div>
     </div>
@@ -66,10 +70,10 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="js/firebase-config.js?v=6"></script>
-<script src="js/auth.js?v=6"></script>
-<script src="js/portal-data.js?v=6"></script>
-<script src="js/portal-shell.js?v=6"></script>
+<script src="js/firebase-config.js?v=7"></script>
+<script src="js/auth.js?v=7"></script>
+<script src="js/portal-shell.js?v=7"></script>
+<script src="js/portal-data.js?v=7"></script>
 <script>
 firebase.initializeApp(FIREBASE_CONFIG);
 const db = firebase.firestore();
@@ -77,26 +81,9 @@ const db = firebase.firestore();
 bootPortal({ active: 'mood' });
 document.getElementById('topbar-mount').outerHTML = renderTopbar({ showStreak: false });
 
-document.getElementById('lbl-spectrum').innerHTML = ICONS.sparkles + 'Mood spectrum';
-document.getElementById('lbl-recent').innerHTML   = ICONS.heart + 'Recent check-ins';
-
-// Render the static mood spectrum once
-(function renderSpectrum() {
-    const tiers = [
-        { range: '1–2',  label: 'Low',     color: '#748ffc' },
-        { range: '3–4',  label: 'Okay',    color: '#74c0fc' },
-        { range: '5–6',  label: 'Good',    color: '#4ade80' },
-        { range: '7–8',  label: 'Great',   color: '#ffd43b' },
-        { range: '9–10', label: 'Amazing', color: '#ff8cc8' },
-    ];
-    document.getElementById('mood-spectrum').innerHTML = tiers.map(t => `
-        <div class="spec-tile">
-            <div class="spec-orb" style="background:radial-gradient(circle at 30% 30%, ${t.color}, ${t.color}55 60%, transparent 90%);
-                box-shadow: 0 0 20px ${t.color}55, inset 0 0 12px ${t.color}66;"></div>
-            <div class="spec-label">${t.label}</div>
-            <div class="spec-range">${t.range}</div>
-        </div>`).join('');
-})();
+document.getElementById('lbl-trend').innerHTML  = ICONS.activity + '30-day trend';
+document.getElementById('lbl-cal').innerHTML    = ICONS.calendar + 'Last 30 days';
+document.getElementById('lbl-recent').innerHTML = ICONS.heart    + 'Recent check-ins';
 
 requireAuth('/signin.html').then(async user => {
     setupSidebar(user);
@@ -110,54 +97,46 @@ requireAuth('/signin.html').then(async user => {
     console.log('[Lotara] mood page:', { count: moods.length });
 
     // ──────────────────────────────────────────────────────────
-    // Hero: current mood orb
+    // Latest check-in card (slim, calm)
     // ──────────────────────────────────────────────────────────
-    const orb = document.getElementById('mood-orb');
-    const pulse = document.getElementById('mood-orb-pulse');
-
+    const latestEl = document.getElementById('mood-latest');
     if (!moods.length) {
-        document.getElementById('mood-hero-tag').textContent  = 'No check-ins yet';
-        document.getElementById('mood-hero-label').textContent = 'Start tracking';
-        document.getElementById('mood-hero-sub').textContent   = 'Open Lotara to log how you feel';
-        orb.style.background = 'radial-gradient(circle at 30% 30%, #a78bfa, #8b5cf655 60%, transparent 90%)';
-        orb.style.boxShadow  = '0 0 40px rgba(167,139,250,0.4), inset 0 0 24px rgba(167,139,250,0.4)';
+        latestEl.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-state-icon">${ICONS.heart}</div>
+                No mood check-ins yet — track how you feel in the Lotara app
+            </div>`;
     } else {
         const latest = moods[0];
-        const score = latest.value || 5;
-        const c = moodColor(score);
-        const lbl = moodLabel(score);
-        const d = toJS(latest.timestamp);
-        const dateStr = d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}) + ' · ' +
+        const score  = latest.value || 5;
+        const meta   = moodMeta(score);
+        const d      = toJS(latest.timestamp);
+        const dateStr = d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}) +
+                        ' · ' +
                         d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
-
-        orb.style.background = `radial-gradient(circle at 30% 30%, ${c}, ${c}55 55%, transparent 90%)`;
-        orb.style.boxShadow  = `0 0 60px ${c}66, inset 0 0 30px ${c}88`;
-        pulse.style.background = `radial-gradient(circle, ${c}33 0%, transparent 70%)`;
-
-        document.getElementById('mood-hero-tag').textContent   = 'Last check-in';
-        document.getElementById('mood-hero-label').innerHTML  = `${lbl} <span style="color:${c};font-weight:300;margin-left:8px">${score}/10</span>`;
-        document.getElementById('mood-hero-sub').textContent   = dateStr;
+        latestEl.innerHTML = `
+            <div class="mood-latest-icon" style="color:${meta.color};background:${meta.color}1f;border-color:${meta.color}33">
+                ${ICONS[meta.iconKey]}
+            </div>
+            <div class="mood-latest-info">
+                <div class="mood-latest-tag">Last check-in</div>
+                <div class="mood-latest-label">${meta.label}
+                    <span class="mood-latest-score" style="color:${meta.color}">${score}<span class="mood-latest-of">/10</span></span>
+                </div>
+                <div class="mood-latest-sub">${dateStr}</div>
+            </div>`;
     }
 
     // ──────────────────────────────────────────────────────────
-    // Calm, soft mood chart — same DNA as the dashboard chart users love.
-    // Smoothed curve, single soft-purple area fill, no dots, no glow.
+    // 30-day trend chart — same calm aesthetic as dashboard
     // ──────────────────────────────────────────────────────────
     const svg = document.getElementById('mood-svg-big');
     if (moods.length >= 2) {
         const scores = moods.slice().reverse().map(m => m.value || 5);
-        const W = 800, H = 160, padX = 12, padY = 18;
-        // Smoothing: rolling avg (window 2) so single bad days don't look like cliffs
-        const smoothed = scores.map((_, i, arr) => {
-            const a = i === 0 ? arr[0] : arr[i-1];
-            const b = arr[i];
-            return (a + b) / 2;
-        });
-        const min = Math.max(1, Math.min(...smoothed) - 0.5);
-        const max = Math.min(10, Math.max(...smoothed) + 0.5);
-        const range = max - min || 1;
-        const pts = smoothed.map((v, i) => [
-            padX + (i / (smoothed.length - 1)) * (W - padX * 2),
+        const W = 800, H = 140, padX = 8, padY = 14;
+        const min = 1, max = 10, range = max - min;
+        const pts = scores.map((v, i) => [
+            padX + (i / (scores.length - 1)) * (W - padX * 2),
             H - padY - ((v - min) / range) * (H - padY * 2)
         ]);
 
@@ -185,78 +164,121 @@ requireAuth('/signin.html').then(async user => {
         svg.innerHTML = `
             <defs>
                 <linearGradient id="mg-area-soft" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%"   stop-color="#a78bfa" stop-opacity="0.32"/>
+                    <stop offset="0%"   stop-color="#a78bfa" stop-opacity="0.30"/>
                     <stop offset="100%" stop-color="#a78bfa" stop-opacity="0"/>
                 </linearGradient>
             </defs>
-
             <path d="${areaPath}" fill="url(#mg-area-soft)" opacity="0">
-                <animate attributeName="opacity" from="0" to="1" dur="1.2s" begin="0.1s" fill="freeze"/>
+                <animate attributeName="opacity" from="0" to="1" dur="1.0s" begin="0.1s" fill="freeze"/>
             </path>
-
-            <path d="${linePath}" fill="none"
-                  stroke="#a78bfa" stroke-width="2.2"
+            <path d="${linePath}" fill="none" stroke="#a78bfa" stroke-width="2"
                   stroke-linecap="round" stroke-linejoin="round"
-                  pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"
-                  opacity="0.95">
-                <animate attributeName="stroke-dashoffset" from="1" to="0" dur="1.6s" begin="0s" fill="freeze"/>
-            </path>
-        `;
+                  pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" opacity="0.95">
+                <animate attributeName="stroke-dashoffset" from="1" to="0" dur="1.4s" begin="0s" fill="freeze"/>
+            </path>`;
     } else {
-        svg.innerHTML = `<text x="400" y="80" text-anchor="middle"
+        svg.innerHTML = `<text x="400" y="70" text-anchor="middle"
             fill="rgba(255,255,255,0.3)" font-size="13" font-family="system-ui">
             Track moods daily to see your trend</text>`;
     }
 
     // ──────────────────────────────────────────────────────────
-    // Stats — beautiful glass tiles
+    // Stats — small, calm row
     // ──────────────────────────────────────────────────────────
     const now = new Date();
-    const ms = new Date(now.getFullYear(), now.getMonth(), 1);
+    const ms     = new Date(now.getFullYear(), now.getMonth(), 1);
     const prevMs = new Date(now.getFullYear(), now.getMonth() - 1, 1);
     const prevMe = new Date(now.getFullYear(), now.getMonth(), 0);
 
     const thisMonth = moods.filter(m => toJS(m.timestamp) >= ms);
     const prevMonth = moods.filter(m => { const d = toJS(m.timestamp); return d >= prevMs && d <= prevMe; });
 
-    const avg  = thisMonth.length ? +(thisMonth.reduce((a,m)=>a+(m.value||5),0) / thisMonth.length).toFixed(1) : null;
-    const prev = prevMonth.length ? +(prevMonth.reduce((a,m)=>a+(m.value||5),0) / prevMonth.length).toFixed(1) : null;
+    const avg   = thisMonth.length ? +(thisMonth.reduce((a,m)=>a+(m.value||5),0) / thisMonth.length).toFixed(1) : null;
+    const prev  = prevMonth.length ? +(prevMonth.reduce((a,m)=>a+(m.value||5),0) / prevMonth.length).toFixed(1) : null;
     const delta = (avg !== null && prev !== null) ? +(avg - prev).toFixed(1) : null;
-    const all = moods.map(m => m.value || 5);
+    const all   = moods.map(m => m.value || 5);
     const best  = all.length ? Math.max(...all) : null;
     const worst = all.length ? Math.min(...all) : null;
 
-    const fmt = v => v === null ? '—' : (typeof v === 'number' ? (Number.isInteger(v) ? String(v) : v.toFixed(1)) : v);
+    const fmt = v => v === null ? '—' : (Number.isInteger(v) ? String(v) : v.toFixed(1));
     const tiles = [
-        { val: fmt(avg),
-          lbl: 'Avg this month',
-          accent: avg !== null ? moodColor(Math.round(avg)) : '#a78bfa',
-          icon: ICONS.activity },
+        { val: fmt(avg),   lbl: 'Avg this month',  accent: avg !== null ? moodColor(avg) : 'rgba(255,255,255,0.4)' },
         { val: delta === null ? '—' : (delta > 0 ? '+' : '') + delta,
           lbl: 'vs last month',
-          accent: delta === null ? '#a78bfa' : delta > 0 ? '#4ade80' : delta < 0 ? '#74c0fc' : 'rgba(255,255,255,0.5)',
-          icon: delta === null ? ICONS.minus : delta > 0 ? ICONS.arrowUp : delta < 0 ? ICONS.arrowDown : ICONS.minus },
-        { val: fmt(best),
-          lbl: 'Best day',
-          accent: best !== null ? moodColor(best) : '#ffd43b',
-          icon: ICONS.star },
-        { val: fmt(worst),
-          lbl: 'Lowest day',
-          accent: worst !== null ? moodColor(worst) : '#74c0fc',
-          icon: ICONS.heart },
+          accent: delta === null ? 'rgba(255,255,255,0.4)' : delta > 0 ? '#4ade80' : delta < 0 ? '#74c0fc' : 'rgba(255,255,255,0.4)' },
+        { val: fmt(best),  lbl: 'Best day',        accent: best !== null ? moodColor(best) : 'rgba(255,255,255,0.4)' },
+        { val: fmt(worst), lbl: 'Lowest day',      accent: worst !== null ? moodColor(worst) : 'rgba(255,255,255,0.4)' },
     ];
     document.getElementById('mood-stats').innerHTML = tiles.map(t => `
-        <div class="mood-stat-tile">
-            <div class="mood-stat-head">
-                <div class="mood-stat-icon" style="color:${t.accent}">${t.icon}</div>
-                <span class="mood-stat-dot" style="background:${t.accent};box-shadow:0 0 8px ${t.accent}99"></span>
+        <div class="mood-trend-stat">
+            <span class="mood-trend-stat-dot" style="background:${t.accent};box-shadow:0 0 6px ${t.accent}99"></span>
+            <div>
+                <div class="mood-trend-stat-val">${t.val}</div>
+                <div class="mood-trend-stat-lbl">${t.lbl}</div>
             </div>
-            <div class="mood-stat-value">${t.val}</div>
-            <div class="mood-stat-label">${t.lbl}</div>
         </div>`).join('');
 
     // ──────────────────────────────────────────────────────────
-    // Recent list — premium gradient orb rows
+    // 30-day calendar heatmap
+    // ──────────────────────────────────────────────────────────
+    const calGrid = document.getElementById('mood-cal-grid');
+    const calWeekdays = document.getElementById('mood-cal-weekdays');
+    calWeekdays.innerHTML = ['S','M','T','W','T','F','S'].map(d =>
+        `<div class="mood-cal-weekday">${d}</div>`).join('');
+
+    // Build map of dateKey → mood value
+    const moodByDay = new Map();
+    moods.forEach(m => {
+        const k = toDateStr(m.timestamp);
+        // If multiple per day, take the latest (highest timestamp)
+        if (!moodByDay.has(k) || toJS(m.timestamp) > moodByDay.get(k).t) {
+            moodByDay.set(k, { v: m.value || 5, t: toJS(m.timestamp) });
+        }
+    });
+
+    // 35-cell grid (5 weeks): start at Sunday on/before (today - 34 days)
+    const today = new Date(); today.setHours(0,0,0,0);
+    const startDay = new Date(today);
+    startDay.setDate(today.getDate() - 34);
+    // Roll back to nearest Sunday so columns align with weekdays
+    while (startDay.getDay() !== 0) startDay.setDate(startDay.getDate() - 1);
+
+    const cells = [];
+    const cursor = new Date(startDay);
+    while (cursor <= today) {
+        const k = (() => {
+            const y = cursor.getFullYear();
+            const m = String(cursor.getMonth() + 1).padStart(2, '0');
+            const d = String(cursor.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
+        })();
+        const mood = moodByDay.get(k);
+        const isToday = cursor.getTime() === today.getTime();
+        cells.push({ date: new Date(cursor), key: k, mood, isToday });
+        cursor.setDate(cursor.getDate() + 1);
+    }
+
+    calGrid.innerHTML = cells.map(c => {
+        if (!c.mood) {
+            const cls = c.isToday ? ' today' : '';
+            const tip = c.date.toLocaleDateString('en-US', { month:'short', day:'numeric' }) + ' — no entry';
+            return `<div class="mood-cal-cell empty${cls}" title="${tip}"></div>`;
+        }
+        const color = moodColor(c.mood.v);
+        const meta = moodMeta(c.mood.v);
+        const cls  = c.isToday ? ' today' : '';
+        const tip  = c.date.toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric' }) +
+                     ` — ${meta.label} (${c.mood.v}/10)`;
+        // intensity scales with score
+        const opacity = 0.18 + (c.mood.v / 10) * 0.55;
+        return `<div class="mood-cal-cell${cls}"
+            style="background:${color}; opacity:${opacity.toFixed(2)};
+                   border-color:${color}; box-shadow: 0 0 8px ${color}33"
+            title="${tip}"></div>`;
+    }).join('');
+
+    // ──────────────────────────────────────────────────────────
+    // Recent check-ins — calm rows with SF-symbol-style icon
     // ──────────────────────────────────────────────────────────
     if (!moods.length) {
         document.getElementById('mood-list').innerHTML = `<div class="empty-state">
@@ -270,26 +292,28 @@ requireAuth('/signin.html').then(async user => {
         const d = toJS(m.timestamp);
         const now2 = new Date();
         const startOfToday = new Date(now2.getFullYear(), now2.getMonth(), now2.getDate());
-        const diffD = Math.floor((startOfToday - new Date(d.getFullYear(), d.getMonth(), d.getDate())) / 86400000);
+        const dDay = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+        const diffD = Math.floor((startOfToday - dDay) / 86400000);
         const dateStr = diffD === 0
             ? 'Today, ' + d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})
             : diffD === 1 ? 'Yesterday'
             : d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
         const score = m.value || 5;
-        const color = moodColor(score);
-        const lbl = moodLabel(score);
-        return `<div class="mood-entry-row" style="--mood-color:${color}">
-            <div class="mood-entry-orb" style="
-                background: radial-gradient(circle at 30% 30%, ${color}, ${color}55 60%, transparent 92%);
-                box-shadow: 0 0 18px ${color}55, inset 0 0 10px ${color}77;
-            "></div>
-            <div class="mood-entry-info">
-                <div class="mood-entry-date">${dateStr}</div>
-                ${m.note ? `<div class="mood-entry-note">${m.note}</div>` : `<div class="mood-entry-note" style="color:rgba(255,255,255,0.35)">${lbl}</div>`}
+        const meta  = moodMeta(score);
+        return `<div class="mood-row" style="--mood-color:${meta.color}">
+            <div class="mood-row-icon" style="color:${meta.color};background:${meta.color}14">
+                ${ICONS[meta.iconKey]}
             </div>
-            <div class="mood-entry-score">
-                <span style="color:${color}">${score}</span>
-                <span class="mood-entry-score-max">/10</span>
+            <div class="mood-row-info">
+                <div class="mood-row-meta">
+                    <span class="mood-row-label" style="color:${meta.color}">${meta.label}</span>
+                    <span class="mood-row-dot">·</span>
+                    <span class="mood-row-date">${dateStr}</span>
+                </div>
+                ${m.note ? `<div class="mood-row-note">${m.note}</div>` : ''}
+            </div>
+            <div class="mood-row-score">
+                <span style="color:${meta.color}">${score}</span><span class="mood-row-score-of">/10</span>
             </div>
         </div>`;
     }).join('');

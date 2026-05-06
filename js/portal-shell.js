@@ -34,7 +34,40 @@ const ICONS = {
     minus:      _icon('<line x1="5" y1="12" x2="19" y2="12"/>'),
     sparkles:   _icon('<path d="M12 3v3M12 18v3M21 12h-3M6 12H3M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1M18.4 18.4l-2.1-2.1M7.7 7.7L5.6 5.6"/>'),
     feather:    _icon('<path d="M20.24 12.24a6 6 0 00-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/>'),
+
+    // ── Mood SF-Symbol-equivalents (line-art) ──
+    moodSparkles:  _icon('<path d="M12 3v3M12 18v3M21 12h-3M6 12H3M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1M18.4 18.4l-2.1-2.1M7.7 7.7L5.6 5.6"/>'),
+    moodSun:       _icon('<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>'),
+    moodSmile:     _icon('<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>'),
+    moodHeart:     _icon('<path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>'),
+    moodMinus:     _icon('<circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/>'),
+    moodCircle:    _icon('<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="2.5"/>'),
+    moodCloud:     _icon('<path d="M17.5 19a4.5 4.5 0 100-9 6 6 0 00-11.5 2 4 4 0 000 7z"/>'),
+    moodRain:      _icon('<path d="M16 13v8M8 13v8M12 15v8M20 16.58A5 5 0 0018 7h-1.26A8 8 0 104 15.25"/>'),
+    moodAlert:     _icon('<path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>'),
+    moodX:         _icon('<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>'),
 };
+
+// ── Mood scale matching iOS CalmMoodTrackerView exactly ──
+//    Score → { iconKey, label, color }
+const MOOD_SCALE = {
+    10: { iconKey: 'moodSparkles', label: 'Joyful',     color: '#ff8cc8' },
+    9:  { iconKey: 'moodSun',      label: 'Great',      color: '#4ade80' },
+    8:  { iconKey: 'moodSmile',    label: 'Happy',      color: '#74c0fc' },
+    7:  { iconKey: 'moodHeart',    label: 'Good',       color: '#ff8cc8' },
+    6:  { iconKey: 'moodMinus',    label: 'Okay',       color: '#a3b8b8' },
+    5:  { iconKey: 'moodCircle',   label: 'Meh',        color: '#b39d9d' },
+    4:  { iconKey: 'moodCloud',    label: 'Low',        color: '#cc8866' },
+    3:  { iconKey: 'moodRain',     label: 'Sad',        color: '#748ffc' },
+    2:  { iconKey: 'moodAlert',    label: 'Anxious',    color: '#e69140' },
+    1:  { iconKey: 'moodX',        label: 'Struggling', color: '#ff5959' },
+};
+
+function moodMeta(score) {
+    const s = Math.max(1, Math.min(10, Math.round(score)));
+    return MOOD_SCALE[s];
+}
+function moodIcon(score) { return ICONS[moodMeta(score).iconKey]; }
 
 // ── Inject orbs + particles into body once ──
 function injectAmbience() {

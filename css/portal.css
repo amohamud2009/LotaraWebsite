@@ -434,168 +434,185 @@ body {
 .journal-entry-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 .tag-chip { padding: 2px 10px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--r-btn); font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.5); }
 
-/* ── Mood: hero card ── */
-.mood-hero { padding: 28px 28px 22px; margin-bottom: 22px; }
-.mood-hero-top { display: flex; align-items: center; gap: 22px; margin-bottom: 26px; }
-.mood-hero-orb-wrap {
-    position: relative; width: 84px; height: 84px; flex-shrink: 0;
+/* ════════════════════════════════════════════════════════════
+   MOOD PAGE — Calm, lotara.app-aligned design
+   ════════════════════════════════════════════════════════════ */
+
+/* ── Latest check-in (slim card, no orb) ── */
+.mood-latest {
+    display: flex; align-items: center; gap: 18px;
+    padding: 20px 22px; margin-bottom: 22px;
 }
-.mood-hero-orb {
-    position: absolute; inset: 0;
-    border-radius: 50%;
-    animation: orbBreathe 5s ease-in-out infinite;
+.mood-latest-icon {
+    width: 54px; height: 54px; flex-shrink: 0;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid;
 }
-.mood-hero-orb-pulse {
-    position: absolute; inset: -16px;
-    border-radius: 50%;
-    animation: orbPulse 3.4s ease-in-out infinite;
-    pointer-events: none;
+.mood-latest-icon svg {
+    width: 26px !important; height: 26px !important;
+    stroke-width: 1.6;
 }
-@keyframes orbBreathe {
-    0%, 100% { transform: scale(1); }
-    50%      { transform: scale(1.04); }
-}
-@keyframes orbPulse {
-    0%   { transform: scale(0.9); opacity: 0.7; }
-    70%  { transform: scale(1.4); opacity: 0; }
-    100% { transform: scale(1.4); opacity: 0; }
-}
-.mood-hero-meta { flex: 1; min-width: 0; }
-.mood-hero-tag {
+.mood-latest-info { flex: 1; min-width: 0; }
+.mood-latest-tag {
     font-size: 10px; font-weight: 600; letter-spacing: 0.14em;
-    text-transform: uppercase; color: rgba(255,255,255,0.5);
-    margin-bottom: 8px;
+    text-transform: uppercase; color: rgba(255,255,255,0.45);
+    margin-bottom: 6px;
 }
-.mood-hero-label {
-    font-size: 32px; font-weight: 200; letter-spacing: -0.8px;
-    color: #fff; margin-bottom: 6px; line-height: 1.1;
+.mood-latest-label {
+    font-size: 24px; font-weight: 300; letter-spacing: -0.4px;
+    color: #fff; line-height: 1.15; margin-bottom: 4px;
+    display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
 }
-.mood-hero-sub {
-    font-size: 13px; font-weight: 300;
-    color: rgba(255,255,255,0.5);
+.mood-latest-score {
+    font-size: 17px; font-weight: 400; letter-spacing: -0.2px;
+}
+.mood-latest-of {
+    font-size: 13px; color: rgba(255,255,255,0.35); margin-left: 1px;
+}
+.mood-latest-sub {
+    font-size: 12px; font-weight: 300;
+    color: rgba(255,255,255,0.45);
 }
 
-/* Chart wrap */
-.mood-chart-wrap {
-    width: 100%; padding: 6px 0 18px;
-    margin-bottom: 22px;
+/* ── 30-day trend chart card ── */
+.mood-trend-chart {
+    width: 100%; padding: 8px 0 14px;
     border-bottom: 1px solid rgba(255,255,255,0.06);
+    margin-bottom: 16px;
 }
-
-/* Stats grid */
-.mood-stats {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+.mood-trend-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
 }
-.mood-stat-tile {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 14px;
-    padding: 14px 16px;
-    transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+.mood-trend-stat {
+    display: flex; align-items: center; gap: 10px;
 }
-.mood-stat-tile:hover {
-    background: rgba(255,255,255,0.06);
-    border-color: rgba(255,255,255,0.12);
-    transform: translateY(-1px);
-}
-.mood-stat-head {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 10px;
-}
-.mood-stat-icon { opacity: 0.85; line-height: 0; }
-.mood-stat-icon svg { width: 16px !important; height: 16px !important; }
-.mood-stat-dot {
-    width: 6px; height: 6px; border-radius: 50%;
+.mood-trend-stat-dot {
+    width: 7px; height: 7px; border-radius: 50%;
     flex-shrink: 0;
 }
-.mood-stat-value {
-    font-size: 28px; font-weight: 200; letter-spacing: -0.6px;
-    margin-bottom: 4px; line-height: 1;
-    color: #ffffff;
+.mood-trend-stat-val {
+    font-size: 22px; font-weight: 200; letter-spacing: -0.4px;
+    color: #fff; line-height: 1;
 }
-.mood-stat-label {
-    font-size: 11px; font-weight: 400;
-    color: rgba(255,255,255,0.5); letter-spacing: 0.02em;
+.mood-trend-stat-lbl {
+    font-size: 11px; font-weight: 400; color: rgba(255,255,255,0.5);
+    margin-top: 4px; letter-spacing: 0.01em;
 }
 
-/* ── Mood spectrum legend ── */
-.mood-spectrum-card { margin-bottom: 22px; }
-.mood-spectrum {
-    display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-top: 6px;
+/* ── 30-day calendar heatmap ── */
+.mood-cal-weekdays {
+    display: grid; grid-template-columns: repeat(7, 1fr);
+    gap: 6px; margin-bottom: 8px;
 }
-.spec-tile {
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
-    padding: 14px 8px;
-    background: rgba(255,255,255,0.03);
+.mood-cal-weekday {
+    font-size: 10px; font-weight: 500;
+    color: rgba(255,255,255,0.35);
+    text-align: center; letter-spacing: 0.06em;
+}
+.mood-cal-grid {
+    display: grid; grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    margin-bottom: 16px;
+}
+.mood-cal-cell {
+    aspect-ratio: 1 / 1;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.mood-cal-cell:hover { transform: scale(1.08); border-color: rgba(255,255,255,0.4); }
+.mood-cal-cell.empty {
+    background: rgba(255,255,255,0.04);
+    border-color: rgba(255,255,255,0.05);
+}
+.mood-cal-cell.today {
+    border-color: rgba(255,255,255,0.6) !important;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.25);
+}
+.mood-cal-legend {
+    display: flex; align-items: center; gap: 6px;
+    justify-content: flex-end;
+    padding-top: 6px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+.mood-cal-legend-label {
+    font-size: 10px; font-weight: 400;
+    color: rgba(255,255,255,0.4); letter-spacing: 0.04em;
+}
+.mood-cal-legend-cell {
+    width: 14px; height: 14px;
+    border-radius: 4px;
     border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 14px;
-    transition: all 0.3s ease;
 }
-.spec-tile:hover { background: rgba(255,255,255,0.06); transform: translateY(-2px); }
-.spec-orb {
-    width: 38px; height: 38px; border-radius: 50%;
-}
-.spec-label { font-size: 13px; font-weight: 400; color: #fff; }
-.spec-range { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.45); }
 
-/* ── Mood entries (recent check-ins) ── */
-.mood-entry-row {
-    display: flex; align-items: center; gap: 16px;
-    padding: 14px 16px;
-    margin-bottom: 8px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-left: 3px solid var(--mood-color, #a78bfa);
-    border-radius: 14px;
+/* ── Recent check-in row (calm, SF-symbol icon) ── */
+.mood-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 14px;
+    margin-bottom: 6px;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-left: 2px solid var(--mood-color, #a78bfa);
+    border-radius: 12px;
     transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
 }
-.mood-entry-row:hover {
-    background: rgba(255,255,255,0.06);
-    border-color: rgba(255,255,255,0.12);
+.mood-row:hover {
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.1);
     border-left-color: var(--mood-color);
     transform: translateX(2px);
 }
-.mood-entry-row:last-child { margin-bottom: 0; }
-.mood-entry-orb {
-    width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+.mood-row:last-child { margin-bottom: 0; }
+.mood-row-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
 }
-.mood-entry-info { flex: 1; min-width: 0; }
-.mood-entry-date { font-size: 12px; font-weight: 400; color: rgba(255,255,255,0.55); margin-bottom: 4px; letter-spacing: 0.01em; }
-.mood-entry-note {
-    font-size: 14px; font-weight: 300; color: rgba(255,255,255,0.85);
+.mood-row-icon svg {
+    width: 18px !important; height: 18px !important;
+    stroke-width: 1.6;
+}
+.mood-row-info { flex: 1; min-width: 0; }
+.mood-row-meta {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 400;
+    margin-bottom: 2px;
+}
+.mood-row-label { font-weight: 500; }
+.mood-row-dot { color: rgba(255,255,255,0.25); }
+.mood-row-date { color: rgba(255,255,255,0.5); }
+.mood-row-note {
+    font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.7);
     line-height: 1.4;
     overflow: hidden; text-overflow: ellipsis;
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
 }
-.mood-entry-score {
-    font-size: 26px; font-weight: 200; flex-shrink: 0; letter-spacing: -0.5px;
-    display: flex; align-items: baseline; gap: 1px;
+.mood-row-score {
+    font-size: 18px; font-weight: 300; letter-spacing: -0.3px;
+    flex-shrink: 0;
+    display: flex; align-items: baseline;
 }
-.mood-entry-score-max { font-size: 13px; color: rgba(255,255,255,0.3); font-weight: 300; }
-
-/* Legacy fallback (keep until pages migrate) */
-.mood-face { width: 38px; height: 38px; flex-shrink: 0; }
-.mood-score { font-size: 22px; font-weight: 300; flex-shrink: 0; letter-spacing: -0.5px; }
+.mood-row-score-of { font-size: 11px; color: rgba(255,255,255,0.3); margin-left: 1px; }
 
 /* ── Mobile ── */
 @media (max-width: 900px) {
     .stat-row { grid-template-columns: repeat(2,1fr); }
     .two-col, .habit-grid { grid-template-columns: 1fr; }
-    .mood-stats { grid-template-columns: repeat(2, 1fr); }
-    .mood-spectrum { grid-template-columns: repeat(5, 1fr); gap: 8px; }
-    .mood-hero { padding: 22px 20px 18px; }
-    .mood-hero-orb-wrap { width: 64px; height: 64px; }
-    .mood-hero-label { font-size: 26px; }
+    .mood-trend-stats { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .mood-latest { padding: 16px 18px; gap: 14px; }
+    .mood-latest-icon { width: 46px; height: 46px; }
+    .mood-latest-icon svg { width: 22px !important; height: 22px !important; }
+    .mood-latest-label { font-size: 20px; gap: 8px; }
 }
 @media (max-width: 600px) {
-    .mood-spectrum { grid-template-columns: repeat(5, 1fr); gap: 6px; }
-    .spec-tile { padding: 10px 4px; }
-    .spec-orb { width: 28px; height: 28px; }
-    .spec-label { font-size: 11px; }
-    .spec-range { font-size: 10px; }
-    .mood-stat-value { font-size: 22px; }
-    .mood-entry-row { padding: 12px 12px; gap: 12px; }
-    .mood-entry-orb { width: 30px; height: 30px; }
+    .mood-trend-stat-val { font-size: 19px; }
+    .mood-row { padding: 10px 12px; gap: 12px; }
+    .mood-row-icon { width: 32px; height: 32px; }
+    .mood-row-icon svg { width: 16px !important; height: 16px !important; }
+    .mood-cal-weekday { font-size: 9px; }
+    .mood-cal-grid { gap: 4px; }
+    .mood-cal-weekdays { gap: 4px; }
 }
 @media (max-width: 768px) {
     body { overflow: auto; }
