@@ -57,13 +57,17 @@ requireAuth('/signin.html').then(async user => {
     document.getElementById('topbar-greeting').textContent = 'Habits';
     const uid = user.uid;
 
+    // No orderBy on habitCompletions — matches iOS exactly (no composite index needed)
     const [hSnap, cSnap] = await Promise.all([
-        db.collection(`users/${uid}/habits`).get(),
-        db.collection('habitCompletions').where('userId','==',uid).orderBy('date','desc').limit(500).get().catch(()=>({docs:[]})),
+        db.collection(`users/${uid}/habits`).get().catch(e => { console.error('habits', e); return {docs:[]}; }),
+        db.collection('habitCompletions').where('userId','==',uid).get().catch(e => { console.error('completions', e); return {docs:[]}; }),
     ]);
 
     const habits      = hSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-    const completions = cSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const completions = cSnap.docs.map(d => ({ id: d.id, ...d.data() }))
+                              .sort((a, b) => toJS(b.date) - toJS(a.date));
+
+    console.log('[Lotara] habits page:', { habits: habits.length, completions: completions.length });
 
     const streak = calcOverallStreak(completions);
     document.getElementById('streak-val').textContent = streak;
@@ -103,7 +107,7 @@ requireAuth('/signin.html').then(async user => {
     }
 
     grid.innerHTML = habits.map((h, i) => {
-        const color  = HABIT_COLORS[i % HABIT_COLORS.length];
+        const color  = habitColor(h, i);
         const hc     = completions.filter(c => c.habitId === h.id);
         const pct    = monthlyCompletionPct(hc);
         const s      = calcHabitStreak(hc);
@@ -115,7 +119,7 @@ requireAuth('/signin.html').then(async user => {
         return `<div class="habit-grid-card" style="animation-delay:${i*0.05}s">
             <div class="habit-grid-top">
                 ${habitRingSVG(pct, color)}
-                <div class="habit-grid-name">${h.name || 'Habit'}</div>
+                <div class="habit-grid-name">${habitName(h)}</div>
                 <span class="habit-streak-pill" style="background:${color}1f;color:${color};border:1px solid ${color}40">${s}d</span>
             </div>
             <div class="habit-grid-bar">

@@ -1,14 +1,25 @@
 /* ============================================================
    LOTARA PORTAL — Shared data helpers
-   Uses exact Firestore paths + field names from the iOS app.
+   Uses EXACT Firestore paths + field names from the iOS app.
 
-   Key facts from iOS FirebaseDataService.swift:
+   Verified from FirebaseDataService.swift:
    - habitCompletions (ROOT): { id, date: Timestamp, habitId, userId }
-   - users/{uid}/habits: { id, name, ... }
-   - users/{uid}/journal: { id, title, content, mood: Int, date: Timestamp, tags }
-   - users/{uid}/moods:   { id, timestamp: Timestamp, value: Int, note, tags }
-   - users/{uid}/meditation: { id, date: Timestamp, ... }
+       NOTE: iOS does NOT order by date — only filters by userId.
+       Adding orderBy on web requires a composite index that doesn't exist.
+   - users/{uid}/habits: { id, title, colorHex, reminderDays, userId, longestStreak }
+       Field is `title` — NOT `name`.
+   - users/{uid}/journal: { id, title, content, mood: Int, date: Timestamp, tags, isPrivate }
+   - users/{uid}/moods:   { id, timestamp: Timestamp, value: Int, note, tags, activities }
    ============================================================ */
+
+// ── Habit field accessors (defensive against legacy data) ──
+function habitName(h)  { return h.title || h.name || 'Habit'; }
+function habitColor(h, i) {
+    const fallback = HABIT_COLORS[i % HABIT_COLORS.length];
+    if (!h.colorHex) return fallback;
+    const c = String(h.colorHex).trim();
+    return c.startsWith('#') ? c : ('#' + c);
+}
 
 // ── Date utilities ──────────────────────────────────────────
 

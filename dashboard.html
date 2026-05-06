@@ -100,17 +100,22 @@ requireAuth('/signin.html').then(async user => {
     setupTopbar(user);
     const uid = user.uid;
 
+    // NOTE: iOS does NOT use orderBy on habitCompletions (no composite index exists).
+    // Use the same simple .where(userId) and sort in JS — matches iOS exactly.
     const [hSnap, cSnap, mSnap, jSnap] = await Promise.all([
-        db.collection(`users/${uid}/habits`).get(),
-        db.collection('habitCompletions').where('userId','==',uid).orderBy('date','desc').limit(300).get().catch(()=>({docs:[]})),
-        db.collection(`users/${uid}/moods`).orderBy('timestamp','desc').limit(30).get().catch(()=>({docs:[]})),
-        db.collection(`users/${uid}/journal`).orderBy('date','desc').limit(10).get().catch(()=>({docs:[]})),
+        db.collection(`users/${uid}/habits`).get().catch(e => { console.error('habits', e); return {docs:[]}; }),
+        db.collection('habitCompletions').where('userId','==',uid).get().catch(e => { console.error('completions', e); return {docs:[]}; }),
+        db.collection(`users/${uid}/moods`).orderBy('timestamp','desc').limit(30).get().catch(e => { console.error('moods', e); return {docs:[]}; }),
+        db.collection(`users/${uid}/journal`).orderBy('date','desc').limit(10).get().catch(e => { console.error('journal', e); return {docs:[]}; }),
     ]);
 
     const habits      = hSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-    const completions = cSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const completions = cSnap.docs.map(d => ({ id: d.id, ...d.data() }))
+                            .sort((a, b) => toJS(b.date) - toJS(a.date));
     const moods       = mSnap.docs.map(d => d.data());
     const journals    = jSnap.docs.map(d => d.data());
+
+    console.log('[Lotara] loaded:', { habits: habits.length, completions: completions.length, moods: moods.length, journals: journals.length });
 
     const streak = calcOverallStreak(completions);
     document.getElementById('streak-val').textContent = streak;
@@ -130,7 +135,7 @@ requireAuth('/signin.html').then(async user => {
     const weekAgo = new Date(now); weekAgo.setDate(now.getDate() - 7);
     const weekJournals    = journals.filter(j => toJS(j.date) >= weekAgo).length;
     const weekCompletions = completions.filter(c => toJS(c.date) >= weekAgo);
-    const topHabit        = habits[0]?.name || 'your habit';
+    const topHabit        = habits[0] ? habitName(habits[0]) : 'your habit';
     const topHabitDays    = habits[0]
         ? new Set(weekCompletions.filter(c => c.habitId === habits[0].id).map(c => toDateStr(c.date))).size
         : 0;
@@ -153,7 +158,7 @@ requireAuth('/signin.html').then(async user => {
         </div>`;
     } else {
         habitsList.innerHTML = habits.slice(0,3).map((h, i) => {
-            const color = HABIT_COLORS[i % HABIT_COLORS.length];
+            const color = habitColor(h, i);
             const hc = completions.filter(c => c.habitId === h.id);
             const dots = sevenDayDots(hc).map(done =>
                 `<div class="dot${done ? ' done' : ''}" style="${done ? `--dot-color:${color}` : ''}"></div>`
@@ -163,7 +168,7 @@ requireAuth('/signin.html').then(async user => {
             return `<div class="habit-row">
                 <div class="habit-ring">${habitRingSVG(pct, color)}</div>
                 <div class="habit-info">
-                    <div class="habit-name">${h.name || 'Habit'}</div>
+                    <div class="habit-name">${habitName(h)}</div>
                     <div class="habit-dots">${dots}</div>
                 </div>
                 <div class="habit-streak-badge">${streak}d</div>
