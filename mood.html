@@ -9,42 +9,22 @@
 </head>
 <body>
 
-<aside class="sidebar">
-    <div class="sb-logo"><img src="assets/images/lotara-logo.png" alt="Lotara"></div>
-    <div class="sb-user">
-        <div class="sb-avatar" id="sb-avatar">?</div>
-        <div><div class="sb-name" id="sb-name">Loading…</div><div class="sb-plan">Premium</div></div>
-    </div>
-    <nav class="sb-nav">
-        <a href="dashboard.html" class="nav-item"><span class="nav-dot" style="background:#8b5cf6"></span>Dashboard</a>
-        <a href="habits.html"    class="nav-item"><span class="nav-dot" style="background:#74c0fc"></span>Habits</a>
-        <a href="journal.html"   class="nav-item"><span class="nav-dot" style="background:#ff8cc8"></span>Journal</a>
-        <a href="mood.html"      class="nav-item active"><span class="nav-dot" style="background:#4ade80"></span>Mood</a>
-        <a href="progress.html"  class="nav-item"><span class="nav-dot" style="background:#ffd43b"></span>Progress</a>
-        <a href="settings.html"  class="nav-item"><span class="nav-dot" style="background:rgba(255,255,255,0.35)"></span>Settings</a>
-    </nav>
-    <div class="sb-footer">
-        <a href="https://apps.apple.com/us/app/lotara/id6749601041" class="btn-app" target="_blank" rel="noopener">Open in App</a>
-        <button class="btn-signout">Sign out</button>
-    </div>
-</aside>
-
 <main class="main">
-    <div class="topbar">
-        <div>
-            <div class="topbar-greeting" id="topbar-greeting">Mood</div>
-            <div class="topbar-date" id="topbar-date"></div>
-        </div>
-    </div>
+    <div id="topbar-mount"></div>
 
     <div class="content">
+        <div class="page-header">
+            <div class="page-title">Mood</div>
+            <div class="page-sub">How you've been feeling over time</div>
+        </div>
+
         <!-- 30-day chart -->
-        <div class="card" style="margin-bottom:20px">
-            <div class="card-label">30-day mood trend</div>
-            <div style="width:100%;height:100px">
-                <svg id="mood-svg-big" viewBox="0 0 400 100" preserveAspectRatio="none" style="width:100%;height:100%;overflow:visible"></svg>
+        <div class="card" style="margin-bottom:22px">
+            <div class="card-label" id="lbl-chart"></div>
+            <div style="width:100%;height:130px;margin-bottom:18px">
+                <svg id="mood-svg-big" viewBox="0 0 400 130" preserveAspectRatio="none" style="width:100%;height:100%;overflow:visible"></svg>
             </div>
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px" id="mood-stats">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;border-top:1px solid rgba(255,255,255,0.06);padding-top:18px" id="mood-stats">
                 <div class="skeleton" style="height:48px"></div>
                 <div class="skeleton" style="height:48px"></div>
                 <div class="skeleton" style="height:48px"></div>
@@ -54,7 +34,7 @@
 
         <!-- Recent check-ins -->
         <div class="card">
-            <div class="card-label">Recent check-ins</div>
+            <div class="card-label" id="lbl-recent"></div>
             <div id="mood-list">
                 <div class="skeleton" style="height:54px;margin-bottom:10px"></div>
                 <div class="skeleton" style="height:54px;margin-bottom:10px"></div>
@@ -70,55 +50,63 @@
 <script src="js/firebase-config.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/portal-data.js"></script>
+<script src="js/portal-shell.js"></script>
 <script>
 firebase.initializeApp(FIREBASE_CONFIG);
 const db = firebase.firestore();
 
+bootPortal({ active: 'mood' });
+document.getElementById('topbar-mount').outerHTML = renderTopbar({ showStreak: false });
+
+document.getElementById('lbl-chart').innerHTML  = ICONS.activity + '30-day mood trend';
+document.getElementById('lbl-recent').innerHTML = ICONS.heart    + 'Recent check-ins';
+
 requireAuth('/signin.html').then(async user => {
     setupSidebar(user);
     setupTopbar(user);
+    document.getElementById('topbar-greeting').textContent = 'Mood';
     const uid = user.uid;
 
-    // moods use field "timestamp" (not date)
     const snap = await db.collection(`users/${uid}/moods`).orderBy('timestamp','desc').limit(30).get().catch(()=>({docs:[]}));
-    const moods = snap.docs.map(d=>d.data());
+    const moods = snap.docs.map(d => d.data());
 
-    // ── Big 30-day chart (wider viewBox) ──
+    // Big chart
     const svg = document.getElementById('mood-svg-big');
     if (moods.length >= 2) {
         const scores = moods.slice().reverse().map(m => m.value || m.score || 5);
-        const W=400, H=100, pad=10;
-        const min=Math.min(...scores), max=Math.max(...scores), range=max-min||1;
-        const pts = scores.map((v,i) => [
-            pad + (i/(scores.length-1))*(W-pad*2),
-            H - pad - ((v-min)/range)*(H-pad*2)
+        const W = 400, H = 130, pad = 12;
+        const min = Math.min(...scores), max = Math.max(...scores), range = max - min || 1;
+        const pts = scores.map((v, i) => [
+            pad + (i / (scores.length - 1)) * (W - pad * 2),
+            H - pad - ((v - min) / range) * (H - pad * 2)
         ]);
-        const linePts = pts.map(p=>p.join(',')).join(' ');
+        const linePts = pts.map(p => p.join(',')).join(' ');
         const areaD = `M${pts[0][0]},${H} ${pts.map(p=>`L${p.join(',')}`).join(' ')} L${pts[pts.length-1][0]},${H} Z`;
         svg.innerHTML = `
             <defs>
                 <linearGradient id="mg-big" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.35"/>
+                    <stop offset="0%" stop-color="#a78bfa" stop-opacity="0.45"/>
                     <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
                 </linearGradient>
             </defs>
             <path d="${areaD}" fill="url(#mg-big)"/>
-            <polyline points="${linePts}" fill="none" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+            <polyline points="${linePts}" fill="none" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            ${pts.map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="#a78bfa" stroke="rgba(0,0,0,0.4)" stroke-width="2"/>`).join('')}`;
     } else {
-        svg.innerHTML = `<text x="200" y="52" text-anchor="middle" fill="rgba(255,255,255,0.25)" font-size="13" font-family="system-ui">Not enough data yet — check in daily in the app</text>`;
+        svg.innerHTML = `<text x="200" y="65" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="13" font-family="system-ui">Not enough data yet — check in daily in the app</text>`;
     }
 
-    // ── Stats ──
+    // Stats
     const now = new Date();
-    const ms  = new Date(now.getFullYear(), now.getMonth(), 1);
-    const prevMs = new Date(now.getFullYear(), now.getMonth()-1, 1);
+    const ms = new Date(now.getFullYear(), now.getMonth(), 1);
+    const prevMs = new Date(now.getFullYear(), now.getMonth() - 1, 1);
     const prevMe = new Date(now.getFullYear(), now.getMonth(), 0);
 
     const thisMonthMoods = moods.filter(m => toJS(m.timestamp) >= ms);
-    const prevMonthMoods = moods.filter(m => { const d=toJS(m.timestamp); return d >= prevMs && d <= prevMe; });
+    const prevMonthMoods = moods.filter(m => { const d = toJS(m.timestamp); return d >= prevMs && d <= prevMe; });
 
-    const avg  = thisMonthMoods.length ? (thisMonthMoods.reduce((a,m)=>a+(m.value||5),0)/thisMonthMoods.length).toFixed(1) : '—';
-    const prev = prevMonthMoods.length ? (prevMonthMoods.reduce((a,m)=>a+(m.value||5),0)/prevMonthMoods.length).toFixed(1) : '—';
+    const avg = thisMonthMoods.length ? (thisMonthMoods.reduce((a,m)=>a+(m.value||5),0) / thisMonthMoods.length).toFixed(1) : '—';
+    const prev = prevMonthMoods.length ? (prevMonthMoods.reduce((a,m)=>a+(m.value||5),0) / prevMonthMoods.length).toFixed(1) : '—';
     const delta = avg !== '—' && prev !== '—' ? ((+avg - +prev) > 0 ? '+' : '') + (+avg - +prev).toFixed(1) : '—';
     const allScores = moods.map(m => m.value || m.score || 5);
     const best  = allScores.length ? Math.max(...allScores) : '—';
@@ -126,18 +114,20 @@ requireAuth('/signin.html').then(async user => {
 
     document.getElementById('mood-stats').innerHTML = [
         { val: avg,   lbl: 'Avg score',     color: '#a78bfa' },
-        { val: delta, lbl: 'vs last month',  color: +delta > 0 ? '#4ade80' : +delta < 0 ? '#74c0fc' : 'rgba(255,255,255,0.5)' },
-        { val: best,  lbl: 'Best day',       color: '#ffd43b' },
-        { val: worst, lbl: 'Lowest day',     color: '#74c0fc' },
+        { val: delta, lbl: 'vs last month', color: +delta > 0 ? '#4ade80' : +delta < 0 ? '#74c0fc' : 'rgba(255,255,255,0.5)' },
+        { val: best,  lbl: 'Best day',      color: '#ffd43b' },
+        { val: worst, lbl: 'Lowest day',    color: '#74c0fc' },
     ].map(s => `<div>
-        <div style="font-size:22px;font-weight:300;color:${s.color};margin-bottom:3px">${s.val}</div>
-        <div style="font-size:12px;font-weight:300;color:rgba(255,255,255,0.4)">${s.lbl}</div>
+        <div style="font-size:24px;font-weight:300;color:${s.color};margin-bottom:3px;letter-spacing:-0.5px">${s.val}</div>
+        <div style="font-size:12px;font-weight:300;color:rgba(255,255,255,0.45)">${s.lbl}</div>
     </div>`).join('');
 
-    // ── Recent check-ins ──
+    // Recent list
     if (!moods.length) {
-        document.getElementById('mood-list').innerHTML =
-            '<div class="empty-state">No mood check-ins yet —<br>start tracking your mood in the Lotara app</div>';
+        document.getElementById('mood-list').innerHTML = `<div class="empty-state">
+            <div class="empty-state-icon">${ICONS.heart}</div>
+            No mood check-ins yet —<br>track how you feel in the Lotara app
+        </div>`;
         return;
     }
 
@@ -145,7 +135,8 @@ requireAuth('/signin.html').then(async user => {
         const d = toJS(m.timestamp);
         const now2 = new Date();
         const diffD = Math.floor((now2 - d) / 86400000);
-        const dateStr = diffD === 0 ? 'Today, ' + d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})
+        const dateStr = diffD === 0
+            ? 'Today, ' + d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})
             : diffD === 1 ? 'Yesterday'
             : d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
         const score = m.value || m.score || 5;

@@ -9,43 +9,12 @@
 </head>
 <body>
 
-<!-- ── Sidebar ── -->
-<aside class="sidebar">
-    <div class="sb-logo"><img src="assets/images/lotara-logo.png" alt="Lotara"></div>
-    <div class="sb-user">
-        <div class="sb-avatar" id="sb-avatar">?</div>
-        <div><div class="sb-name" id="sb-name">Loading…</div><div class="sb-plan">Premium</div></div>
-    </div>
-    <nav class="sb-nav">
-        <a href="dashboard.html" class="nav-item active"><span class="nav-dot" style="background:#8b5cf6"></span>Dashboard</a>
-        <a href="habits.html"    class="nav-item"><span class="nav-dot" style="background:#74c0fc"></span>Habits</a>
-        <a href="journal.html"   class="nav-item"><span class="nav-dot" style="background:#ff8cc8"></span>Journal</a>
-        <a href="mood.html"      class="nav-item"><span class="nav-dot" style="background:#4ade80"></span>Mood</a>
-        <a href="progress.html"  class="nav-item"><span class="nav-dot" style="background:#ffd43b"></span>Progress</a>
-        <a href="settings.html"  class="nav-item"><span class="nav-dot" style="background:rgba(255,255,255,0.35)"></span>Settings</a>
-    </nav>
-    <div class="sb-footer">
-        <a href="https://apps.apple.com/us/app/lotara/id6749601041" class="btn-app" target="_blank" rel="noopener">Open in App</a>
-        <button class="btn-signout">Sign out</button>
-    </div>
-</aside>
-
-<!-- ── Main ── -->
 <main class="main">
-    <div class="topbar">
-        <div>
-            <div class="topbar-greeting" id="topbar-greeting">Good evening</div>
-            <div class="topbar-date"     id="topbar-date"></div>
-        </div>
-        <div class="streak-pill">
-            <div class="streak-dot"></div>
-            <span id="streak-val" style="font-weight:400">—</span>&nbsp;<span style="opacity:.7">day streak</span>
-        </div>
-    </div>
+    <div id="topbar-mount"></div>
 
     <div class="content">
 
-        <!-- Momentum bar -->
+        <!-- Momentum -->
         <div class="momentum-bar">
             <div class="momentum-cell">
                 <div class="momentum-val" id="m-streak" style="color:#a78bfa">—</div>
@@ -63,7 +32,7 @@
 
         <!-- Weekly wins -->
         <div class="wins-card">
-            <div class="wins-tag">Your week in review</div>
+            <div class="wins-tag" id="wins-tag-icon"></div>
             <div class="wins-body" id="wins-body">Loading your wellness data…</div>
             <div class="wins-pills" id="wins-pills"></div>
         </div>
@@ -71,7 +40,7 @@
         <!-- Top habits + Mood -->
         <div class="two-col">
             <div class="card">
-                <div class="card-label">Top habits</div>
+                <div class="card-label" id="lbl-habits"></div>
                 <div id="habits-list">
                     <div class="skeleton" style="height:54px;margin-bottom:10px"></div>
                     <div class="skeleton" style="height:54px;margin-bottom:10px"></div>
@@ -79,17 +48,17 @@
                 </div>
             </div>
             <div class="card">
-                <div class="card-label">Mood — last 7 days</div>
+                <div class="card-label" id="lbl-mood"></div>
                 <div class="mood-chart">
-                    <svg id="mood-svg" viewBox="0 0 200 72" preserveAspectRatio="none"></svg>
+                    <svg id="mood-svg" viewBox="0 0 200 76" preserveAspectRatio="none"></svg>
                 </div>
                 <div class="mood-trend-label" id="mood-trend"></div>
             </div>
         </div>
 
         <!-- Latest journal -->
-        <div class="card" id="journal-card" style="margin-bottom:20px">
-            <div class="card-label">Latest journal entry</div>
+        <div class="card" id="journal-card" style="margin-bottom:22px">
+            <div class="card-label" id="lbl-journal"></div>
             <div class="skeleton" style="height:90px"></div>
         </div>
 
@@ -111,40 +80,31 @@
 <script src="js/firebase-config.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/portal-data.js"></script>
+<script src="js/portal-shell.js"></script>
 <script>
 firebase.initializeApp(FIREBASE_CONFIG);
 const db = firebase.firestore();
+
+bootPortal({ active: 'dashboard' });
+
+// Inject card label icons + topbar
+document.getElementById('lbl-habits').innerHTML  = ICONS.target + 'Top habits';
+document.getElementById('lbl-mood').innerHTML    = ICONS.heart  + 'Mood — last 7 days';
+document.getElementById('lbl-journal').innerHTML = ICONS.book   + 'Latest journal entry';
+document.getElementById('wins-tag-icon').innerHTML = ICONS.sparkles + 'Your week in review';
+
+document.getElementById('topbar-mount').outerHTML = renderTopbar({ showStreak: true });
 
 requireAuth('/signin.html').then(async user => {
     setupSidebar(user);
     setupTopbar(user);
     const uid = user.uid;
 
-    // Load all data in parallel with correct field names
     const [hSnap, cSnap, mSnap, jSnap] = await Promise.all([
         db.collection(`users/${uid}/habits`).get(),
-
-        // habitCompletions root collection — field: "date" (not completedAt)
-        db.collection('habitCompletions')
-            .where('userId','==', uid)
-            .orderBy('date','desc')
-            .limit(300)
-            .get()
-            .catch(() => ({ docs: [] })),
-
-        // moods — field: "timestamp" (not date)
-        db.collection(`users/${uid}/moods`)
-            .orderBy('timestamp','desc')
-            .limit(30)
-            .get()
-            .catch(() => ({ docs: [] })),
-
-        // journal — field: "date"
-        db.collection(`users/${uid}/journal`)
-            .orderBy('date','desc')
-            .limit(10)
-            .get()
-            .catch(() => ({ docs: [] })),
+        db.collection('habitCompletions').where('userId','==',uid).orderBy('date','desc').limit(300).get().catch(()=>({docs:[]})),
+        db.collection(`users/${uid}/moods`).orderBy('timestamp','desc').limit(30).get().catch(()=>({docs:[]})),
+        db.collection(`users/${uid}/journal`).orderBy('date','desc').limit(10).get().catch(()=>({docs:[]})),
     ]);
 
     const habits      = hSnap.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -152,33 +112,26 @@ requireAuth('/signin.html').then(async user => {
     const moods       = mSnap.docs.map(d => d.data());
     const journals    = jSnap.docs.map(d => d.data());
 
-    // ── Streak ──
     const streak = calcOverallStreak(completions);
-    document.getElementById('streak-val').textContent  = streak;
+    document.getElementById('streak-val').textContent = streak;
     document.getElementById('m-streak').textContent    = streak;
 
-    // ── Days active this month ──
     const now = new Date();
     const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-    const activeDays = new Set(
-        completions
-            .filter(c => toJS(c.date) >= monthStart)
-            .map(c => toDateStr(c.date))
-    );
+    const activeDays = new Set(completions.filter(c => toJS(c.date) >= monthStart).map(c => toDateStr(c.date)));
     document.getElementById('m-days').textContent = activeDays.size;
 
-    // ── Completion rate ──
     const monthCompletions = completions.filter(c => toJS(c.date) >= monthStart).length;
     const totalPossible    = habits.length * now.getDate();
     const rate = totalPossible > 0 ? Math.round((monthCompletions / totalPossible) * 100) : 0;
     document.getElementById('m-rate').textContent = rate + '%';
 
-    // ── Weekly wins ──
+    // Weekly wins
     const weekAgo = new Date(now); weekAgo.setDate(now.getDate() - 7);
-    const weekJournals     = journals.filter(j => toJS(j.date) >= weekAgo).length;
-    const weekCompletions  = completions.filter(c => toJS(c.date) >= weekAgo);
-    const topHabit         = habits[0]?.name || 'your habit';
-    const topHabitDays     = habits[0]
+    const weekJournals    = journals.filter(j => toJS(j.date) >= weekAgo).length;
+    const weekCompletions = completions.filter(c => toJS(c.date) >= weekAgo);
+    const topHabit        = habits[0]?.name || 'your habit';
+    const topHabitDays    = habits[0]
         ? new Set(weekCompletions.filter(c => c.habitId === habits[0].id).map(c => toDateStr(c.date))).size
         : 0;
     document.getElementById('wins-body').textContent =
@@ -189,18 +142,20 @@ requireAuth('/signin.html').then(async user => {
     if (weekJournals > 0)     pills.push(`${weekJournals} journal ${weekJournals === 1 ? 'entry' : 'entries'}`);
     if (rate >= 70)           pills.push('Strong completion rate');
     if (activeDays.size >= 5) pills.push('Active all week');
-    document.getElementById('wins-pills').innerHTML =
-        pills.map(p => `<span class="win-pill">${p}</span>`).join('');
+    document.getElementById('wins-pills').innerHTML = pills.map(p => `<span class="win-pill">${p}</span>`).join('');
 
-    // ── Top 3 habits ──
+    // Top 3 habits
     const habitsList = document.getElementById('habits-list');
     if (!habits.length) {
-        habitsList.innerHTML = '<div class="empty-state">No habits yet — add some in the app</div>';
+        habitsList.innerHTML = `<div class="empty-state">
+            <div class="empty-state-icon">${ICONS.target}</div>
+            No habits yet — add some in the app
+        </div>`;
     } else {
         habitsList.innerHTML = habits.slice(0,3).map((h, i) => {
             const color = HABIT_COLORS[i % HABIT_COLORS.length];
-            const hc    = completions.filter(c => c.habitId === h.id);
-            const dots  = sevenDayDots(hc).map(done =>
+            const hc = completions.filter(c => c.habitId === h.id);
+            const dots = sevenDayDots(hc).map(done =>
                 `<div class="dot${done ? ' done' : ''}" style="${done ? `--dot-color:${color}` : ''}"></div>`
             ).join('');
             const pct    = monthlyCompletionPct(hc);
@@ -216,22 +171,28 @@ requireAuth('/signin.html').then(async user => {
         }).join('');
     }
 
-    // ── Mood chart — moods use "timestamp" + "value" ──
+    // Mood chart
     const moodScores = moods.slice(0,7).reverse().map(m => m.value || m.score || 5);
     renderMoodSVG('mood-svg', moodScores);
+    const tEl = document.getElementById('mood-trend');
     if (moodScores.length >= 2) {
         const slope = moodScores[moodScores.length-1] - moodScores[0];
-        const tEl = document.getElementById('mood-trend');
-        tEl.innerHTML = slope > 1 ? '<span style="color:#4ade80">Trending up</span>'
-            : slope < -1 ? '<span style="color:#74c0fc">Trending down</span>'
-            : '<span style="color:rgba(255,255,255,0.4)">Stable</span>';
+        if (slope > 1)       tEl.innerHTML = ICONS.arrowUp + '<span style="color:#4ade80">Trending up</span>';
+        else if (slope < -1) tEl.innerHTML = ICONS.arrowDown + '<span style="color:#74c0fc">Trending down</span>';
+        else                  tEl.innerHTML = ICONS.minus + '<span style="color:rgba(255,255,255,0.5)">Stable</span>';
+    } else {
+        tEl.innerHTML = '';
     }
 
-    // ── Latest journal — mood is Int 1-10 ──
+    // Latest journal
     const jCard = document.getElementById('journal-card');
     if (!journals.length) {
-        jCard.innerHTML = '<div class="card-label">Latest journal entry</div>' +
-            '<div class="empty-state">No journal entries yet —<br>start writing in the Lotara app</div>';
+        jCard.innerHTML = `
+            <div class="card-label">${ICONS.book}Latest journal entry</div>
+            <div class="empty-state">
+                <div class="empty-state-icon">${ICONS.feather}</div>
+                No journal entries yet —<br>start writing in the Lotara app
+            </div>`;
     } else {
         const e = journals[0];
         const d = toJS(e.date);
@@ -240,12 +201,12 @@ requireAuth('/signin.html').then(async user => {
         const mc = moodColor(e.mood);
         const ml = moodLabel(e.mood);
         jCard.innerHTML = `
-            <div class="card-label">Latest journal entry</div>
+            <div class="card-label">${ICONS.book}Latest journal entry</div>
             <div class="entry-date">${dateStr}</div>
-            ${e.mood ? `<span class="mood-tag" style="background:${mc}18;color:${mc};border:1px solid ${mc}30">${ml}</span>` : ''}
+            ${e.mood ? `<span class="mood-tag" style="background:${mc}1f;color:${mc};border:1px solid ${mc}40">${ml}</span>` : ''}
             ${e.title ? `<div style="font-size:15px;font-weight:400;margin-bottom:6px">${e.title}</div>` : ''}
             <div class="entry-text">${e.content || ''}</div>
-            <a href="journal.html" class="more-link">Read more in journal →</a>`;
+            <a href="journal.html" class="more-link">Read more in journal ${ICONS.arrowRight}</a>`;
     }
 });
 </script>

@@ -6,68 +6,34 @@
     <title>Habits — Lotara</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/portal.css">
-    <style>
-        .habit-card { padding: 18px 22px; border-bottom: 1px solid rgba(255,255,255,0.06); }
-        .habit-card:last-child { border-bottom: none; }
-        .habit-card-top { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
-        .habit-card-name { font-size: 15px; font-weight: 400; flex: 1; }
-        .streak-pill-sm { padding: 3px 12px; border-radius: 999px; font-size: 11px; font-weight: 600; }
-        .habit-progress-track { height: 4px; background: rgba(255,255,255,0.08); border-radius: 99px; overflow: hidden; margin-bottom: 10px; }
-        .habit-progress-fill  { height: 100%; border-radius: 99px; transition: width 0.8s cubic-bezier(0.4,0,0.2,1); }
-        .habit-card-dots { display: flex; gap: 6px; margin-bottom: 8px; }
-        .habit-status { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.4); }
-    </style>
 </head>
 <body>
 
-<aside class="sidebar">
-    <div class="sb-logo"><img src="assets/images/lotara-logo.png" alt="Lotara"></div>
-    <div class="sb-user">
-        <div class="sb-avatar" id="sb-avatar">?</div>
-        <div><div class="sb-name" id="sb-name">Loading…</div><div class="sb-plan">Premium</div></div>
-    </div>
-    <nav class="sb-nav">
-        <a href="dashboard.html" class="nav-item"><span class="nav-dot" style="background:#8b5cf6"></span>Dashboard</a>
-        <a href="habits.html"    class="nav-item active"><span class="nav-dot" style="background:#74c0fc"></span>Habits</a>
-        <a href="journal.html"   class="nav-item"><span class="nav-dot" style="background:#ff8cc8"></span>Journal</a>
-        <a href="mood.html"      class="nav-item"><span class="nav-dot" style="background:#4ade80"></span>Mood</a>
-        <a href="progress.html"  class="nav-item"><span class="nav-dot" style="background:#ffd43b"></span>Progress</a>
-        <a href="settings.html"  class="nav-item"><span class="nav-dot" style="background:rgba(255,255,255,0.35)"></span>Settings</a>
-    </nav>
-    <div class="sb-footer">
-        <a href="https://apps.apple.com/us/app/lotara/id6749601041" class="btn-app" target="_blank" rel="noopener">Open in App</a>
-        <button class="btn-signout">Sign out</button>
-    </div>
-</aside>
-
 <main class="main">
-    <div class="topbar">
-        <div>
-            <div class="topbar-greeting" id="topbar-greeting">Habits</div>
-            <div class="topbar-date" id="topbar-date"></div>
-        </div>
-        <div class="streak-pill">
-            <div class="streak-dot"></div>
-            <span id="streak-val" style="font-weight:400">—</span>&nbsp;<span style="opacity:.7">day streak</span>
-        </div>
-    </div>
+    <div id="topbar-mount"></div>
 
     <div class="content">
-        <!-- Stats -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px" id="habit-stats">
-            <div class="card skeleton" style="height:80px"></div>
-            <div class="card skeleton" style="height:80px"></div>
+
+        <div class="page-header">
+            <div class="page-title">Your habits</div>
+            <div class="page-sub">Track what matters and build momentum</div>
         </div>
 
-        <!-- Habits list -->
-        <div class="card" id="habits-container">
-            <div class="card-label">All habits</div>
-            <div id="habits-list">
-                <div class="skeleton" style="height:80px;margin-bottom:12px"></div>
-                <div class="skeleton" style="height:80px;margin-bottom:12px"></div>
-                <div class="skeleton" style="height:80px"></div>
-            </div>
+        <!-- Stats -->
+        <div class="stat-row" id="stat-row" style="grid-template-columns:repeat(3,1fr)">
+            <div class="card skeleton" style="height:90px"></div>
+            <div class="card skeleton" style="height:90px"></div>
+            <div class="card skeleton" style="height:90px"></div>
         </div>
+
+        <!-- Habit grid -->
+        <div class="habit-grid" id="habit-grid">
+            <div class="card skeleton" style="height:140px"></div>
+            <div class="card skeleton" style="height:140px"></div>
+            <div class="card skeleton" style="height:140px"></div>
+            <div class="card skeleton" style="height:140px"></div>
+        </div>
+
     </div>
 </main>
 
@@ -77,13 +43,18 @@
 <script src="js/firebase-config.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/portal-data.js"></script>
+<script src="js/portal-shell.js"></script>
 <script>
 firebase.initializeApp(FIREBASE_CONFIG);
 const db = firebase.firestore();
 
+bootPortal({ active: 'habits' });
+document.getElementById('topbar-mount').outerHTML = renderTopbar({ showStreak: true, title: 'Habits' });
+
 requireAuth('/signin.html').then(async user => {
     setupSidebar(user);
     setupTopbar(user);
+    document.getElementById('topbar-greeting').textContent = 'Habits';
     const uid = user.uid;
 
     const [hSnap, cSnap] = await Promise.all([
@@ -91,8 +62,8 @@ requireAuth('/signin.html').then(async user => {
         db.collection('habitCompletions').where('userId','==',uid).orderBy('date','desc').limit(500).get().catch(()=>({docs:[]})),
     ]);
 
-    const habits      = hSnap.docs.map(d=>({id:d.id,...d.data()}));
-    const completions = cSnap.docs.map(d=>({id:d.id,...d.data()}));
+    const habits      = hSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const completions = cSnap.docs.map(d => ({ id: d.id, ...d.data() }));
 
     const streak = calcOverallStreak(completions);
     document.getElementById('streak-val').textContent = streak;
@@ -101,31 +72,37 @@ requireAuth('/signin.html').then(async user => {
     const ms  = new Date(now.getFullYear(), now.getMonth(), 1);
     const monthC = completions.filter(c => toJS(c.date) >= ms).length;
     const rate   = habits.length > 0 ? Math.round((monthC / (habits.length * now.getDate())) * 100) : 0;
-
-    const bestStreak = habits.reduce((best, h) => {
-        const hc = completions.filter(c => c.habitId === h.id);
-        return Math.max(best, calcHabitStreak(hc));
-    }, 0);
+    const bestStreak = habits.reduce((b, h) => Math.max(b, calcHabitStreak(completions.filter(c => c.habitId === h.id))), 0);
 
     // Stats
-    document.getElementById('habit-stats').innerHTML = `
+    document.getElementById('stat-row').innerHTML = `
         <div class="card">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;color:#a78bfa">${ICONS.activity}<span style="font-size:12px;color:rgba(255,255,255,0.5)">Completion</span></div>
             <div class="stat-value" style="color:#a78bfa">${rate}%</div>
-            <div class="stat-label">Completion rate this month</div>
+            <div class="stat-label">This month</div>
         </div>
         <div class="card">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;color:#ffd43b">${ICONS.flame}<span style="font-size:12px;color:rgba(255,255,255,0.5)">Best streak</span></div>
             <div class="stat-value" style="color:#ffd43b">${bestStreak}d</div>
-            <div class="stat-label">Best current streak</div>
+            <div class="stat-label">Current</div>
+        </div>
+        <div class="card">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;color:#4ade80">${ICONS.target}<span style="font-size:12px;color:rgba(255,255,255,0.5)">Habits</span></div>
+            <div class="stat-value" style="color:#4ade80">${habits.length}</div>
+            <div class="stat-label">Active</div>
         </div>`;
 
-    // Habits list
+    // Habit grid
+    const grid = document.getElementById('habit-grid');
     if (!habits.length) {
-        document.getElementById('habits-list').innerHTML =
-            '<div class="empty-state">No habits yet —<br>add your first habit in the Lotara app</div>';
+        grid.outerHTML = `<div class="card"><div class="empty-state">
+            <div class="empty-state-icon">${ICONS.target}</div>
+            No habits yet —<br>add your first habit in the Lotara app
+        </div></div>`;
         return;
     }
 
-    document.getElementById('habits-list').innerHTML = habits.map((h, i) => {
+    grid.innerHTML = habits.map((h, i) => {
         const color  = HABIT_COLORS[i % HABIT_COLORS.length];
         const hc     = completions.filter(c => c.habitId === h.id);
         const pct    = monthlyCompletionPct(hc);
@@ -133,19 +110,22 @@ requireAuth('/signin.html').then(async user => {
         const dots   = sevenDayDots(hc);
         const status = pct >= 80 ? 'Strong' : pct >= 50 ? 'On track' : pct >= 20 ? 'Building' : 'Keep going';
         const dotsHTML = dots.map(done =>
-            `<div class="dot${done?' done':''}" style="${done?`--dot-color:${color}`:''}"></div>`
+            `<div class="dot${done ? ' done' : ''}" style="${done ? `--dot-color:${color}` : ''}"></div>`
         ).join('');
-        return `<div class="habit-card">
-            <div class="habit-card-top">
+        return `<div class="habit-grid-card" style="animation-delay:${i*0.05}s">
+            <div class="habit-grid-top">
                 ${habitRingSVG(pct, color)}
-                <div class="habit-card-name">${h.name || 'Habit'}</div>
-                <span class="streak-pill-sm" style="background:${color}18;color:${color};border:1px solid ${color}30">${s}d streak</span>
+                <div class="habit-grid-name">${h.name || 'Habit'}</div>
+                <span class="habit-streak-pill" style="background:${color}1f;color:${color};border:1px solid ${color}40">${s}d</span>
             </div>
-            <div class="habit-progress-track">
-                <div class="habit-progress-fill" style="width:${pct}%;background:linear-gradient(90deg,${color},${color}aa)"></div>
+            <div class="habit-grid-bar">
+                <div class="habit-grid-fill" style="width:${pct}%;background:linear-gradient(90deg, ${color}, ${color}aa)"></div>
             </div>
-            <div class="habit-card-dots">${dotsHTML}</div>
-            <div class="habit-status">${status} · ${pct}% this month</div>
+            <div class="habit-grid-dots">${dotsHTML}</div>
+            <div class="habit-grid-status">
+                <span>${pct}% this month</span>
+                <span class="habit-grid-status-tag" style="color:${color}">${status}</span>
+            </div>
         </div>`;
     }).join('');
 });

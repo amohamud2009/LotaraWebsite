@@ -9,69 +9,43 @@
 </head>
 <body>
 
-<aside class="sidebar">
-    <div class="sb-logo"><img src="assets/images/lotara-logo.png" alt="Lotara"></div>
-    <div class="sb-user">
-        <div class="sb-avatar" id="sb-avatar">?</div>
-        <div><div class="sb-name" id="sb-name">Loading…</div><div class="sb-plan">Premium</div></div>
-    </div>
-    <nav class="sb-nav">
-        <a href="dashboard.html" class="nav-item"><span class="nav-dot" style="background:#8b5cf6"></span>Dashboard</a>
-        <a href="habits.html"    class="nav-item"><span class="nav-dot" style="background:#74c0fc"></span>Habits</a>
-        <a href="journal.html"   class="nav-item"><span class="nav-dot" style="background:#ff8cc8"></span>Journal</a>
-        <a href="mood.html"      class="nav-item"><span class="nav-dot" style="background:#4ade80"></span>Mood</a>
-        <a href="progress.html"  class="nav-item active"><span class="nav-dot" style="background:#ffd43b"></span>Progress</a>
-        <a href="settings.html"  class="nav-item"><span class="nav-dot" style="background:rgba(255,255,255,0.35)"></span>Settings</a>
-    </nav>
-    <div class="sb-footer">
-        <a href="https://apps.apple.com/us/app/lotara/id6749601041" class="btn-app" target="_blank" rel="noopener">Open in App</a>
-        <button class="btn-signout">Sign out</button>
-    </div>
-</aside>
-
 <main class="main">
-    <div class="topbar">
-        <div>
-            <div class="topbar-greeting" id="topbar-greeting">Progress</div>
-            <div class="topbar-date" id="topbar-date"></div>
-        </div>
-        <div class="streak-pill">
-            <div class="streak-dot"></div>
-            <span id="streak-val" style="font-weight:400">—</span>&nbsp;<span style="opacity:.7">day streak</span>
-        </div>
-    </div>
+    <div id="topbar-mount"></div>
 
     <div class="content">
+        <div class="page-header">
+            <div class="page-title">Progress</div>
+            <div class="page-sub">Your wellness journey at a glance</div>
+        </div>
 
-        <!-- Stats grid -->
+        <!-- Stats -->
         <div class="stat-row" id="stat-row">
-            <div class="card skeleton" style="height:90px"></div>
-            <div class="card skeleton" style="height:90px"></div>
-            <div class="card skeleton" style="height:90px"></div>
-            <div class="card skeleton" style="height:90px"></div>
+            <div class="card skeleton" style="height:100px"></div>
+            <div class="card skeleton" style="height:100px"></div>
+            <div class="card skeleton" style="height:100px"></div>
+            <div class="card skeleton" style="height:100px"></div>
         </div>
 
         <!-- Activity bars -->
-        <div class="card" style="margin-bottom:20px">
-            <div class="card-label">This month's activity</div>
+        <div class="card" style="margin-bottom:22px">
+            <div class="card-label" id="lbl-activity"></div>
             <div id="activity-bars">
-                <div class="skeleton" style="height:16px;margin-bottom:14px"></div>
-                <div class="skeleton" style="height:16px;margin-bottom:14px"></div>
-                <div class="skeleton" style="height:16px;margin-bottom:14px"></div>
-                <div class="skeleton" style="height:16px"></div>
+                <div class="skeleton" style="height:18px;margin-bottom:14px"></div>
+                <div class="skeleton" style="height:18px;margin-bottom:14px"></div>
+                <div class="skeleton" style="height:18px;margin-bottom:14px"></div>
+                <div class="skeleton" style="height:18px"></div>
             </div>
         </div>
 
         <!-- Milestones -->
         <div class="card">
-            <div class="card-label">Milestones</div>
+            <div class="card-label" id="lbl-milestones"></div>
             <div id="milestones-list">
-                <div class="skeleton" style="height:54px;margin-bottom:10px"></div>
-                <div class="skeleton" style="height:54px;margin-bottom:10px"></div>
-                <div class="skeleton" style="height:54px"></div>
+                <div class="skeleton" style="height:60px;margin-bottom:10px"></div>
+                <div class="skeleton" style="height:60px;margin-bottom:10px"></div>
+                <div class="skeleton" style="height:60px"></div>
             </div>
         </div>
-
     </div>
 </main>
 
@@ -81,13 +55,21 @@
 <script src="js/firebase-config.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/portal-data.js"></script>
+<script src="js/portal-shell.js"></script>
 <script>
 firebase.initializeApp(FIREBASE_CONFIG);
 const db = firebase.firestore();
 
+bootPortal({ active: 'progress' });
+document.getElementById('topbar-mount').outerHTML = renderTopbar({ showStreak: true });
+
+document.getElementById('lbl-activity').innerHTML   = ICONS.activity + 'This month\'s activity';
+document.getElementById('lbl-milestones').innerHTML = ICONS.award    + 'Milestones';
+
 requireAuth('/signin.html').then(async user => {
     setupSidebar(user);
     setupTopbar(user);
+    document.getElementById('topbar-greeting').textContent = 'Progress';
     const uid = user.uid;
 
     const [hSnap, cSnap, mSnap, jSnap, medSnap] = await Promise.all([
@@ -98,42 +80,37 @@ requireAuth('/signin.html').then(async user => {
         db.collection(`users/${uid}/meditation`).orderBy('date','desc').limit(100).get().catch(()=>({docs:[]})),
     ]);
 
-    const habits      = hSnap.docs.map(d=>({id:d.id,...d.data()}));
-    const completions = cSnap.docs.map(d=>({id:d.id,...d.data()}));
-    const moods       = mSnap.docs.map(d=>d.data());
-    const journals    = jSnap.docs.map(d=>d.data());
-    const meditations = medSnap.docs.map(d=>d.data());
+    const habits      = hSnap.docs.map(d => ({id:d.id,...d.data()}));
+    const completions = cSnap.docs.map(d => ({id:d.id,...d.data()}));
+    const moods       = mSnap.docs.map(d => d.data());
+    const journals    = jSnap.docs.map(d => d.data());
+    const meditations = medSnap.docs.map(d => d.data());
 
     const streak = calcOverallStreak(completions);
     document.getElementById('streak-val').textContent = streak;
 
-    // ── Longest streak (walk all dates) ──
+    // Longest streak
     const allDays = [...new Set(completions.map(c => toDateStr(c.date)))].sort();
     let longestStreak = 0, cur = 0;
     for (let i = 0; i < allDays.length; i++) {
-        if (i === 0) { cur = 1; }
+        if (i === 0) cur = 1;
         else {
-            const prev = new Date(allDays[i-1]), next = new Date(allDays[i]);
-            const diff = (next - prev) / 86400000;
+            const diff = (new Date(allDays[i]) - new Date(allDays[i-1])) / 86400000;
             cur = diff === 1 ? cur + 1 : 1;
         }
         longestStreak = Math.max(longestStreak, cur);
     }
 
-    // ── Days on Lotara (first habit created) ──
-    const firstDate = habits.length > 0
-        ? habits.reduce((min, h) => {
-            const d = toJS(h.createdAt || h.date || null);
-            return (d && d < min) ? d : min;
-        }, new Date())
-        : null;
-    const daysOnLotara = firstDate && firstDate.getTime() > 0
-        ? Math.max(1, Math.floor((Date.now() - firstDate.getTime()) / 86400000))
-        : journals.length > 0
-            ? Math.max(1, Math.floor((Date.now() - toJS(journals[journals.length-1].date).getTime()) / 86400000))
-            : 0;
+    // Days on Lotara — earliest data point
+    const allDates = [
+        ...completions.map(c => toJS(c.date)),
+        ...journals.map(j => toJS(j.date)),
+        ...moods.map(m => toJS(m.timestamp)),
+    ].filter(d => d.getTime() > 0);
+    const earliest = allDates.length ? new Date(Math.min(...allDates)) : null;
+    const daysOnLotara = earliest ? Math.max(1, Math.floor((Date.now() - earliest.getTime()) / 86400000)) : 0;
 
-    // ── This month stats ──
+    // This month stats
     const now = new Date();
     const ms  = new Date(now.getFullYear(), now.getMonth(), 1);
     const monthJ   = journals.filter(j => toJS(j.date) >= ms).length;
@@ -142,23 +119,23 @@ requireAuth('/signin.html').then(async user => {
     const monthC   = completions.filter(c => toJS(c.date) >= ms).length;
     const rate     = habits.length > 0 ? Math.round((monthC / (habits.length * now.getDate())) * 100) : 0;
 
-    // ── Stat row ──
+    // Stat row
     document.getElementById('stat-row').innerHTML = [
-        { val: daysOnLotara || '—', lbl: 'Days on Lotara', color: '#a78bfa' },
-        { val: longestStreak,        lbl: 'Longest streak',  color: '#ffd43b' },
-        { val: journals.length,      lbl: 'Journal entries', color: '#ff8cc8' },
-        { val: habits.length,        lbl: 'Active habits',   color: '#4ade80' },
+        { icon: ICONS.calendar, val: daysOnLotara || '—', lbl: 'Days on Lotara', color: '#a78bfa' },
+        { icon: ICONS.flame,    val: longestStreak,        lbl: 'Longest streak',  color: '#ffd43b' },
+        { icon: ICONS.feather,  val: journals.length,      lbl: 'Total entries',   color: '#ff8cc8' },
+        { icon: ICONS.target,   val: habits.length,        lbl: 'Active habits',   color: '#4ade80' },
     ].map(s => `<div class="card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;color:${s.color}">${s.icon}<span style="font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;text-transform:uppercase">${s.lbl}</span></div>
         <div class="stat-value" style="color:${s.color}">${s.val}</div>
-        <div class="stat-label">${s.lbl}</div>
     </div>`).join('');
 
-    // ── Activity bars ──
+    // Activity bars
     const bars = [
-        { label: 'Journal entries this month',   val: monthJ,    max: Math.max(monthJ, 30),    color: '#ff8cc8' },
-        { label: 'Habit completion rate',         val: rate,      max: 100,                     color: '#a78bfa', suffix: '%' },
-        { label: 'Meditation sessions',           val: monthMed,  max: Math.max(monthMed, 10),  color: '#74c0fc' },
-        { label: 'Mood check-ins',                val: monthMood, max: Math.max(monthMood, 30), color: '#4ade80' },
+        { label: 'Journal entries this month', val: monthJ,    max: Math.max(monthJ, 30),    color: '#ff8cc8' },
+        { label: 'Habit completion rate',       val: rate,      max: 100,                     color: '#a78bfa', suffix: '%' },
+        { label: 'Meditation sessions',         val: monthMed,  max: Math.max(monthMed, 10),  color: '#74c0fc' },
+        { label: 'Mood check-ins',              val: monthMood, max: Math.max(monthMood, 30), color: '#4ade80' },
     ];
     document.getElementById('activity-bars').innerHTML = bars.map(b => {
         const pct = b.max > 0 ? Math.round((b.val / b.max) * 100) : 0;
@@ -173,15 +150,15 @@ requireAuth('/signin.html').then(async user => {
         </div>`;
     }).join('');
 
-    // ── Milestones ──
+    // Milestones — SVG icons only, no emojis
     const totalJ = journals.length, totalMed = meditations.length;
     const MILESTONES = [
-        { icon: '🔥', title: '7-day streak',      target: 7,   current: longestStreak, unit: 'streak days',      color: '#ffd43b' },
-        { icon: '⚡️', title: '30-day streak',     target: 30,  current: longestStreak, unit: 'streak days',      color: '#a78bfa' },
-        { icon: '📖', title: 'First 10 journals',  target: 10,  current: totalJ,        unit: 'journal entries',  color: '#ff8cc8' },
-        { icon: '🧘', title: '10 meditations',     target: 10,  current: totalMed,      unit: 'meditation sessions', color: '#74c0fc' },
-        { icon: '✍️', title: '50 journal entries', target: 50,  current: totalJ,        unit: 'journal entries',  color: '#ff8cc8' },
-        { icon: '💯', title: '100 days on Lotara', target: 100, current: daysOnLotara,  unit: 'days',             color: '#4ade80' },
+        { icon: ICONS.flame,    title: '7-day streak',      target: 7,   current: longestStreak, unit: 'streak days',         color: '#ffd43b' },
+        { icon: ICONS.zap,      title: '30-day streak',     target: 30,  current: longestStreak, unit: 'streak days',         color: '#a78bfa' },
+        { icon: ICONS.feather,  title: 'First 10 journals', target: 10,  current: totalJ,        unit: 'journal entries',     color: '#ff8cc8' },
+        { icon: ICONS.heart,    title: '10 meditations',    target: 10,  current: totalMed,      unit: 'meditation sessions', color: '#74c0fc' },
+        { icon: ICONS.book,     title: '50 journal entries',target: 50,  current: totalJ,        unit: 'journal entries',     color: '#ff8cc8' },
+        { icon: ICONS.award,    title: '100 days on Lotara',target: 100, current: daysOnLotara,  unit: 'days',                color: '#4ade80' },
     ];
     document.getElementById('milestones-list').innerHTML = MILESTONES.map(m => {
         const done  = m.current >= m.target;
@@ -190,7 +167,7 @@ requireAuth('/signin.html').then(async user => {
                     : close ? `<span class="milestone-badge badge-close">${m.target - m.current} away</span>`
                     :         `<span class="milestone-badge badge-current">${m.current}/${m.target}</span>`;
         return `<div class="milestone-row">
-            <div class="milestone-icon" style="background:${m.color}15">${m.icon}</div>
+            <div class="milestone-icon" style="background:${m.color}1a;color:${m.color};border:1px solid ${m.color}30">${m.icon}</div>
             <div class="milestone-info">
                 <div class="milestone-title">${m.title}</div>
                 <div class="milestone-date">${done ? 'Achieved' : m.current + ' ' + m.unit + ' so far'}</div>

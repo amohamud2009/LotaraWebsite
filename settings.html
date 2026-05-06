@@ -7,98 +7,87 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/portal.css">
     <style>
-        .settings-row {
+        .set-row {
             display: flex; align-items: center; justify-content: space-between;
             padding: 14px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
             font-size: 14px; font-weight: 300;
         }
-        .settings-row:last-child { border-bottom: none; }
-        .settings-row-label { color: var(--white); }
-        .settings-row-value { color: rgba(255,255,255,0.4); font-size: 13px; }
-        .settings-section-title {
-            font-size: 10px; font-weight: 500; letter-spacing: 0.1em;
-            text-transform: uppercase; color: rgba(255,255,255,0.4);
-            margin: 24px 0 4px;
+        .set-row:last-child { border-bottom: none; }
+        .set-row-label { color: var(--white); display: flex; align-items: center; gap: 10px; }
+        .set-row-label svg { width: 16px; height: 16px; stroke: rgba(255,255,255,0.5); fill: none; stroke-width: 1.7; }
+        .set-row-value { color: rgba(255,255,255,0.45); font-size: 13px; }
+        .set-row a { color: var(--purple-lt); font-size: 13px; text-decoration: none; display: flex; align-items: center; gap: 4px; transition: gap 0.2s; }
+        .set-row a svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; }
+        .set-row a:hover { gap: 6px; }
+        .set-section-title {
+            font-size: 10px; font-weight: 600; letter-spacing: 0.12em;
+            text-transform: uppercase; color: rgba(255,255,255,0.45);
+            margin: 22px 0 4px; display: flex; align-items: center; gap: 8px;
         }
-        .settings-section-title:first-child { margin-top: 0; }
+        .set-section-title svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; }
+        .set-section-title:first-child { margin-top: 0; }
         .btn-danger {
-            width: 100%; margin-top: 8px; padding: 14px;
+            width: 100%; margin-top: 6px; padding: 13px;
             background: rgba(239,68,68,0.08);
-            border: 1px solid rgba(239,68,68,0.2);
-            border-radius: 12px; font-size: 14px; font-weight: 400;
+            border: 1px solid rgba(239,68,68,0.22);
+            border-radius: 14px; font-size: 14px; font-weight: 400;
             color: #fca5a5; cursor: pointer; font-family: var(--font);
             transition: all 0.2s;
         }
-        .btn-danger:hover { background: rgba(239,68,68,0.14); border-color: rgba(239,68,68,0.35); }
+        .btn-danger:hover { background: rgba(239,68,68,0.14); border-color: rgba(239,68,68,0.4); }
     </style>
 </head>
 <body>
 
-<aside class="sidebar">
-    <div class="sb-logo"><img src="assets/images/lotara-logo.png" alt="Lotara"></div>
-    <div class="sb-user">
-        <div class="sb-avatar" id="sb-avatar">?</div>
-        <div><div class="sb-name" id="sb-name">Loading…</div><div class="sb-plan">Premium</div></div>
-    </div>
-    <nav class="sb-nav">
-        <a href="dashboard.html" class="nav-item"><span class="nav-dot" style="background:#8b5cf6"></span>Dashboard</a>
-        <a href="habits.html"    class="nav-item"><span class="nav-dot" style="background:#74c0fc"></span>Habits</a>
-        <a href="journal.html"   class="nav-item"><span class="nav-dot" style="background:#ff8cc8"></span>Journal</a>
-        <a href="mood.html"      class="nav-item"><span class="nav-dot" style="background:#4ade80"></span>Mood</a>
-        <a href="progress.html"  class="nav-item"><span class="nav-dot" style="background:#ffd43b"></span>Progress</a>
-        <a href="settings.html"  class="nav-item active"><span class="nav-dot" style="background:rgba(255,255,255,0.35)"></span>Settings</a>
-    </nav>
-    <div class="sb-footer">
-        <a href="https://apps.apple.com/us/app/lotara/id6749601041" class="btn-app" target="_blank" rel="noopener">Open in App</a>
-        <button class="btn-signout">Sign out</button>
-    </div>
-</aside>
-
 <main class="main">
-    <div class="topbar">
-        <div>
-            <div class="topbar-greeting" id="topbar-greeting">Settings</div>
-            <div class="topbar-date" id="topbar-date"></div>
-        </div>
-    </div>
+    <div id="topbar-mount"></div>
 
-    <div class="content" style="max-width:560px">
+    <div class="content" style="max-width:600px">
 
-        <div class="card" style="margin-bottom:20px">
-            <div class="settings-section-title">Account</div>
-            <div class="settings-row">
-                <span class="settings-row-label">Name</span>
-                <span class="settings-row-value" id="set-name">—</span>
-            </div>
-            <div class="settings-row">
-                <span class="settings-row-label">Email</span>
-                <span class="settings-row-value" id="set-email">—</span>
-            </div>
-            <div class="settings-row">
-                <span class="settings-row-label">Plan</span>
-                <span style="background:rgba(167,139,250,0.12);color:#a78bfa;border:1px solid rgba(167,139,250,0.25);padding:3px 12px;border-radius:999px;font-size:12px;font-weight:500">Premium</span>
-            </div>
+        <div class="page-header">
+            <div class="page-title">Settings</div>
+            <div class="page-sub">Manage your account and preferences</div>
         </div>
 
-        <div class="card" style="margin-bottom:20px">
-            <div class="settings-section-title">Support</div>
-            <div class="settings-row">
-                <span class="settings-row-label">Help Center</span>
-                <a href="help/" style="color:rgba(167,139,250,0.8);font-size:13px;text-decoration:none">Visit →</a>
+        <div class="card" style="margin-bottom:18px">
+            <div class="set-section-title" id="lbl-account"></div>
+            <div class="set-row">
+                <span class="set-row-label">Name</span>
+                <span class="set-row-value" id="set-name">—</span>
             </div>
-            <div class="settings-row">
-                <span class="settings-row-label">Rate Lotara</span>
-                <a href="https://apps.apple.com/us/app/lotara/id6749601041" target="_blank" rel="noopener" style="color:rgba(167,139,250,0.8);font-size:13px;text-decoration:none">App Store →</a>
+            <div class="set-row">
+                <span class="set-row-label">Email</span>
+                <span class="set-row-value" id="set-email">—</span>
             </div>
-            <div class="settings-row">
-                <span class="settings-row-label">Privacy Policy</span>
-                <a href="privacy/" style="color:rgba(167,139,250,0.8);font-size:13px;text-decoration:none">Read →</a>
+            <div class="set-row">
+                <span class="set-row-label">Plan</span>
+                <span style="background:rgba(167,139,250,0.14);color:#a78bfa;border:1px solid rgba(167,139,250,0.3);padding:3px 12px;border-radius:999px;font-size:12px;font-weight:500">Premium</span>
+            </div>
+        </div>
+
+        <div class="card" style="margin-bottom:18px">
+            <div class="set-section-title" id="lbl-support"></div>
+            <div class="set-row">
+                <span class="set-row-label">Help Center</span>
+                <a href="help/">Visit</a>
+            </div>
+            <div class="set-row">
+                <span class="set-row-label">Rate Lotara</span>
+                <a href="https://apps.apple.com/us/app/lotara/id6749601041" target="_blank" rel="noopener">App Store</a>
+            </div>
+            <div class="set-row">
+                <span class="set-row-label">Privacy Policy</span>
+                <a href="privacy/">Read</a>
+            </div>
+            <div class="set-row">
+                <span class="set-row-label">Terms of Service</span>
+                <a href="terms/">Read</a>
             </div>
         </div>
 
         <div class="card">
-            <div class="settings-section-title">Danger zone</div>
+            <div class="set-section-title">Account actions</div>
             <button class="btn-danger" id="btn-signout-all">Sign out</button>
         </div>
 
@@ -110,11 +99,19 @@
 <script src="js/firebase-config.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/portal-data.js"></script>
+<script src="js/portal-shell.js"></script>
 <script>
 firebase.initializeApp(FIREBASE_CONFIG);
+
+bootPortal({ active: 'settings' });
+document.getElementById('topbar-mount').outerHTML = renderTopbar({ showStreak: false });
+document.getElementById('lbl-account').innerHTML = ICONS.smile + 'Account';
+document.getElementById('lbl-support').innerHTML = ICONS.star  + 'Support';
+
 requireAuth('/signin.html').then(user => {
     setupSidebar(user);
     setupTopbar(user);
+    document.getElementById('topbar-greeting').textContent = 'Settings';
     document.getElementById('set-name').textContent  = user.displayName || '—';
     document.getElementById('set-email').textContent = user.email || '—';
     document.getElementById('btn-signout-all').addEventListener('click', async () => {

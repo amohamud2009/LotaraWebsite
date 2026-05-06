@@ -9,49 +9,27 @@
 </head>
 <body>
 
-<aside class="sidebar">
-    <div class="sb-logo"><img src="assets/images/lotara-logo.png" alt="Lotara"></div>
-    <div class="sb-user">
-        <div class="sb-avatar" id="sb-avatar">?</div>
-        <div><div class="sb-name" id="sb-name">Loading…</div><div class="sb-plan">Premium</div></div>
-    </div>
-    <nav class="sb-nav">
-        <a href="dashboard.html" class="nav-item"><span class="nav-dot" style="background:#8b5cf6"></span>Dashboard</a>
-        <a href="habits.html"    class="nav-item"><span class="nav-dot" style="background:#74c0fc"></span>Habits</a>
-        <a href="journal.html"   class="nav-item active"><span class="nav-dot" style="background:#ff8cc8"></span>Journal</a>
-        <a href="mood.html"      class="nav-item"><span class="nav-dot" style="background:#4ade80"></span>Mood</a>
-        <a href="progress.html"  class="nav-item"><span class="nav-dot" style="background:#ffd43b"></span>Progress</a>
-        <a href="settings.html"  class="nav-item"><span class="nav-dot" style="background:rgba(255,255,255,0.35)"></span>Settings</a>
-    </nav>
-    <div class="sb-footer">
-        <a href="https://apps.apple.com/us/app/lotara/id6749601041" class="btn-app" target="_blank" rel="noopener">Open in App</a>
-        <button class="btn-signout">Sign out</button>
-    </div>
-</aside>
-
 <main class="main">
-    <div class="topbar">
-        <div>
-            <div class="topbar-greeting" id="topbar-greeting">Journal</div>
-            <div class="topbar-date" id="topbar-date"></div>
-        </div>
-    </div>
+    <div id="topbar-mount"></div>
 
     <div class="content">
+        <div class="page-header">
+            <div class="page-title">Journal</div>
+            <div class="page-sub">Your thoughts, reflections, and growth</div>
+        </div>
+
         <!-- Stats -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px" id="journal-stats">
-            <div class="card skeleton" style="height:80px"></div>
-            <div class="card skeleton" style="height:80px"></div>
+        <div class="stat-row" id="stat-row" style="grid-template-columns:repeat(3,1fr)">
+            <div class="card skeleton" style="height:90px"></div>
+            <div class="card skeleton" style="height:90px"></div>
+            <div class="card skeleton" style="height:90px"></div>
         </div>
 
         <!-- Entries -->
-        <div class="card">
-            <div class="card-label">Recent entries</div>
-            <div id="journal-list">
-                <div class="skeleton" style="height:80px;margin-bottom:10px"></div>
-                <div class="skeleton" style="height:80px;margin-bottom:10px"></div>
-                <div class="skeleton" style="height:80px"></div>
-            </div>
+        <div class="journal-grid" id="journal-list">
+            <div class="card skeleton" style="height:120px"></div>
+            <div class="card skeleton" style="height:120px"></div>
+            <div class="card skeleton" style="height:120px"></div>
         </div>
     </div>
 </main>
@@ -62,57 +40,79 @@
 <script src="js/firebase-config.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/portal-data.js"></script>
+<script src="js/portal-shell.js"></script>
 <script>
 firebase.initializeApp(FIREBASE_CONFIG);
 const db = firebase.firestore();
 
+bootPortal({ active: 'journal' });
+document.getElementById('topbar-mount').outerHTML = renderTopbar({ showStreak: false });
+
 requireAuth('/signin.html').then(async user => {
     setupSidebar(user);
     setupTopbar(user);
+    document.getElementById('topbar-greeting').textContent = 'Journal';
     const uid = user.uid;
 
-    const snap = await db.collection(`users/${uid}/journal`).orderBy('date','desc').limit(30).get().catch(()=>({docs:[]}));
-    const entries = snap.docs.map(d=>d.data());
+    const snap = await db.collection(`users/${uid}/journal`).orderBy('date','desc').limit(40).get().catch(()=>({docs:[]}));
+    const entries = snap.docs.map(d => d.data());
 
     const now = new Date();
     const ms  = new Date(now.getFullYear(), now.getMonth(), 1);
+    const wAgo = new Date(now); wAgo.setDate(now.getDate()-7);
     const thisMonth = entries.filter(e => toJS(e.date) >= ms).length;
+    const thisWeek  = entries.filter(e => toJS(e.date) >= wAgo).length;
 
-    document.getElementById('journal-stats').innerHTML = `
+    const avgMood = entries.length
+        ? (entries.reduce((a,e)=>a+(e.mood||5), 0) / entries.length).toFixed(1)
+        : '—';
+
+    document.getElementById('stat-row').innerHTML = `
         <div class="card">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;color:#ff8cc8">${ICONS.feather}<span style="font-size:12px;color:rgba(255,255,255,0.5)">This month</span></div>
             <div class="stat-value" style="color:#ff8cc8">${thisMonth}</div>
-            <div class="stat-label">Entries this month</div>
+            <div class="stat-label">Entries</div>
         </div>
         <div class="card">
-            <div class="stat-value" style="color:#a78bfa">${entries.length}</div>
-            <div class="stat-label">Total loaded</div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;color:#a78bfa">${ICONS.calendar}<span style="font-size:12px;color:rgba(255,255,255,0.5)">This week</span></div>
+            <div class="stat-value" style="color:#a78bfa">${thisWeek}</div>
+            <div class="stat-label">Entries</div>
+        </div>
+        <div class="card">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;color:#4ade80">${ICONS.smile}<span style="font-size:12px;color:rgba(255,255,255,0.5)">Avg mood</span></div>
+            <div class="stat-value" style="color:#4ade80">${avgMood}</div>
+            <div class="stat-label">All entries</div>
         </div>`;
 
+    // Entries
+    const list = document.getElementById('journal-list');
     if (!entries.length) {
-        document.getElementById('journal-list').innerHTML =
-            '<div class="empty-state">No journal entries yet —<br>start writing in the Lotara app</div>';
+        list.outerHTML = `<div class="card"><div class="empty-state">
+            <div class="empty-state-icon">${ICONS.feather}</div>
+            No journal entries yet —<br>start writing in the Lotara app
+        </div></div>`;
         return;
     }
 
-    document.getElementById('journal-list').innerHTML = entries.map(e => {
-        const d   = toJS(e.date);
-        const now = new Date();
-        const diffMs = now - d;
-        const diffD  = Math.floor(diffMs / 86400000);
-        const dateStr = diffD === 0 ? 'Today, ' + d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})
+    list.innerHTML = entries.map((e, i) => {
+        const d = toJS(e.date);
+        const now2 = new Date();
+        const diffD = Math.floor((now2 - d) / 86400000);
+        const dateStr = diffD === 0
+            ? 'Today, ' + d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})
             : diffD === 1 ? 'Yesterday'
-            : d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+            : d.toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'});
         const mc = moodColor(e.mood);
         const ml = moodLabel(e.mood);
-        const tags = (e.tags || []).slice(0,3).map(t => `<span class="tag-chip">${t}</span>`).join('');
-        return `<div class="journal-card-item">
-            <div class="journal-meta" style="margin-bottom:6px">
-                <span class="entry-date" style="margin:0">${dateStr}</span>
-                ${e.mood ? `<span class="mood-tag" style="margin:0;background:${mc}18;color:${mc};border:1px solid ${mc}30;font-size:11px;padding:2px 9px">${ml}</span>` : ''}
+        const tags = (e.tags || []).slice(0,4).map(t => `<span class="tag-chip">${t}</span>`).join('');
+        return `<div class="journal-entry" style="--mood-c:${mc};animation-delay:${i*0.04}s">
+            <div class="journal-entry-meta">
+                <span class="journal-entry-date">${dateStr}</span>
+                ${e.mood ? `<span class="mood-tag" style="margin:0;background:${mc}1f;color:${mc};border:1px solid ${mc}40;font-size:11px;padding:2px 10px">${ml}</span>` : ''}
             </div>
-            ${e.title ? `<div class="journal-title">${e.title}</div>` : ''}
-            <div class="journal-preview">${e.content || ''}</div>
-            ${tags ? `<div class="journal-meta" style="margin-top:8px">${tags}</div>` : ''}
+            ${e.title ? `<div class="journal-entry-title">${e.title}</div>` : ''}
+            <div class="journal-entry-text">${e.content || ''}</div>
+            ${tags ? `<div class="journal-entry-tags">${tags}</div>` : ''}
         </div>`;
     }).join('');
 });
