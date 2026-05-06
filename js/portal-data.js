@@ -70,11 +70,11 @@ function monthlyCompletionPct(habitCompletions) {
     return Math.min(100, Math.round((days.size / now.getDate()) * 100));
 }
 
-// ── Habit ring SVG ──
-function habitRingSVG(pct, color) {
+// ── Habit ring SVG (self-contained: explicit width/height) ──
+function habitRingSVG(pct, color, size = 40) {
     const r = 14, circ = 2 * Math.PI * r;
     const dash = (pct / 100) * circ;
-    return `<svg viewBox="0 0 36 36">
+    return `<svg width="${size}" height="${size}" viewBox="0 0 36 36" style="display:block;flex-shrink:0">
         <circle cx="18" cy="18" r="${r}" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="3"/>
         <circle cx="18" cy="18" r="${r}" fill="none" stroke="${color}" stroke-width="3"
             stroke-dasharray="${dash.toFixed(1)} ${circ.toFixed(1)}"
@@ -99,18 +99,18 @@ function moodLabel(score) {
     return 'Amazing';
 }
 
-// ── Simple SVG mood face ──
+// ── Simple SVG mood face (self-contained) ──
 function moodFaceSVG(score, size = 36) {
     const color = moodColor(score);
     const smile = score >= 7
-        ? `<path d="M11 16s2 3 5 3 5-3 5-3" stroke="${color}" stroke-width="1.8" fill="none" stroke-linecap="round"/>`
+        ? `<path d="M9 17s2 3 5 3 5-3 5-3" stroke="${color}" stroke-width="1.6" fill="none" stroke-linecap="round"/>`
         : score <= 4
-        ? `<path d="M11 19s2-3 5-3 5 3 5 3" stroke="${color}" stroke-width="1.8" fill="none" stroke-linecap="round"/>`
-        : `<line x1="11" y1="18" x2="16" y2="18" stroke="${color}" stroke-width="1.8" stroke-linecap="round"/>`;
-    return `<svg width="${size}" height="${size}" viewBox="0 0 28 28">
-        <circle cx="14" cy="14" r="12" fill="${color}20" stroke="${color}" stroke-width="1.5"/>
-        <circle cx="10" cy="12" r="1.5" fill="${color}"/>
-        <circle cx="18" cy="12" r="1.5" fill="${color}"/>
+        ? `<path d="M9 19s2-3 5-3 5 3 5 3" stroke="${color}" stroke-width="1.6" fill="none" stroke-linecap="round"/>`
+        : `<line x1="10" y1="18" x2="18" y2="18" stroke="${color}" stroke-width="1.6" stroke-linecap="round"/>`;
+    return `<svg width="${size}" height="${size}" viewBox="0 0 28 28" style="display:block;flex-shrink:0">
+        <circle cx="14" cy="14" r="12" fill="${color}22" stroke="${color}" stroke-width="1.5"/>
+        <circle cx="10" cy="12" r="1.4" fill="${color}"/>
+        <circle cx="18" cy="12" r="1.4" fill="${color}"/>
         ${smile}
     </svg>`;
 }
