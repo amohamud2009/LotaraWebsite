@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mood — Lotara</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/portal.css">
+    <link rel="stylesheet" href="css/styles.css?v=4">
+    <link rel="stylesheet" href="css/portal.css?v=4">
 </head>
 <body>
 
@@ -18,27 +18,46 @@
             <div class="page-sub">How you've been feeling over time</div>
         </div>
 
-        <!-- 30-day chart -->
-        <div class="card" style="margin-bottom:22px">
-            <div class="card-label" id="lbl-chart"></div>
-            <div style="width:100%;height:130px;margin-bottom:18px">
-                <svg id="mood-svg-big" viewBox="0 0 400 130" preserveAspectRatio="none" style="width:100%;height:100%;overflow:visible"></svg>
+        <!-- Hero: current mood orb + chart -->
+        <div class="card mood-hero" id="mood-hero">
+            <div class="mood-hero-top">
+                <div class="mood-hero-orb-wrap">
+                    <div class="mood-hero-orb" id="mood-orb"></div>
+                    <div class="mood-hero-orb-pulse" id="mood-orb-pulse"></div>
+                </div>
+                <div class="mood-hero-meta">
+                    <div class="mood-hero-tag" id="mood-hero-tag">Last check-in</div>
+                    <div class="mood-hero-label" id="mood-hero-label">—</div>
+                    <div class="mood-hero-sub"   id="mood-hero-sub">—</div>
+                </div>
             </div>
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;border-top:1px solid rgba(255,255,255,0.06);padding-top:18px" id="mood-stats">
-                <div class="skeleton" style="height:48px"></div>
-                <div class="skeleton" style="height:48px"></div>
-                <div class="skeleton" style="height:48px"></div>
-                <div class="skeleton" style="height:48px"></div>
+
+            <div class="mood-chart-wrap">
+                <svg id="mood-svg-big" viewBox="0 0 800 200" preserveAspectRatio="none"
+                     style="width:100%;height:200px;overflow:visible;display:block"></svg>
             </div>
+
+            <div class="mood-stats" id="mood-stats">
+                <div class="skeleton" style="height:60px;border-radius:14px"></div>
+                <div class="skeleton" style="height:60px;border-radius:14px"></div>
+                <div class="skeleton" style="height:60px;border-radius:14px"></div>
+                <div class="skeleton" style="height:60px;border-radius:14px"></div>
+            </div>
+        </div>
+
+        <!-- Mood spectrum legend -->
+        <div class="card mood-spectrum-card">
+            <div class="card-label" id="lbl-spectrum"></div>
+            <div class="mood-spectrum" id="mood-spectrum"></div>
         </div>
 
         <!-- Recent check-ins -->
         <div class="card">
             <div class="card-label" id="lbl-recent"></div>
             <div id="mood-list">
-                <div class="skeleton" style="height:54px;margin-bottom:10px"></div>
-                <div class="skeleton" style="height:54px;margin-bottom:10px"></div>
-                <div class="skeleton" style="height:54px"></div>
+                <div class="skeleton" style="height:64px;margin-bottom:10px;border-radius:14px"></div>
+                <div class="skeleton" style="height:64px;margin-bottom:10px;border-radius:14px"></div>
+                <div class="skeleton" style="height:64px;border-radius:14px"></div>
             </div>
         </div>
     </div>
@@ -47,10 +66,10 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="js/firebase-config.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/portal-data.js"></script>
-<script src="js/portal-shell.js"></script>
+<script src="js/firebase-config.js?v=4"></script>
+<script src="js/auth.js?v=4"></script>
+<script src="js/portal-data.js?v=4"></script>
+<script src="js/portal-shell.js?v=4"></script>
 <script>
 firebase.initializeApp(FIREBASE_CONFIG);
 const db = firebase.firestore();
@@ -58,8 +77,26 @@ const db = firebase.firestore();
 bootPortal({ active: 'mood' });
 document.getElementById('topbar-mount').outerHTML = renderTopbar({ showStreak: false });
 
-document.getElementById('lbl-chart').innerHTML  = ICONS.activity + '30-day mood trend';
-document.getElementById('lbl-recent').innerHTML = ICONS.heart    + 'Recent check-ins';
+document.getElementById('lbl-spectrum').innerHTML = ICONS.sparkles + 'Mood spectrum';
+document.getElementById('lbl-recent').innerHTML   = ICONS.heart + 'Recent check-ins';
+
+// Render the static mood spectrum once
+(function renderSpectrum() {
+    const tiers = [
+        { range: '1–2',  label: 'Low',     color: '#748ffc' },
+        { range: '3–4',  label: 'Okay',    color: '#74c0fc' },
+        { range: '5–6',  label: 'Good',    color: '#4ade80' },
+        { range: '7–8',  label: 'Great',   color: '#ffd43b' },
+        { range: '9–10', label: 'Amazing', color: '#ff8cc8' },
+    ];
+    document.getElementById('mood-spectrum').innerHTML = tiers.map(t => `
+        <div class="spec-tile">
+            <div class="spec-orb" style="background:radial-gradient(circle at 30% 30%, ${t.color}, ${t.color}55 60%, transparent 90%);
+                box-shadow: 0 0 20px ${t.color}55, inset 0 0 12px ${t.color}66;"></div>
+            <div class="spec-label">${t.label}</div>
+            <div class="spec-range">${t.range}</div>
+        </div>`).join('');
+})();
 
 requireAuth('/signin.html').then(async user => {
     setupSidebar(user);
@@ -67,62 +104,173 @@ requireAuth('/signin.html').then(async user => {
     document.getElementById('topbar-greeting').textContent = 'Mood';
     const uid = user.uid;
 
-    const snap = await db.collection(`users/${uid}/moods`).orderBy('timestamp','desc').limit(30).get().catch(()=>({docs:[]}));
+    const snap = await db.collection(`users/${uid}/moods`).orderBy('timestamp','desc').limit(60).get()
+        .catch(e => { console.error('moods', e); return {docs:[]}; });
     const moods = snap.docs.map(d => d.data());
+    console.log('[Lotara] mood page:', { count: moods.length });
 
-    // Big chart
-    const svg = document.getElementById('mood-svg-big');
-    if (moods.length >= 2) {
-        const scores = moods.slice().reverse().map(m => m.value || m.score || 5);
-        const W = 400, H = 130, pad = 12;
-        const min = Math.min(...scores), max = Math.max(...scores), range = max - min || 1;
-        const pts = scores.map((v, i) => [
-            pad + (i / (scores.length - 1)) * (W - pad * 2),
-            H - pad - ((v - min) / range) * (H - pad * 2)
-        ]);
-        const linePts = pts.map(p => p.join(',')).join(' ');
-        const areaD = `M${pts[0][0]},${H} ${pts.map(p=>`L${p.join(',')}`).join(' ')} L${pts[pts.length-1][0]},${H} Z`;
-        svg.innerHTML = `
-            <defs>
-                <linearGradient id="mg-big" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#a78bfa" stop-opacity="0.45"/>
-                    <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
-                </linearGradient>
-            </defs>
-            <path d="${areaD}" fill="url(#mg-big)"/>
-            <polyline points="${linePts}" fill="none" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            ${pts.map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="#a78bfa" stroke="rgba(0,0,0,0.4)" stroke-width="2"/>`).join('')}`;
+    // ──────────────────────────────────────────────────────────
+    // Hero: current mood orb
+    // ──────────────────────────────────────────────────────────
+    const orb = document.getElementById('mood-orb');
+    const pulse = document.getElementById('mood-orb-pulse');
+
+    if (!moods.length) {
+        document.getElementById('mood-hero-tag').textContent  = 'No check-ins yet';
+        document.getElementById('mood-hero-label').textContent = 'Start tracking';
+        document.getElementById('mood-hero-sub').textContent   = 'Open Lotara to log how you feel';
+        orb.style.background = 'radial-gradient(circle at 30% 30%, #a78bfa, #8b5cf655 60%, transparent 90%)';
+        orb.style.boxShadow  = '0 0 40px rgba(167,139,250,0.4), inset 0 0 24px rgba(167,139,250,0.4)';
     } else {
-        svg.innerHTML = `<text x="200" y="65" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="13" font-family="system-ui">Not enough data yet — check in daily in the app</text>`;
+        const latest = moods[0];
+        const score = latest.value || 5;
+        const c = moodColor(score);
+        const lbl = moodLabel(score);
+        const d = toJS(latest.timestamp);
+        const dateStr = d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}) + ' · ' +
+                        d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+
+        orb.style.background = `radial-gradient(circle at 30% 30%, ${c}, ${c}55 55%, transparent 90%)`;
+        orb.style.boxShadow  = `0 0 60px ${c}66, inset 0 0 30px ${c}88`;
+        pulse.style.background = `radial-gradient(circle, ${c}33 0%, transparent 70%)`;
+
+        document.getElementById('mood-hero-tag').textContent   = 'Last check-in';
+        document.getElementById('mood-hero-label').innerHTML  = `${lbl} <span style="color:${c};font-weight:300;margin-left:8px">${score}/10</span>`;
+        document.getElementById('mood-hero-sub').textContent   = dateStr;
     }
 
-    // Stats
+    // ──────────────────────────────────────────────────────────
+    // Smooth premium chart (cubic-bezier curve, animated draw-in)
+    // ──────────────────────────────────────────────────────────
+    const svg = document.getElementById('mood-svg-big');
+    if (moods.length >= 2) {
+        const scores = moods.slice().reverse().map(m => m.value || 5);
+        const W = 800, H = 200, padX = 16, padY = 22;
+        const min = Math.max(1, Math.min(...scores) - 1);
+        const max = Math.min(10, Math.max(...scores) + 1);
+        const range = max - min || 1;
+        const pts = scores.map((v, i) => [
+            padX + (i / (scores.length - 1)) * (W - padX * 2),
+            H - padY - ((v - min) / range) * (H - padY * 2)
+        ]);
+
+        // Cubic bezier smooth curve through points (Catmull-Rom-ish)
+        function smoothPath(points) {
+            if (points.length < 2) return '';
+            let d = `M ${points[0][0]} ${points[0][1]}`;
+            for (let i = 0; i < points.length - 1; i++) {
+                const p0 = points[i - 1] || points[i];
+                const p1 = points[i];
+                const p2 = points[i + 1];
+                const p3 = points[i + 2] || p2;
+                const t = 0.22; // tension — lower = smoother
+                const cp1x = p1[0] + (p2[0] - p0[0]) * t;
+                const cp1y = p1[1] + (p2[1] - p0[1]) * t;
+                const cp2x = p2[0] - (p3[0] - p1[0]) * t;
+                const cp2y = p2[1] - (p3[1] - p1[1]) * t;
+                d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2[0]} ${p2[1]}`;
+            }
+            return d;
+        }
+
+        const linePath = smoothPath(pts);
+        const areaPath = `${linePath} L ${pts[pts.length-1][0]} ${H} L ${pts[0][0]} ${H} Z`;
+
+        // Horizontal grid lines (5 / 10)
+        const gridLines = [3, 5, 7, 10].map(g => {
+            const y = H - padY - ((g - min) / range) * (H - padY * 2);
+            if (y < 0 || y > H) return '';
+            return `<line x1="0" y1="${y}" x2="${W}" y2="${y}" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 5"/>`;
+        }).join('');
+
+        svg.innerHTML = `
+            <defs>
+                <linearGradient id="mg-area" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%"   stop-color="#c4b5fd" stop-opacity="0.55"/>
+                    <stop offset="40%"  stop-color="#a78bfa" stop-opacity="0.30"/>
+                    <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+                </linearGradient>
+                <linearGradient id="mg-stroke" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%"   stop-color="#c4b5fd"/>
+                    <stop offset="50%"  stop-color="#a78bfa"/>
+                    <stop offset="100%" stop-color="#8b5cf6"/>
+                </linearGradient>
+                <filter id="mg-glow" x="-30%" y="-30%" width="160%" height="160%">
+                    <feGaussianBlur stdDeviation="3"/>
+                    <feMerge>
+                        <feMergeNode/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+            </defs>
+
+            ${gridLines}
+
+            <path d="${areaPath}" fill="url(#mg-area)" opacity="0">
+                <animate attributeName="opacity" from="0" to="1" dur="0.9s" begin="0.1s" fill="freeze"/>
+            </path>
+
+            <path id="mood-line" d="${linePath}" fill="none"
+                  stroke="url(#mg-stroke)" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"
+                  filter="url(#mg-glow)"
+                  pathLength="1" stroke-dasharray="1" stroke-dashoffset="1">
+                <animate attributeName="stroke-dashoffset" from="1" to="0" dur="1.4s" begin="0s" fill="freeze"/>
+            </path>
+
+            ${pts.map((p, i) => {
+                const score = scores[i];
+                const c = moodColor(score);
+                return `<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="${c}"
+                    stroke="rgba(10,5,30,0.6)" stroke-width="2" opacity="0">
+                    <animate attributeName="opacity" from="0" to="0.95"
+                        dur="0.4s" begin="${1.0 + i * 0.02}s" fill="freeze"/>
+                </circle>`;
+            }).join('')}
+        `;
+    } else {
+        svg.innerHTML = `<text x="400" y="100" text-anchor="middle"
+            fill="rgba(255,255,255,0.3)" font-size="13" font-family="system-ui">
+            Track moods daily to see your trend</text>`;
+    }
+
+    // ──────────────────────────────────────────────────────────
+    // Stats — beautiful glass tiles
+    // ──────────────────────────────────────────────────────────
     const now = new Date();
     const ms = new Date(now.getFullYear(), now.getMonth(), 1);
     const prevMs = new Date(now.getFullYear(), now.getMonth() - 1, 1);
     const prevMe = new Date(now.getFullYear(), now.getMonth(), 0);
 
-    const thisMonthMoods = moods.filter(m => toJS(m.timestamp) >= ms);
-    const prevMonthMoods = moods.filter(m => { const d = toJS(m.timestamp); return d >= prevMs && d <= prevMe; });
+    const thisMonth = moods.filter(m => toJS(m.timestamp) >= ms);
+    const prevMonth = moods.filter(m => { const d = toJS(m.timestamp); return d >= prevMs && d <= prevMe; });
 
-    const avg = thisMonthMoods.length ? (thisMonthMoods.reduce((a,m)=>a+(m.value||5),0) / thisMonthMoods.length).toFixed(1) : '—';
-    const prev = prevMonthMoods.length ? (prevMonthMoods.reduce((a,m)=>a+(m.value||5),0) / prevMonthMoods.length).toFixed(1) : '—';
-    const delta = avg !== '—' && prev !== '—' ? ((+avg - +prev) > 0 ? '+' : '') + (+avg - +prev).toFixed(1) : '—';
-    const allScores = moods.map(m => m.value || m.score || 5);
-    const best  = allScores.length ? Math.max(...allScores) : '—';
-    const worst = allScores.length ? Math.min(...allScores) : '—';
+    const avg  = thisMonth.length ? +(thisMonth.reduce((a,m)=>a+(m.value||5),0) / thisMonth.length).toFixed(1) : null;
+    const prev = prevMonth.length ? +(prevMonth.reduce((a,m)=>a+(m.value||5),0) / prevMonth.length).toFixed(1) : null;
+    const delta = (avg !== null && prev !== null) ? +(avg - prev).toFixed(1) : null;
+    const all = moods.map(m => m.value || 5);
+    const best  = all.length ? Math.max(...all) : null;
+    const worst = all.length ? Math.min(...all) : null;
 
-    document.getElementById('mood-stats').innerHTML = [
-        { val: avg,   lbl: 'Avg score',     color: '#a78bfa' },
-        { val: delta, lbl: 'vs last month', color: +delta > 0 ? '#4ade80' : +delta < 0 ? '#74c0fc' : 'rgba(255,255,255,0.5)' },
-        { val: best,  lbl: 'Best day',      color: '#ffd43b' },
-        { val: worst, lbl: 'Lowest day',    color: '#74c0fc' },
-    ].map(s => `<div>
-        <div style="font-size:24px;font-weight:300;color:${s.color};margin-bottom:3px;letter-spacing:-0.5px">${s.val}</div>
-        <div style="font-size:12px;font-weight:300;color:rgba(255,255,255,0.45)">${s.lbl}</div>
-    </div>`).join('');
+    const fmt = v => v === null ? '—' : (typeof v === 'number' ? (Number.isInteger(v) ? v : v.toFixed(1)) : v);
+    const tiles = [
+        { val: fmt(avg),   lbl: 'Avg this month',  color: avg !== null ? moodColor(Math.round(avg)) : '#a78bfa', icon: ICONS.activity },
+        { val: delta === null ? '—' : (delta > 0 ? '+' : '') + delta,
+          lbl: 'vs last month',   color: delta === null ? '#a78bfa' : delta > 0 ? '#4ade80' : delta < 0 ? '#74c0fc' : 'rgba(255,255,255,0.5)',
+          icon: delta === null ? ICONS.minus : delta > 0 ? ICONS.arrowUp : delta < 0 ? ICONS.arrowDown : ICONS.minus },
+        { val: fmt(best),  lbl: 'Best day',       color: best !== null ? moodColor(best) : '#ffd43b', icon: ICONS.star },
+        { val: fmt(worst), lbl: 'Lowest day',     color: worst !== null ? moodColor(worst) : '#74c0fc', icon: ICONS.heart },
+    ];
+    document.getElementById('mood-stats').innerHTML = tiles.map(t => `
+        <div class="mood-stat-tile">
+            <div class="mood-stat-icon" style="color:${t.color}">${t.icon}</div>
+            <div class="mood-stat-value" style="color:${t.color}">${t.val}</div>
+            <div class="mood-stat-label">${t.lbl}</div>
+        </div>`).join('');
 
-    // Recent list
+    // ──────────────────────────────────────────────────────────
+    // Recent list — premium gradient orb rows
+    // ──────────────────────────────────────────────────────────
     if (!moods.length) {
         document.getElementById('mood-list').innerHTML = `<div class="empty-state">
             <div class="empty-state-icon">${ICONS.heart}</div>
@@ -131,23 +279,31 @@ requireAuth('/signin.html').then(async user => {
         return;
     }
 
-    document.getElementById('mood-list').innerHTML = moods.slice(0,15).map(m => {
+    document.getElementById('mood-list').innerHTML = moods.slice(0,20).map(m => {
         const d = toJS(m.timestamp);
         const now2 = new Date();
-        const diffD = Math.floor((now2 - d) / 86400000);
+        const startOfToday = new Date(now2.getFullYear(), now2.getMonth(), now2.getDate());
+        const diffD = Math.floor((startOfToday - new Date(d.getFullYear(), d.getMonth(), d.getDate())) / 86400000);
         const dateStr = diffD === 0
             ? 'Today, ' + d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})
             : diffD === 1 ? 'Yesterday'
             : d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
-        const score = m.value || m.score || 5;
+        const score = m.value || 5;
         const color = moodColor(score);
-        return `<div class="mood-entry-row">
-            <div class="mood-face">${moodFaceSVG(score, 38)}</div>
+        const lbl = moodLabel(score);
+        return `<div class="mood-entry-row" style="--mood-color:${color}">
+            <div class="mood-entry-orb" style="
+                background: radial-gradient(circle at 30% 30%, ${color}, ${color}55 60%, transparent 92%);
+                box-shadow: 0 0 18px ${color}55, inset 0 0 10px ${color}77;
+            "></div>
             <div class="mood-entry-info">
                 <div class="mood-entry-date">${dateStr}</div>
-                ${m.note ? `<div class="mood-entry-note">${m.note}</div>` : ''}
+                ${m.note ? `<div class="mood-entry-note">${m.note}</div>` : `<div class="mood-entry-note" style="color:rgba(255,255,255,0.35)">${lbl}</div>`}
             </div>
-            <div class="mood-score" style="color:${color}">${score}</div>
+            <div class="mood-entry-score">
+                <span style="color:${color}">${score}</span>
+                <span class="mood-entry-score-max">/10</span>
+            </div>
         </div>`;
     }).join('');
 });

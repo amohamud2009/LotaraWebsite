@@ -434,23 +434,159 @@ body {
 .journal-entry-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 .tag-chip { padding: 2px 10px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--r-btn); font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.5); }
 
-/* ── Mood entries ── */
-.mood-entry-row {
-    display: flex; align-items: center; gap: 14px;
-    padding: 13px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+/* ── Mood: hero card ── */
+.mood-hero { padding: 28px 28px 22px; margin-bottom: 22px; }
+.mood-hero-top { display: flex; align-items: center; gap: 22px; margin-bottom: 26px; }
+.mood-hero-orb-wrap {
+    position: relative; width: 84px; height: 84px; flex-shrink: 0;
 }
-.mood-entry-row:last-child { border-bottom: none; }
-.mood-face { width: 38px; height: 38px; flex-shrink: 0; }
+.mood-hero-orb {
+    position: absolute; inset: 0;
+    border-radius: 50%;
+    animation: orbBreathe 5s ease-in-out infinite;
+}
+.mood-hero-orb-pulse {
+    position: absolute; inset: -16px;
+    border-radius: 50%;
+    animation: orbPulse 3.4s ease-in-out infinite;
+    pointer-events: none;
+}
+@keyframes orbBreathe {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.04); }
+}
+@keyframes orbPulse {
+    0%   { transform: scale(0.9); opacity: 0.7; }
+    70%  { transform: scale(1.4); opacity: 0; }
+    100% { transform: scale(1.4); opacity: 0; }
+}
+.mood-hero-meta { flex: 1; min-width: 0; }
+.mood-hero-tag {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: rgba(255,255,255,0.5);
+    margin-bottom: 8px;
+}
+.mood-hero-label {
+    font-size: 32px; font-weight: 200; letter-spacing: -0.8px;
+    color: #fff; margin-bottom: 6px; line-height: 1.1;
+}
+.mood-hero-sub {
+    font-size: 13px; font-weight: 300;
+    color: rgba(255,255,255,0.5);
+}
+
+/* Chart wrap */
+.mood-chart-wrap {
+    width: 100%; padding: 6px 0 18px;
+    margin-bottom: 22px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Stats grid */
+.mood-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+}
+.mood-stat-tile {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px;
+    padding: 14px 16px;
+    transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.mood-stat-tile:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.12);
+    transform: translateY(-1px);
+}
+.mood-stat-icon { margin-bottom: 8px; opacity: 0.85; }
+.mood-stat-icon svg { width: 16px !important; height: 16px !important; }
+.mood-stat-value {
+    font-size: 28px; font-weight: 200; letter-spacing: -0.6px;
+    margin-bottom: 4px; line-height: 1;
+}
+.mood-stat-label {
+    font-size: 11px; font-weight: 400;
+    color: rgba(255,255,255,0.5); letter-spacing: 0.02em;
+}
+
+/* ── Mood spectrum legend ── */
+.mood-spectrum-card { margin-bottom: 22px; }
+.mood-spectrum {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-top: 6px;
+}
+.spec-tile {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    padding: 14px 8px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px;
+    transition: all 0.3s ease;
+}
+.spec-tile:hover { background: rgba(255,255,255,0.06); transform: translateY(-2px); }
+.spec-orb {
+    width: 38px; height: 38px; border-radius: 50%;
+}
+.spec-label { font-size: 13px; font-weight: 400; color: #fff; }
+.spec-range { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.45); }
+
+/* ── Mood entries (recent check-ins) ── */
+.mood-entry-row {
+    display: flex; align-items: center; gap: 16px;
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-left: 3px solid var(--mood-color, #a78bfa);
+    border-radius: 14px;
+    transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.mood-entry-row:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.12);
+    border-left-color: var(--mood-color);
+    transform: translateX(2px);
+}
+.mood-entry-row:last-child { margin-bottom: 0; }
+.mood-entry-orb {
+    width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+}
 .mood-entry-info { flex: 1; min-width: 0; }
-.mood-entry-date { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.45); }
-.mood-entry-note { font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.7); margin-top: 3px; }
+.mood-entry-date { font-size: 12px; font-weight: 400; color: rgba(255,255,255,0.55); margin-bottom: 4px; letter-spacing: 0.01em; }
+.mood-entry-note {
+    font-size: 14px; font-weight: 300; color: rgba(255,255,255,0.85);
+    line-height: 1.4;
+    overflow: hidden; text-overflow: ellipsis;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+}
+.mood-entry-score {
+    font-size: 26px; font-weight: 200; flex-shrink: 0; letter-spacing: -0.5px;
+    display: flex; align-items: baseline; gap: 1px;
+}
+.mood-entry-score-max { font-size: 13px; color: rgba(255,255,255,0.3); font-weight: 300; }
+
+/* Legacy fallback (keep until pages migrate) */
+.mood-face { width: 38px; height: 38px; flex-shrink: 0; }
 .mood-score { font-size: 22px; font-weight: 300; flex-shrink: 0; letter-spacing: -0.5px; }
 
 /* ── Mobile ── */
 @media (max-width: 900px) {
     .stat-row { grid-template-columns: repeat(2,1fr); }
     .two-col, .habit-grid { grid-template-columns: 1fr; }
+    .mood-stats { grid-template-columns: repeat(2, 1fr); }
+    .mood-spectrum { grid-template-columns: repeat(5, 1fr); gap: 8px; }
+    .mood-hero { padding: 22px 20px 18px; }
+    .mood-hero-orb-wrap { width: 64px; height: 64px; }
+    .mood-hero-label { font-size: 26px; }
+}
+@media (max-width: 600px) {
+    .mood-spectrum { grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .spec-tile { padding: 10px 4px; }
+    .spec-orb { width: 28px; height: 28px; }
+    .spec-label { font-size: 11px; }
+    .spec-range { font-size: 10px; }
+    .mood-stat-value { font-size: 22px; }
+    .mood-entry-row { padding: 12px 12px; gap: 12px; }
+    .mood-entry-orb { width: 30px; height: 30px; }
 }
 @media (max-width: 768px) {
     body { overflow: auto; }
