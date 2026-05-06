@@ -130,7 +130,20 @@ body {
     transition: all 0.2s ease;
     position: relative;
 }
-.nav-item svg { width: 17px; height: 17px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; opacity: 0.8; }
+/* Force-size all SVG icons — defensive against missing attrs */
+.nav-item svg,
+.card-label svg,
+.set-row-label svg,
+.set-section-title svg,
+.milestone-icon svg,
+.empty-state-icon svg,
+.mood-trend-label svg,
+.more-link svg,
+.wins-tag svg {
+    flex-shrink: 0 !important;
+    fill: none !important;
+}
+.nav-item svg { width: 17px !important; height: 17px !important; stroke: currentColor; stroke-width: 1.7; opacity: 0.8; }
 .nav-item:hover { color: var(--white); background: rgba(255,255,255,0.05); }
 .nav-item:hover svg { opacity: 1; }
 .nav-item.active { color: var(--white); background: rgba(139,92,246,0.18); font-weight: 400; }
