@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mood — Lotara</title>
-    <link rel="stylesheet" href="css/styles.css?v=7">
-    <link rel="stylesheet" href="css/portal.css?v=7">
+    <link rel="stylesheet" href="css/styles.css?v=8">
+    <link rel="stylesheet" href="css/portal.css?v=8">
 </head>
 <body>
 
@@ -38,23 +38,6 @@
             </div>
         </div>
 
-        <!-- 30-day calendar heatmap — beautiful at-a-glance overview -->
-        <div class="card" style="margin-bottom:22px">
-            <div class="card-label" id="lbl-cal"></div>
-            <div class="mood-cal-weekdays" id="mood-cal-weekdays"></div>
-            <div class="mood-cal-grid" id="mood-cal-grid"></div>
-            <div class="mood-cal-legend">
-                <span class="mood-cal-legend-label">Less</span>
-                <span class="mood-cal-legend-cell" style="background:rgba(255,255,255,0.06)"></span>
-                <span class="mood-cal-legend-cell" style="background:#ff595933;border-color:#ff595955"></span>
-                <span class="mood-cal-legend-cell" style="background:#cc886633;border-color:#cc886655"></span>
-                <span class="mood-cal-legend-cell" style="background:#a3b8b833;border-color:#a3b8b855"></span>
-                <span class="mood-cal-legend-cell" style="background:#74c0fc44;border-color:#74c0fc66"></span>
-                <span class="mood-cal-legend-cell" style="background:#ff8cc844;border-color:#ff8cc866"></span>
-                <span class="mood-cal-legend-label">More</span>
-            </div>
-        </div>
-
         <!-- Recent check-ins -->
         <div class="card">
             <div class="card-label" id="lbl-recent"></div>
@@ -70,10 +53,10 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="js/firebase-config.js?v=7"></script>
-<script src="js/auth.js?v=7"></script>
-<script src="js/portal-shell.js?v=7"></script>
-<script src="js/portal-data.js?v=7"></script>
+<script src="js/firebase-config.js?v=8"></script>
+<script src="js/auth.js?v=8"></script>
+<script src="js/portal-shell.js?v=8"></script>
+<script src="js/portal-data.js?v=8"></script>
 <script>
 firebase.initializeApp(FIREBASE_CONFIG);
 const db = firebase.firestore();
@@ -82,7 +65,6 @@ bootPortal({ active: 'mood' });
 document.getElementById('topbar-mount').outerHTML = renderTopbar({ showStreak: false });
 
 document.getElementById('lbl-trend').innerHTML  = ICONS.activity + '30-day trend';
-document.getElementById('lbl-cal').innerHTML    = ICONS.calendar + 'Last 30 days';
 document.getElementById('lbl-recent').innerHTML = ICONS.heart    + 'Recent check-ins';
 
 requireAuth('/signin.html').then(async user => {
@@ -217,65 +199,6 @@ requireAuth('/signin.html').then(async user => {
                 <div class="mood-trend-stat-lbl">${t.lbl}</div>
             </div>
         </div>`).join('');
-
-    // ──────────────────────────────────────────────────────────
-    // 30-day calendar heatmap
-    // ──────────────────────────────────────────────────────────
-    const calGrid = document.getElementById('mood-cal-grid');
-    const calWeekdays = document.getElementById('mood-cal-weekdays');
-    calWeekdays.innerHTML = ['S','M','T','W','T','F','S'].map(d =>
-        `<div class="mood-cal-weekday">${d}</div>`).join('');
-
-    // Build map of dateKey → mood value
-    const moodByDay = new Map();
-    moods.forEach(m => {
-        const k = toDateStr(m.timestamp);
-        // If multiple per day, take the latest (highest timestamp)
-        if (!moodByDay.has(k) || toJS(m.timestamp) > moodByDay.get(k).t) {
-            moodByDay.set(k, { v: m.value || 5, t: toJS(m.timestamp) });
-        }
-    });
-
-    // 35-cell grid (5 weeks): start at Sunday on/before (today - 34 days)
-    const today = new Date(); today.setHours(0,0,0,0);
-    const startDay = new Date(today);
-    startDay.setDate(today.getDate() - 34);
-    // Roll back to nearest Sunday so columns align with weekdays
-    while (startDay.getDay() !== 0) startDay.setDate(startDay.getDate() - 1);
-
-    const cells = [];
-    const cursor = new Date(startDay);
-    while (cursor <= today) {
-        const k = (() => {
-            const y = cursor.getFullYear();
-            const m = String(cursor.getMonth() + 1).padStart(2, '0');
-            const d = String(cursor.getDate()).padStart(2, '0');
-            return `${y}-${m}-${d}`;
-        })();
-        const mood = moodByDay.get(k);
-        const isToday = cursor.getTime() === today.getTime();
-        cells.push({ date: new Date(cursor), key: k, mood, isToday });
-        cursor.setDate(cursor.getDate() + 1);
-    }
-
-    calGrid.innerHTML = cells.map(c => {
-        if (!c.mood) {
-            const cls = c.isToday ? ' today' : '';
-            const tip = c.date.toLocaleDateString('en-US', { month:'short', day:'numeric' }) + ' — no entry';
-            return `<div class="mood-cal-cell empty${cls}" title="${tip}"></div>`;
-        }
-        const color = moodColor(c.mood.v);
-        const meta = moodMeta(c.mood.v);
-        const cls  = c.isToday ? ' today' : '';
-        const tip  = c.date.toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric' }) +
-                     ` — ${meta.label} (${c.mood.v}/10)`;
-        // intensity scales with score
-        const opacity = 0.18 + (c.mood.v / 10) * 0.55;
-        return `<div class="mood-cal-cell${cls}"
-            style="background:${color}; opacity:${opacity.toFixed(2)};
-                   border-color:${color}; box-shadow: 0 0 8px ${color}33"
-            title="${tip}"></div>`;
-    }).join('');
 
     // ──────────────────────────────────────────────────────────
     // Recent check-ins — calm rows with SF-symbol-style icon
