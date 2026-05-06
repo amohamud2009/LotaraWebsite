@@ -30,42 +30,59 @@ function toJS(ts) {
     return new Date(ts);
 }
 
+// LOCAL date string (YYYY-MM-DD) — avoids UTC off-by-one bugs at night
 function toDateStr(ts) {
-    return toJS(ts).toISOString().slice(0,10);
+    const d = toJS(ts);
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
 }
 
-// ── Streak (walk backward from today counting consecutive days) ──
-function calcOverallStreak(completions) {
-    if (!completions.length) return 0;
+function _localKey(d) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+}
+
+// ── Streak (mirrors iOS HabitTracker.currentStreak) ──
+//    Walks backward from today. Today is allowed to be "in-progress":
+//    if today is empty BUT yesterday has activity, streak counts from
+//    yesterday. If both today and yesterday are empty → streak = 0.
+function _calcStreakBackward(completions) {
+    if (!completions || !completions.length) return 0;
     const days = new Set(completions.map(c => toDateStr(c.date)));
+    const today = new Date(); today.setHours(0,0,0,0);
+    let cursor = new Date(today);
+
+    if (!days.has(_localKey(cursor))) {
+        cursor.setDate(cursor.getDate() - 1);
+        if (!days.has(_localKey(cursor))) return 0;
+    }
+
     let streak = 0;
-    const d = new Date();
-    while (days.has(d.toISOString().slice(0,10))) {
-        streak++;
-        d.setDate(d.getDate() - 1);
+    for (let i = 0; i < 366; i++) {
+        if (days.has(_localKey(cursor))) {
+            streak++;
+            cursor.setDate(cursor.getDate() - 1);
+        } else {
+            break;
+        }
     }
     return streak;
 }
 
-function calcHabitStreak(habitCompletions) {
-    if (!habitCompletions.length) return 0;
-    const days = new Set(habitCompletions.map(c => toDateStr(c.date)));
-    let streak = 0;
-    const d = new Date();
-    while (days.has(d.toISOString().slice(0,10))) {
-        streak++;
-        d.setDate(d.getDate() - 1);
-    }
-    return streak;
-}
+function calcOverallStreak(completions)    { return _calcStreakBackward(completions); }
+function calcHabitStreak(habitCompletions) { return _calcStreakBackward(habitCompletions); }
 
-// ── 7-day dot history for a habit ──
+// ── 7-day dot history for a habit (oldest left → today right) ──
 function sevenDayDots(habitCompletions) {
-    const today = new Date();
     const days = new Set(habitCompletions.map(c => toDateStr(c.date)));
+    const today = new Date(); today.setHours(0,0,0,0);
     return Array.from({length: 7}, (_, i) => {
         const d = new Date(today); d.setDate(today.getDate() - (6 - i));
-        return days.has(d.toISOString().slice(0,10));
+        return days.has(_localKey(d));
     });
 }
 
