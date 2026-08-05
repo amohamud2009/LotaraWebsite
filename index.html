@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lotara — Find Your Inner Peace</title>
-<meta name="description" content="Lotara — begin your wellness journey. Journal, meditate, track habits and mood, and drift off to sleep stories, guided by Lotara Intelligence.">
+<meta name="description" content="Lotara helps you quit what you're trying to quit, build habits that forgive a missed day, and understand your sleep, mood and journal together — guided by Lotara Intelligence.">
 <link rel="canonical" href="https://lotara.app/">
 <meta name="theme-color" content="#05060d">
 
@@ -12,12 +12,12 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://lotara.app/">
 <meta property="og:title" content="Lotara — Find Your Inner Peace">
-<meta property="og:description" content="Journal, meditate, track habits and mood, and drift off to sleep stories — quietly, at your own pace.">
+<meta property="og:description" content="Quit something, build habits that forgive a missed day, and understand what your sleep and mood are telling you — quietly, at your own pace.">
 <meta property="og:image" content="https://lotara.app/assets/images/lotara-logo.png">
 <meta property="og:site_name" content="Lotara">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Lotara — Find Your Inner Peace">
-<meta name="twitter:description" content="Journal, meditate, track habits and mood, and drift off to sleep stories — quietly, at your own pace.">
+<meta name="twitter:description" content="Quit something, build habits that forgive a missed day, and understand what your sleep and mood are telling you — quietly, at your own pace.">
 <meta name="twitter:image" content="https://lotara.app/assets/images/lotara-logo.png">
 
 <link rel="icon" href="assets/images/lotara-icon.png">
@@ -131,16 +131,6 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--lavender);outline-o
 
 /* ---------------- SECTION VISUALS (no screenshots) ---------------- */
 .viz{position:relative;width:100%;max-width:400px;border-radius:24px;overflow:hidden}
-.viz-pick{padding:22px;background:linear-gradient(160deg,#243250 0%,#101826 100%);border:1px solid rgba(162,155,254,0.24);box-shadow:0 24px 50px rgba(0,0,0,.45)}
-.viz-pick::after{content:"";position:absolute;top:0;bottom:0;width:42%;pointer-events:none;background:linear-gradient(100deg,transparent,rgba(255,255,255,0.10),transparent);animation:sheen 9s ease-in-out infinite}
-@keyframes sheen{0%{transform:translateX(-120%)}55%,100%{transform:translateX(320%)}}
-.viz-pick .v-lab{display:flex;align-items:center;gap:7px;font-size:10px;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:var(--lavender);margin-bottom:9px}
-.viz-pick .v-title{font-family:var(--serif);font-size:21px;color:#fff;margin-bottom:6px}
-.viz-pick .v-sub{font-size:13.5px;color:rgba(255,255,255,0.62);line-height:1.5}
-.viz-pick .v-bar{display:flex;align-items:center;gap:10px;margin-top:18px}
-.viz-pick .v-track{flex:1;height:5px;border-radius:9999px;background:rgba(255,255,255,0.16);overflow:hidden}
-.viz-pick .v-fill{height:100%;width:34%;border-radius:9999px;background:#fff}
-.viz-pick .v-count{font-size:12px;font-weight:700;color:#fff}
 
 .viz-cats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .cat{aspect-ratio:1;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border:1px solid rgba(255,255,255,0.08);box-shadow:0 12px 26px rgba(0,0,0,.35)}
@@ -163,12 +153,61 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--lavender);outline-o
 .viz-streak .s-cap{font-size:13px;color:var(--ink-3);text-align:center}
 .viz-streak .s-cap b{color:var(--gold);font-weight:700}
 
+/* The days-free counter — the app's own hero, in the app's own Georgia italic.
+   This is the centerpiece, so it runs wider and darker than the others. */
+.viz-quit{max-width:440px;padding:32px 26px 26px;text-align:center;
+  background:radial-gradient(120% 90% at 50% 0%,rgba(215,166,203,0.20),rgba(8,8,15,0.97) 62%,#08080f 100%);
+  border:1px solid rgba(215,166,203,0.24);box-shadow:0 30px 64px rgba(0,0,0,.6)}
+.viz-quit .q-lab{font-size:10px;font-weight:700;letter-spacing:0.24em;text-transform:uppercase;color:rgba(255,255,255,0.44);margin-bottom:14px}
+.viz-quit .q-num{font-family:var(--serif);font-style:italic;font-size:88px;line-height:1;color:#fff;text-shadow:0 0 46px rgba(215,166,203,0.42)}
+.viz-quit .q-since{font-size:10px;letter-spacing:0.26em;text-transform:uppercase;color:rgba(255,255,255,0.40);margin-top:10px}
+.viz-quit .q-div{height:1px;margin:22px 0 18px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.16),transparent)}
+.viz-quit .q-pull{display:flex;align-items:center;justify-content:center;gap:9px;padding:13px 16px;border-radius:9999px;
+  background:rgba(215,166,203,0.13);border:1px solid rgba(215,166,203,0.34);font-size:14px;font-weight:600;color:#fff}
+.viz-quit .q-pull .q-orb{width:11px;height:11px;border-radius:50%;background:var(--love);box-shadow:0 0 16px var(--love);animation:pulse-orb 5.2s ease-in-out infinite}
+@keyframes pulse-orb{0%,100%{transform:scale(.72);opacity:.55}50%{transform:scale(1.18);opacity:1}}
+.viz-quit .q-out{display:flex;gap:9px;margin-top:12px}
+.viz-quit .q-out span{flex:1;padding:9px 8px;border-radius:12px;font-size:11.5px;font-weight:600;border:1px solid var(--border);color:rgba(255,255,255,0.62);background:rgba(255,255,255,0.04)}
+.viz-quit .q-out span.rode{color:var(--sage);border-color:rgba(156,194,173,0.36);background:rgba(156,194,173,0.10)}
+
+/* Overnight vitals — what Intelligence actually reads. */
+.viz-vitals{padding:22px;background:var(--surface);border:1px solid var(--border)}
+.viz-vitals .m-row{display:flex;gap:10px;margin-bottom:14px}
+.viz-vitals .m{flex:1;padding:14px 12px;border-radius:16px;background:rgba(255,255,255,0.045);border:1px solid var(--border)}
+.viz-vitals .m .k{font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.42)}
+.viz-vitals .m .v{font-size:23px;font-weight:800;color:#fff;margin-top:6px;line-height:1}
+.viz-vitals .m .v i{font-size:11px;font-style:normal;font-weight:600;color:rgba(255,255,255,0.5);margin-left:3px}
+.viz-vitals .m .d{font-size:11px;font-weight:700;margin-top:5px}
+.viz-vitals .m .d.up{color:var(--love)}
+.viz-vitals .m .d.ok{color:var(--sage)}
+.viz-vitals .m-read{display:flex;gap:10px;align-items:flex-start;padding:14px;border-radius:14px;background:rgba(162,155,254,0.10);border:1px solid rgba(162,155,254,0.24);font-size:13px;color:rgba(255,255,255,0.80);line-height:1.5}
+.viz-vitals .m-read b{color:var(--lavender);font-weight:800}
+
+/* Journal — an entry and the insight drawn from it. */
+.viz-journal{padding:22px;background:var(--surface);border:1px solid var(--border)}
+.viz-journal .j-date{font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.40);margin-bottom:10px}
+.viz-journal .j-body{font-family:var(--serif);font-size:16px;line-height:1.62;color:rgba(255,255,255,0.86)}
+.viz-journal .j-body mark{background:rgba(232,207,154,0.16);color:var(--gold);padding:1px 3px;border-radius:4px}
+.viz-journal .j-tags{display:flex;gap:7px;flex-wrap:wrap;margin:16px 0 14px}
+.viz-journal .j-tags span{font-size:11px;font-weight:600;padding:5px 11px;border-radius:9999px;background:rgba(255,255,255,0.06);border:1px solid var(--border);color:rgba(255,255,255,0.66)}
+.viz-journal .j-insight{display:flex;gap:9px;align-items:flex-start;padding:13px;border-radius:14px;background:rgba(232,207,154,0.09);border:1px solid rgba(232,207,154,0.22);font-size:12.5px;color:rgba(255,255,255,0.76);line-height:1.5}
+.viz-journal .j-insight svg{width:15px;height:15px;stroke:var(--gold);fill:none;stroke-width:2;flex:none;margin-top:1px}
+
+/* Mood check — the wheel of words, one chosen. */
+.viz-mood{padding:24px 22px;background:var(--surface);border:1px solid var(--border)}
+.viz-mood .mo-q{font-family:var(--serif);font-size:18px;color:#fff;text-align:center;margin-bottom:18px}
+.viz-mood .mo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.viz-mood .mo{padding:13px 6px;border-radius:14px;text-align:center;font-size:12px;font-weight:600;color:rgba(255,255,255,0.60);background:rgba(255,255,255,0.045);border:1px solid var(--border)}
+.viz-mood .mo.sel{color:#fff;background:linear-gradient(135deg,rgba(162,155,254,0.34),rgba(102,92,214,0.24));border-color:rgba(162,155,254,0.55);box-shadow:0 8px 22px rgba(102,51,204,.30)}
+.viz-mood .mo-foot{margin-top:16px;font-size:12.5px;color:var(--ink-3);text-align:center;line-height:1.5}
+.viz-mood .mo-foot b{color:var(--lavender);font-weight:700}
+
 /* ---------------- SCROLL REVEAL ---------------- */
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.25,.46,.45,.94),transform .7s cubic-bezier(.25,.46,.45,.94)}
 .reveal.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){
   .reveal{opacity:1;transform:none;transition:none}
-  .hero-orb .core,.hero-orb .ring,.viz-pick::after{animation:none}
+  .hero-orb .core,.hero-orb .ring,.viz-quit .q-orb{animation:none}
 }
 
 /* ---------------- RIPPLE ---------------- */
@@ -346,7 +385,7 @@ footer{border-top:1px solid var(--border);background:var(--navy-1);padding:56px 
       <div class="hero-copy">
         <div class="eyebrow">Daily wellness · guided by intelligence</div>
         <h1>Begin your<br>wellness <em>journey</em></h1>
-        <p class="hero-sub">Your companion for healing, growth, and mindfulness. Journal your thoughts, track your habits, and find your inner peace — quietly, at your own pace.</p>
+        <p class="hero-sub">Quit the thing you're trying to quit, build habits that forgive a missed day, and understand what your sleep and your mood are telling you. Lotara reads it all together — quietly, at your own pace.</p>
         <div class="cta-row">
           <a href="https://apps.apple.com/us/app/lotara/id6749601041" target="_blank" rel="noopener noreferrer" class="btn btn-store">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
@@ -402,9 +441,19 @@ footer{border-top:1px solid var(--border);background:var(--navy-1);padding:56px 
     </div>
     <div class="features-grid">
       <div class="f-card">
-        <div class="f-icon"><svg viewBox="0 0 24 24" style="stroke:var(--wisdom)" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
-        <h3>Mindful Journaling</h3>
-        <p>Express yourself with text or voice. Gentle insights help you understand your emotional patterns and growth.</p>
+        <div class="f-icon"><svg viewBox="0 0 24 24" style="stroke:var(--love)" aria-hidden="true"><path d="M12 21.6C11.7 21.4 5 17.8 5 12.2a5.5 5.5 0 0 1 7-5.3 5.5 5.5 0 0 1 7 5.3c0 5.6-6.7 9.2-7 9.4z"/><path d="M9.5 12.2h1.7l1 2 1.4-3.4.9 1.4h1.6"/></svg></div>
+        <h3>Quitting Something</h3>
+        <p>Count the days since your last. When the pull hits, Lotara steps in before the slip — breathing, your own reasons, and a swap you rehearsed.</p>
+      </div>
+      <div class="f-card">
+        <div class="f-icon"><svg viewBox="0 0 24 24" style="stroke:var(--sage)" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+        <h3>Habits That Forgive</h3>
+        <p>Build a rhythm with gentle reminders and streaks that survive a missed day. Consistency, not a perfect record.</p>
+      </div>
+      <div class="f-card">
+        <div class="f-icon"><svg viewBox="0 0 24 24" style="stroke:var(--calm)" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <h3>Health &amp; Intelligence</h3>
+        <p>Apple Health brings your sleep, resting heart rate and movement in. Lotara reads them together and tells you what it noticed, in plain words.</p>
       </div>
       <div class="f-card">
         <div class="f-icon"><svg viewBox="0 0 24 24" style="stroke:var(--focus)" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></div>
@@ -412,24 +461,14 @@ footer{border-top:1px solid var(--border);background:var(--navy-1);padding:56px 
         <p>Guided sessions across six moods, multi-day challenges that open one day at a time, and sleep stories read by a voice you'll want to fall asleep to.</p>
       </div>
       <div class="f-card">
-        <div class="f-icon"><svg viewBox="0 0 24 24" style="stroke:var(--sage)" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
-        <h3>Habit Tracking</h3>
-        <p>Build lasting habits with smart reminders and streak tracking. Celebrate your wins, big and small.</p>
+        <div class="f-icon"><svg viewBox="0 0 24 24" style="stroke:var(--wisdom)" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
+        <h3>Mindful Journaling</h3>
+        <p>Write it out or say it out loud. Lotara reads what you wrote and reflects the patterns back — never grades them.</p>
       </div>
       <div class="f-card">
-        <div class="f-icon"><svg viewBox="0 0 24 24" style="stroke:var(--love)" aria-hidden="true"><path d="M12 21.6C11.7 21.4 5 17.8 5 12.2a5.5 5.5 0 0 1 7-5.3 5.5 5.5 0 0 1 7 5.3c0 5.6-6.7 9.2-7 9.4z"/></svg></div>
-        <h3>Mood Tracking</h3>
-        <p>Check in with yourself daily. Discover what influences your mood and the patterns in your well-being.</p>
-      </div>
-      <div class="f-card">
-        <div class="f-icon"><svg viewBox="0 0 24 24" style="stroke:var(--calm)" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
-        <h3>Health Integration</h3>
-        <p>Connect with Apple Health to see how your sleep, heart rate and movement connect to how you actually feel.</p>
-      </div>
-      <div class="f-card">
-        <div class="f-icon"><svg viewBox="0 0 24 24" style="stroke:var(--gold)" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 14l4-4 4 4 5-6"/></svg></div>
-        <h3>Growth Analytics</h3>
-        <p>Visualize your journey with beautiful insights. See your progress and celebrate how far you've come.</p>
+        <div class="f-icon"><svg viewBox="0 0 24 24" style="stroke:var(--gold)" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5s1.3 1.6 3.5 1.6 3.5-1.6 3.5-1.6"/><path d="M9 9.5h.01M15 9.5h.01"/></svg></div>
+        <h3>Daily Mood Check</h3>
+        <p>One word a day. Over a month it becomes a map of what lifts you and what costs you — tied back to your sleep and your streaks.</p>
       </div>
     </div>
   </div>
@@ -440,21 +479,43 @@ footer{border-top:1px solid var(--border);background:var(--navy-1);padding:56px 
   <div class="wrap">
     <div class="showcase">
       <div class="sc-media">
-        <div class="viz viz-pick" aria-hidden="true">
-          <div class="v-lab">✦ Lotara picks</div>
-          <div class="v-title">Rain on a Tin Roof</div>
-          <div class="v-sub">Your resting rate was 66 bpm overnight, five above your average — a longer story gives you time to come down.</div>
-          <div class="v-bar"><div class="v-track"><div class="v-fill"></div></div><div class="v-count">18 min</div></div>
+        <div class="viz viz-quit" aria-hidden="true">
+          <div class="q-lab">Quiet Mode · Committed Support</div>
+          <div class="q-num">47</div>
+          <div class="q-since">Days since your last</div>
+          <div class="q-div"></div>
+          <div class="q-pull"><span class="q-orb"></span>I'm feeling the pull right now</div>
+          <div class="q-out"><span class="rode">You rode it out</span><span>Logged, not judged</span></div>
+        </div>
+      </div>
+      <div class="sc-copy">
+        <span class="badge">Quitting</span>
+        <h3>For the thing you're trying to stop</h3>
+        <p>Alcohol, vaping, doomscrolling, whatever it is — Lotara counts the days since your last, and shows you when the pull is strongest: which hours, and what usually comes before it.</p>
+        <p>When it hits, one tap opens the moment before the slip. A breathing orb, the reason you wrote down when you were clear-headed, and the swap you rehearsed. Two honest ways out — <em>you rode it out</em>, or <em>logged, not judged</em>. Never a shaming wall.</p>
+        <p class="quote">"Times you gave in, per week — down 38% since you began."</p>
+      </div>
+    </div>
+    <div class="showcase flip">
+      <div class="sc-media">
+        <div class="viz viz-vitals" aria-hidden="true">
+          <div class="m-row">
+            <div class="m"><div class="k">Resting</div><div class="v">66<i>bpm</i></div><div class="d up">▲ 5 above</div></div>
+            <div class="m"><div class="k">Slept</div><div class="v">5<i>h</i>42<i>m</i></div><div class="d up">▼ short</div></div>
+            <div class="m"><div class="k">Moved</div><div class="v">7.2<i>k</i></div><div class="d ok">on pace</div></div>
+          </div>
+          <div class="m-read"><span>✦</span><span><b>Lotara reads:</b> a short night and a raised resting rate. Today is a day to go gently — and to watch the evening, when the pull usually lands.</span></div>
         </div>
       </div>
       <div class="sc-copy">
         <span class="badge">✦ Lotara Intelligence</span>
         <h3>It reads your day before it suggests anything</h3>
-        <p>Last night's sleep, your resting heart rate, today's mood check-in, what you wrote in your journal — Lotara reads them together and says which practice fits tonight, and why, in plain words.</p>
+        <p>Apple Health brings in last night's sleep, your resting heart rate and your movement. Your mood check-in and what you wrote in your journal sit alongside them.</p>
+        <p>Lotara reads all four together — not one number in isolation — and says what it noticed and what fits today, in plain words. It never overclaims. When there isn't enough to go on, it says so.</p>
         <p class="quote">"Your resting rate was 66 bpm overnight, five above your average — a longer story gives you time to come down."</p>
       </div>
     </div>
-    <div class="showcase flip">
+    <div class="showcase">
       <div class="sc-media">
         <div class="viz viz-cats" aria-hidden="true">
           <div class="cat c1"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9c0-.5 0-.9-.1-1.4a5.4 5.4 0 0 1-4.4 2.3A5.4 5.4 0 0 1 13.4 3.1 9 9 0 0 0 12 3z"/></svg><span>Sleep</span></div>
@@ -466,13 +527,50 @@ footer{border-top:1px solid var(--border);background:var(--navy-1);padding:56px 
         </div>
       </div>
       <div class="sc-copy">
-        <span class="badge">Meditate</span>
+        <span class="badge">Meditate &amp; Sleep</span>
         <h3>A library you can find your way around</h3>
         <p>Browse by how you feel rather than by title — Sleep, Stress &amp; Calm, Focus, Morning, Anxiety, Breathe. Multi-day challenges open one day at a time, so a week of practice feels like a path instead of a playlist.</p>
+        <p>Sleep is its own place at night: long-form stories read by British narrators, with rain, ocean or wind underneath at whatever volume you like — or none at all.</p>
         <p class="quote">Every session carries its own colour, so the app looks the way the practice feels.</p>
       </div>
     </div>
+    <div class="showcase flip">
+      <div class="sc-media">
+        <div class="viz viz-journal" aria-hidden="true">
+          <div class="j-date">Tuesday · 9:14 PM</div>
+          <div class="j-body">Rough one. Got through the meeting but I could feel it building all afternoon, and by six I really wanted a drink. <mark>Went for a walk instead.</mark> Slept badly again.</div>
+          <div class="j-tags"><span>Work</span><span>Evening</span><span>Held on</span></div>
+          <div class="j-insight"><svg viewBox="0 0 24 24"><path d="M12 3v2M12 19v2M5 12H3M21 12h-2M6.3 6.3 4.9 4.9M19.1 19.1l-1.4-1.4M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"/><circle cx="12" cy="12" r="3.4"/></svg><span>That's the third evening this month the pull followed a short night. Worth protecting your sleep first.</span></div>
+        </div>
+      </div>
+      <div class="sc-copy">
+        <span class="badge">Journal</span>
+        <h3>Write it down, and it starts connecting</h3>
+        <p>Type it or speak it — voice entries transcribe themselves. Lotara reads what you wrote and reflects the patterns back: which days come up heavy, what tends to precede a hard evening, what you keep returning to.</p>
+        <p>It never scores you and it never lectures. Entries stay yours, on your device and your private cloud, and nothing is sold or shared.</p>
+        <p class="quote">"That's the third evening this month the pull followed a short night."</p>
+      </div>
+    </div>
     <div class="showcase">
+      <div class="sc-media">
+        <div class="viz viz-mood" aria-hidden="true">
+          <div class="mo-q">How are you, honestly?</div>
+          <div class="mo-grid">
+            <div class="mo">Calm</div><div class="mo">Tired</div><div class="mo sel">Restless</div>
+            <div class="mo">Low</div><div class="mo">Hopeful</div><div class="mo">Wired</div>
+          </div>
+          <div class="mo-foot">Restless three evenings running — each one after <b>under six hours</b> of sleep.</div>
+        </div>
+      </div>
+      <div class="sc-copy">
+        <span class="badge">Mood</span>
+        <h3>One word a day becomes a map</h3>
+        <p>The check-in takes a second: pick the word that fits. Over a month it turns into something you can actually read — what lifts you, what costs you, and which days you tend to struggle.</p>
+        <p>Because it sits next to your sleep, your heart rate and your streaks, Lotara can line them up and tell you what it noticed rather than leaving you to guess.</p>
+        <p class="quote">Some days the honest answer is "low." That's a data point, not a failure.</p>
+      </div>
+    </div>
+    <div class="showcase flip">
       <div class="sc-media">
         <div class="viz viz-streak" aria-hidden="true">
           <div class="s-row">
@@ -557,6 +655,7 @@ footer{border-top:1px solid var(--border);background:var(--navy-1);padding:56px 
         <div class="cell"><div class="best">Best value</div><div class="tier">Premium</div><div class="tprice">$2.08 / month</div></div>
       </div>
       <div class="cmp-body">
+        <div class="cmp-row"><div class="cell"><div class="fname">Quitting Support</div><div class="fdesc">Days-free count, urge tracking, the in-the-moment intercept</div></div><div class="cell mid"><svg class="ico-yes" viewBox="0 0 24 24" role="img" aria-label="Included"><polyline points="20 6 9 17 4 12"/></svg></div><div class="cell mid"><svg class="ico-yes" viewBox="0 0 24 24" role="img" aria-label="Included"><polyline points="20 6 9 17 4 12"/></svg></div></div>
         <div class="cmp-row"><div class="cell"><div class="fname">Unlimited Journaling</div><div class="fdesc">Text or voice, whenever you need it</div></div><div class="cell mid"><svg class="ico-yes" viewBox="0 0 24 24" role="img" aria-label="Included"><polyline points="20 6 9 17 4 12"/></svg></div><div class="cell mid"><svg class="ico-yes" viewBox="0 0 24 24" role="img" aria-label="Included"><polyline points="20 6 9 17 4 12"/></svg></div></div>
         <div class="cmp-row"><div class="cell"><div class="fname">Habit &amp; Mood Tracking</div><div class="fdesc">Build streaks, check in daily</div></div><div class="cell mid"><svg class="ico-yes" viewBox="0 0 24 24" role="img" aria-label="Included"><polyline points="20 6 9 17 4 12"/></svg></div><div class="cell mid"><svg class="ico-yes" viewBox="0 0 24 24" role="img" aria-label="Included"><polyline points="20 6 9 17 4 12"/></svg></div></div>
         <div class="cmp-row"><div class="cell"><div class="fname">Meditations, Sleep Stories &amp; Health Sync</div><div class="fdesc">The full library, challenges, and Apple Health</div></div><div class="cell mid"><svg class="ico-yes" viewBox="0 0 24 24" role="img" aria-label="Included"><polyline points="20 6 9 17 4 12"/></svg></div><div class="cell mid"><svg class="ico-yes" viewBox="0 0 24 24" role="img" aria-label="Included"><polyline points="20 6 9 17 4 12"/></svg></div></div>
