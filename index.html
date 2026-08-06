@@ -189,6 +189,32 @@
 .p-rings .rg b{display:block;font-size:10.5px;font-weight:700;color:rgba(255,255,255,.82)}
 .p-rings .rg span{display:block;font-size:9px;color:rgba(255,255,255,.4);margin-top:2px}
 
+/* Journal: a voice entry caught mid-flight, because "tap once and just talk"
+   is the part worth showing. Bar durations are deliberately incommensurate so
+   the row never visibly loops, and the caret keeps blinking after the sentence
+   so the entry reads as still being written. */
+.p-voice{display:flex;align-items:center;gap:12px;margin-top:22px;padding:13px 15px;border-radius:16px;
+  background:rgba(215,166,203,.10);border:1px solid rgba(215,166,203,.30)}
+.p-voice .mic{width:34px;height:34px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(150deg,#e0a8d4,#b877a6);animation:micPulse 2.6s ease-in-out infinite}
+@keyframes micPulse{0%,100%{box-shadow:0 0 13px rgba(215,166,203,.4)}50%{box-shadow:0 0 27px rgba(215,166,203,.8)}}
+.p-voice .mic svg{width:15px;height:15px;fill:none;stroke:#2a1626;stroke-width:2.2;stroke-linecap:round}
+.p-voice .vt b{display:block;font-size:12.5px;font-weight:700;color:#fff}
+.p-voice .vt span{display:block;font-size:10.5px;color:rgba(255,255,255,.45);margin-top:1px}
+.p-wave{display:flex;align-items:center;gap:3px;margin-left:auto;height:24px}
+.p-wave i{width:3px;border-radius:2px;background:#e0a8d4;animation:wav 1.5s ease-in-out infinite}
+@keyframes wav{0%,100%{height:5px;opacity:.5}50%{height:21px;opacity:1}}
+.p-wave i:nth-child(1){animation-duration:1.28s}
+.p-wave i:nth-child(2){animation-duration:1.71s}
+.p-wave i:nth-child(3){animation-duration:1.05s}
+.p-wave i:nth-child(4){animation-duration:1.93s}
+.p-wave i:nth-child(5){animation-duration:1.44s}
+.p-wave i:nth-child(6){animation-duration:1.17s}
+.p-wave i:nth-child(7){animation-duration:1.82s}
+.p-head .caret{display:inline-block;width:3px;height:.78em;margin-left:5px;vertical-align:-1px;
+  background:var(--love);animation:caret 1.1s step-end infinite}
+@keyframes caret{0%,49%{opacity:1}50%,100%{opacity:0}}
+
 /* footer */
 .p-foot{margin-top:30px;padding-top:22px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:flex-end;justify-content:space-between;gap:14px}
 .p-foot .cta{font-family:var(--serif);font-style:italic;font-size:14.5px;color:rgba(255,255,255,.7);line-height:1.4}
@@ -281,13 +307,89 @@
 .viz-journal .j-insight svg{width:15px;height:15px;stroke:var(--gold);fill:none;stroke-width:2;flex:none;margin-top:1px}
 
 /* Mood check — the wheel of words, one chosen. */
-.viz-mood{padding:24px 22px;background:var(--surface);border:1px solid var(--border)}
-.viz-mood .mo-q{font-family:var(--serif);font-size:18px;color:#fff;text-align:center;margin-bottom:18px}
-.viz-mood .mo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
-.viz-mood .mo{padding:13px 6px;border-radius:14px;text-align:center;font-size:12px;font-weight:600;color:rgba(255,255,255,0.60);background:rgba(255,255,255,0.045);border:1px solid var(--border)}
-.viz-mood .mo.sel{color:#fff;background:linear-gradient(135deg,rgba(162,155,254,0.34),rgba(102,92,214,0.24));border-color:rgba(162,155,254,0.55);box-shadow:0 8px 22px rgba(102,51,204,.30)}
-.viz-mood .mo-foot{margin-top:16px;font-size:12.5px;color:var(--ink-3);text-align:center;line-height:1.5}
+/* ---------------- MOOD ORB ----------------
+   The app never asks you to pick a word off a grid. MoodEntrySheet shows a
+   glowing orb that takes the mood's colour, with the felt word rising
+   underneath — Joyful, Bright, Warm, Steady, Low. This is that, cycling on
+   its own so the section is alive the moment it's on screen. Pure CSS
+   keyframes: nothing to start, so nothing that can fail to start. */
+.viz-mood{padding:30px 22px 24px;background:var(--surface);border:1px solid var(--border);text-align:center}
+.viz-mood .mo-q{font-family:var(--serif);font-size:19px;color:#fff;margin-bottom:20px}
+
+.mo-orb{position:relative;width:170px;height:170px;margin:0 auto;display:flex;align-items:center;justify-content:center}
+.mo-orb .halo,.mo-orb .core{position:absolute;border-radius:50%}
+.mo-orb .halo{width:168px;height:168px;filter:blur(11px);opacity:.5;
+  animation:moodHue 20s linear infinite,moodBreath 5.2s ease-in-out infinite}
+.mo-orb .core{width:94px;height:94px;
+  animation:moodHue 20s linear infinite,moodBreath 5.2s ease-in-out infinite}
+@keyframes moodBreath{0%,100%{transform:scale(.93)}50%{transform:scale(1.07)}}
+@keyframes moodHue{
+  0%,14%  {background:radial-gradient(circle at 34% 30%,#f4e0b8,#e8cf9a 55%,rgba(232,207,154,.5));box-shadow:0 0 44px rgba(232,207,154,.6)}
+  20%,34% {background:radial-gradient(circle at 34% 30%,#f0c8e4,#e0a8d4 55%,rgba(224,168,212,.5));box-shadow:0 0 44px rgba(224,168,212,.6)}
+  40%,54% {background:radial-gradient(circle at 34% 30%,#c2bcff,#a29bfe 55%,rgba(162,155,254,.5));box-shadow:0 0 44px rgba(162,155,254,.6)}
+  60%,74% {background:radial-gradient(circle at 34% 30%,#bcdcca,#9cc2ad 55%,rgba(156,194,173,.5));box-shadow:0 0 44px rgba(156,194,173,.6)}
+  80%,94% {background:radial-gradient(circle at 34% 30%,#bccdec,#9bb1de 55%,rgba(155,177,222,.5));box-shadow:0 0 44px rgba(155,177,222,.6)}
+  100%    {background:radial-gradient(circle at 34% 30%,#f4e0b8,#e8cf9a 55%,rgba(232,207,154,.5));box-shadow:0 0 44px rgba(232,207,154,.6)}
+}
+/* The word arrives after the colour, rising +9px as the last one leaves —
+   the app's `riseUp .3s`. */
+.mo-word{position:relative;height:46px;margin:6px 0 18px}
+.mo-word b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:33px;font-weight:700;letter-spacing:-.5px;opacity:0;animation:moodWord 20s linear infinite}
+@keyframes moodWord{0%{opacity:0;transform:translateY(9px)}3%,13%{opacity:1;transform:none}17%,100%{opacity:0;transform:translateY(-5px)}}
+.mo-word b:nth-child(1){color:#e8cf9a;animation-delay:0s}
+.mo-word b:nth-child(2){color:#e0a8d4;animation-delay:4s}
+.mo-word b:nth-child(3){color:#a29bfe;animation-delay:8s}
+.mo-word b:nth-child(4){color:#9cc2ad;animation-delay:12s}
+.mo-word b:nth-child(5){color:#9bb1de;animation-delay:16s}
+
+.mo-wheel{display:flex;gap:6px;justify-content:center}
+.mo-wheel span{flex:1;padding:10px 4px;border-radius:12px;font-size:11px;font-weight:700;
+  color:rgba(255,255,255,.4);background:rgba(255,255,255,.045);border:1px solid var(--border);
+  animation:moodPill 20s linear infinite}
+@keyframes moodPill{
+  0%,1%   {color:rgba(255,255,255,.4);background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.08);transform:none}
+  4%,13%  {color:#fff;background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.35);transform:translateY(-3px)}
+  17%,100%{color:rgba(255,255,255,.4);background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.08);transform:none}}
+.mo-wheel span:nth-child(1){animation-delay:0s}
+.mo-wheel span:nth-child(2){animation-delay:4s}
+.mo-wheel span:nth-child(3){animation-delay:8s}
+.mo-wheel span:nth-child(4){animation-delay:12s}
+.mo-wheel span:nth-child(5){animation-delay:16s}
+
+.viz-mood .mo-foot{margin-top:18px;font-size:12.5px;color:var(--ink-3);line-height:1.5}
 .viz-mood .mo-foot b{color:var(--lavender);font-weight:700}
+
+/* A walkthrough pulse that steps tile to tile, so the grid reads as something
+   you move through rather than a static swatch board. Pauses under a pointer
+   so it never fights a hover. */
+.cat{animation:catWalk 9s ease-in-out infinite}
+@keyframes catWalk{
+  0%,3%    {transform:none;box-shadow:0 14px 30px rgba(0,0,0,.42);filter:none}
+  6%       {transform:translateY(-8px) scale(1.05);box-shadow:0 24px 44px rgba(0,0,0,.55);filter:brightness(1.12)}
+  10%,100% {transform:none;box-shadow:0 14px 30px rgba(0,0,0,.42);filter:none}}
+.cat:nth-child(1){animation-delay:0s}
+.cat:nth-child(2){animation-delay:.5s}
+.cat:nth-child(3){animation-delay:1s}
+.cat:nth-child(4){animation-delay:1.5s}
+.cat:nth-child(5){animation-delay:2s}
+.cat:nth-child(6){animation-delay:2.5s}
+.viz-cats:hover .cat{animation-play-state:paused}
+
+/* The shared reduced-motion rule kills every animation, which would leave the
+   orb on no colour and all five words faded out. Pin it to the app's own
+   default instead — Warm, lavender — so the section still reads. */
+@media (prefers-reduced-motion:reduce){
+  .mo-orb .halo,.mo-orb .core{animation:none;
+    background:radial-gradient(circle at 34% 30%,#c2bcff,#a29bfe 55%,rgba(162,155,254,.5));
+    box-shadow:0 0 44px rgba(162,155,254,.6)}
+  .mo-word b{animation:none;opacity:0}
+  .mo-word b:nth-child(3){opacity:1}
+  .mo-wheel span{animation:none}
+  .mo-wheel span:nth-child(3){color:#fff;background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.35)}
+  .cat,.p-wave i,.p-voice .mic,.p-head .caret{animation:none}
+  .p-wave i{height:12px}
+}
 
 @media (prefers-reduced-motion:reduce){
   .hero-orb .core,.hero-orb .ring,.viz-quit .q-orb,.phone-shot{animation:none}
@@ -650,13 +752,18 @@
           <div class="inner">
       <div class="p-top"><span class="orb"></span><span class="wm">Lotara</span><span class="kick">Journal · Tuesday 9:14 PM</span></div>
             <div class="p-eyebrow">Tonight you wrote</div>
-            <h2 class="p-head">"I really wanted a drink. <em>I went for a walk instead.</em>"</h2>
+            <h2 class="p-head">"I really wanted a drink. <em>I went for a walk instead.</em>"<span class="caret"></span></h2>
             <div class="p-meta">
               <span class="st"><b>3rd</b><span>evening this month</span></span>
               <span class="sep"></span>
               <span class="st"><b>&lt;6h</b><span>sleep each time</span></span>
             </div>
             <p class="p-reason">That's the third evening this month the pull followed a short night. Worth protecting your sleep first.</p>
+            <div class="p-voice">
+              <span class="mic"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span>
+              <span class="vt"><b>Tap to speak</b><span>Voice entries transcribe themselves</span></span>
+              <span class="p-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+            </div>
             <div class="p-chips">
               <span class="chip"><span class="dot"></span>Tap once and just talk</span>
               <span class="chip"><span class="dot"></span>Never scored, never lectured</span>
@@ -678,18 +785,17 @@
     <div class="showcase">
       <div class="sc-media">
         <div class="viz viz-mood" aria-hidden="true">
-          <div class="mo-q">How are you, honestly?</div>
-          <div class="mo-grid">
-            <div class="mo">Calm</div><div class="mo">Tired</div><div class="mo sel">Restless</div>
-            <div class="mo">Low</div><div class="mo">Hopeful</div><div class="mo">Wired</div>
-          </div>
-          <div class="mo-foot">Restless three evenings running — each one after <b>under six hours</b> of sleep.</div>
+          <div class="mo-q">How are you, really?</div>
+          <div class="mo-orb"><span class="halo"></span><span class="core"></span></div>
+          <div class="mo-word"><b>Joyful</b><b>Bright</b><b>Warm</b><b>Steady</b><b>Low</b></div>
+          <div class="mo-wheel"><span>Joyful</span><span>Bright</span><span>Warm</span><span>Steady</span><span>Low</span></div>
+          <div class="mo-foot">Steady three evenings running — each one after <b>under six hours</b> of sleep.</div>
         </div>
       </div>
       <div class="sc-copy">
         <span class="badge">Mood</span>
-        <h3>One word a day becomes a map</h3>
-        <p>The check-in takes a second: pick the word that fits. Over a month it turns into something you can actually read — what lifts you, what costs you, and which days you tend to struggle.</p>
+        <h3>No words to pick. Just the orb.</h3>
+        <p>The check-in takes a second and never asks you to name it first. Drag the orb and it takes the colour of how you feel — gold when you're joyful, calm blue when you're low — and the word arrives after, not before.</p>
         <p>Because it sits next to your sleep, your heart rate and your streaks, Lotara can line them up and tell you what it noticed rather than leaving you to guess.</p>
         <p class="quote">Some days the honest answer is "low." That's a data point, not a failure.</p>
       </div>
