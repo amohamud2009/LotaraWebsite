@@ -424,59 +424,108 @@
 .sc-copy p{font-size:16.5px;color:var(--ink-3);line-height:1.65;margin-bottom:16px}
 .sc-copy .quote{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--ink-2);border-left:2px solid rgba(162,155,254,0.4);padding-left:16px;line-height:1.55}
 
-/* ---------------- IMPACT ---------------- */
-.impact{background:var(--navy-1);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.impact-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:8px}
-.stat{text-align:center;padding:26px 16px;background:var(--surface-2);border:1px solid var(--border);border-radius:20px}
-.stat .num{font-size:40px;font-weight:800;letter-spacing:-1px;background:var(--hero-grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.stat .lab{font-size:14px;font-weight:700;color:var(--ink);margin-top:6px}
-.stat .desc{font-size:12.5px;color:var(--ink-4);margin-top:6px;line-height:1.5}
-.impact-note{text-align:center;font-size:13px;color:var(--ink-4);margin-top:26px;max-width:680px;margin-left:auto;margin-right:auto;line-height:1.6}
+/* ---------------- IMPACT ----------------
+   These were four outlined boxes with a gradient number — generic. Now each
+   carries its own accent, the numeral is set in the app's Georgia italic the
+   way every hero number in Lotara is, and a soft bloom sits behind it. */
+.impact{position:relative;background:var(--navy-1);border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden}
+.impact::before{content:"";position:absolute;top:-45%;left:50%;transform:translateX(-50%);width:1100px;height:700px;
+  background:radial-gradient(closest-side,rgba(162,155,254,.10),rgba(162,155,254,0));pointer-events:none}
+.impact .wrap{position:relative;z-index:1}
+.impact-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:8px}
+.stat{position:relative;text-align:center;padding:34px 18px 28px;border-radius:24px;overflow:hidden;
+  background:linear-gradient(168deg,rgba(255,255,255,.055),rgba(255,255,255,.018));
+  border:1px solid rgba(255,255,255,.09);box-shadow:0 18px 40px rgba(0,0,0,.34);
+  transition:transform .35s cubic-bezier(.22,.61,.36,1),border-color .35s ease}
+.stat:hover{transform:translateY(-5px);border-color:rgba(255,255,255,.18)}
+/* A hairline of the stat's own colour along the top edge, and a matching bloom. */
+.stat::before{content:"";position:absolute;top:0;left:22%;right:22%;height:1px;background:linear-gradient(90deg,transparent,var(--sc),transparent)}
+.stat::after{content:"";position:absolute;top:-58px;left:50%;transform:translateX(-50%);width:190px;height:150px;
+  background:radial-gradient(closest-side,var(--sc),transparent);opacity:.20;pointer-events:none}
+.stat:nth-child(1){--sc:#a29bfe}
+.stat:nth-child(2){--sc:#9cc2ad}
+.stat:nth-child(3){--sc:#e8cf9a}
+.stat:nth-child(4){--sc:#d7a6cb}
+.stat .num{position:relative;font-family:var(--serif);font-style:italic;font-weight:400;font-size:48px;line-height:1;
+  color:var(--sc);text-shadow:0 0 34px color-mix(in srgb,var(--sc) 55%,transparent)}
+.stat .lab{position:relative;font-size:13px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--ink);margin-top:16px}
+.stat .desc{position:relative;font-size:12.5px;color:var(--ink-4);margin-top:8px;line-height:1.55}
+.impact-note{text-align:center;font-size:13px;color:var(--ink-4);margin-top:32px;max-width:680px;margin-left:auto;margin-right:auto;line-height:1.6}
 
 /* ---------------- PREMIUM ---------------- */
-.premium-wrap{position:relative;border:1px solid rgba(232,207,154,0.22);border-radius:32px;padding:56px 44px;overflow:hidden;background:linear-gradient(135deg,rgba(102,51,204,0.14),rgba(201,143,216,0.05))}
-.premium-wrap::before{content:"";position:absolute;top:-40%;right:-10%;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(232,207,154,0.14),rgba(232,207,154,0)65%);pointer-events:none}
+.premium-wrap{position:relative;border:1px solid rgba(232,207,154,0.22);border-radius:32px;padding:56px 44px;overflow:hidden;
+  background:linear-gradient(135deg,rgba(102,51,204,0.16),rgba(201,143,216,0.06) 55%,rgba(232,207,154,.04))}
+.premium-wrap::before{content:"";position:absolute;top:-40%;right:-10%;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(232,207,154,0.16),rgba(232,207,154,0)65%);pointer-events:none}
+.premium-wrap::after{content:"";position:absolute;bottom:-45%;left:-12%;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(162,155,254,0.16),rgba(162,155,254,0)65%);pointer-events:none}
 .premium-inner{position:relative;z-index:1}
-.badge-pro{display:inline-block;font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#2a2140;background:var(--gold);border-radius:9999px;padding:4px 12px;margin-bottom:18px}
+.badge-pro{display:inline-block;font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#2a2140;background:var(--gold);border-radius:9999px;padding:5px 13px;margin-bottom:18px;box-shadow:0 0 26px rgba(232,207,154,.4)}
 .premium-inner h2{font-size:clamp(28px,3.6vw,40px);font-weight:800;letter-spacing:-0.8px;color:#fff;margin-bottom:14px}
-.premium-inner .p-sub{font-size:17px;color:var(--ink-3);max-width:560px;margin-bottom:34px;line-height:1.6}
-.pf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px 30px;margin-bottom:40px}
+.premium-inner .p-sub{font-size:17px;color:var(--ink-3);max-width:560px;margin-bottom:36px;line-height:1.6}
+.pf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px 30px;margin-bottom:40px}
 .pf{display:flex;gap:13px}
-.pf .dot{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:rgba(232,207,154,0.16);display:flex;align-items:center;justify-content:center;margin-top:1px}
-.pf .dot svg{width:13px;height:13px;stroke:var(--gold);stroke-width:2.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.pf h4{font-size:15.5px;font-weight:700;color:#fff;margin-bottom:3px}
-.pf p{font-size:13.5px;color:var(--ink-4);line-height:1.5}
-.premium-cta{display:flex;align-items:center;gap:22px;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:32px}
-.premium-cta .price b{font-size:30px;font-weight:800;color:#fff;letter-spacing:-0.5px}
-.premium-cta .price span{font-size:14px;color:var(--ink-4)}
-.premium-cta .price small{display:block;font-size:12.5px;color:var(--ink-4);margin-top:2px}
+.pf .dot{flex-shrink:0;width:26px;height:26px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-top:1px;
+  background:linear-gradient(150deg,rgba(232,207,154,.34),rgba(232,207,154,.12));border:1px solid rgba(232,207,154,.34)}
+.pf .dot svg{width:13px;height:13px;stroke:var(--gold);stroke-width:2.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.pf h4{font-size:15.5px;font-weight:700;color:#fff;margin-bottom:4px}
+.pf p{font-size:13.5px;color:var(--ink-4);line-height:1.55}
+.premium-cta{display:flex;align-items:center;justify-content:space-between;gap:26px;flex-wrap:wrap;
+  border-top:1px solid rgba(232,207,154,.18);padding-top:32px}
+.premium-cta .price b{display:block;font-family:var(--serif);font-style:italic;font-weight:400;font-size:32px;color:#fff;letter-spacing:-.4px}
+.premium-cta .price small{display:block;font-size:13px;color:var(--ink-4);margin-top:6px}
 
-/* ---------------- COMPARISON ---------------- */
-.cmp{max-width:900px;margin:0 auto;border:1px solid var(--border);border-radius:24px;overflow:hidden;background:var(--surface-2)}
-.cmp-row{display:grid;grid-template-columns:1.7fr 0.9fr 0.9fr;align-items:center}
-.cmp-head{background:var(--navy-3);border-bottom:1px solid var(--border)}
-.cmp-head .cell{padding:24px 22px;text-align:center}
+/* ---------------- COMPARISON ----------------
+   This was the most HTML-looking thing on the page: a flat table with hairline
+   rows. The Premium column is now a lit lane running the full height of the
+   card, ticks sit in filled discs, and an excluded row reads as a quiet dash
+   rather than a red-ish cross. */
+.cmp{position:relative;max-width:920px;margin:0 auto;border:1px solid rgba(255,255,255,.10);border-radius:28px;overflow:hidden;
+  background:linear-gradient(170deg,rgba(255,255,255,.05),rgba(255,255,255,.015));box-shadow:0 30px 70px rgba(0,0,0,.5)}
+/* The lit lane behind the Premium column. */
+.cmp::before{content:"";position:absolute;top:0;bottom:0;right:0;width:24.5%;pointer-events:none;
+  background:linear-gradient(180deg,rgba(232,207,154,.10),rgba(232,207,154,.03) 40%,rgba(232,207,154,0));
+  border-left:1px solid rgba(232,207,154,.16)}
+.cmp-row{position:relative;z-index:1;display:grid;grid-template-columns:1.7fr 0.75fr 0.75fr;align-items:center}
+.cmp-head{background:rgba(255,255,255,.035);border-bottom:1px solid rgba(255,255,255,.10)}
+.cmp-head .cell{padding:26px 22px 22px;text-align:center}
 .cmp-head .cell:first-child{text-align:left}
 .cmp-head .tier{font-size:17px;font-weight:800;color:#fff}
-.cmp-head .tprice{font-size:13px;color:var(--ink-4);margin-top:3px}
-.cmp-head .best{display:inline-block;font-size:10px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#2a2140;background:var(--gold);border-radius:9999px;padding:2px 9px;margin-bottom:7px}
-.cmp-body .cmp-row{border-bottom:1px solid var(--border)}
+.cmp-head .cell:first-child .tier{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-4)}
+.cmp-head .tprice{font-size:12px;color:var(--ink-4);margin-top:4px}
+.cmp-head .best{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#2a2140;
+  background:var(--gold);border-radius:9999px;padding:3px 10px;margin-bottom:8px;box-shadow:0 0 20px rgba(232,207,154,.45)}
+.cmp-body .cmp-row{border-bottom:1px solid rgba(255,255,255,.055);transition:background .25s ease}
 .cmp-body .cmp-row:last-child{border-bottom:none}
-.cmp-body .cmp-row:nth-child(even){background:rgba(255,255,255,0.015)}
-.cmp .cell{padding:16px 22px}
+.cmp-body .cmp-row:hover{background:rgba(255,255,255,.035)}
+.cmp .cell{padding:18px 22px}
 .cmp .cell.mid{text-align:center}
 .cmp .fname{font-size:15px;font-weight:700;color:var(--ink)}
-.cmp .fdesc{font-size:12.5px;color:var(--ink-4);margin-top:2px}
-.cmp .ico-yes{width:20px;height:20px;stroke:var(--sage);stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;display:inline-block}
-.cmp .ico-no{width:17px;height:17px;stroke:var(--ink-5);stroke-width:2.4;fill:none;stroke-linecap:round;display:inline-block}
+.cmp .fdesc{font-size:12.5px;color:var(--ink-4);margin-top:3px}
+/* Tick in a filled disc; excluded is a dash, not a cross — the point is that
+   the feature is Premium-only, not that something is wrong. */
+.cmp .ico-yes{width:26px;height:26px;padding:6px;border-radius:50%;box-sizing:border-box;
+  background:rgba(156,194,173,.16);border:1px solid rgba(156,194,173,.42);
+  stroke:var(--sage);stroke-width:3.2;fill:none;stroke-linecap:round;stroke-linejoin:round;display:inline-block;vertical-align:middle}
+.cmp .cell.mid:last-child .ico-yes{background:rgba(232,207,154,.18);border-color:rgba(232,207,154,.5);stroke:var(--gold)}
+.cmp .ico-no{width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle}
+.cmp .ico-no::after{content:"";width:12px;height:2px;border-radius:2px;background:rgba(255,255,255,.22)}
 
-/* ---------------- FINAL CTA ---------------- */
-.final{position:relative;text-align:center;padding:120px 0;overflow:hidden}
-.final::before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:820px;height:820px;border-radius:50%;background:radial-gradient(circle,rgba(162,155,254,0.16),rgba(162,155,254,0)62%);pointer-events:none}
-.final-inner{position:relative;z-index:1;max-width:640px;margin:0 auto;padding:0 28px}
-.final h2{font-size:clamp(34px,4.6vw,52px);font-weight:800;letter-spacing:-1px;color:#fff;line-height:1.08;margin-bottom:18px}
-.final h2 em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--lavender)}
-.final p{font-size:18px;color:var(--ink-3);margin-bottom:34px}
+/* ---------------- FINAL CTA ----------------
+   Was bare text floating on black. Now it sits in a panel with the app's
+   breathing orb behind it, so the page closes the way it opened. */
+.final{position:relative;text-align:center;padding:110px 0;overflow:hidden}
+.final::before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:900px;height:900px;border-radius:50%;
+  background:radial-gradient(circle,rgba(162,155,254,0.17),rgba(162,155,254,0)62%);pointer-events:none}
+.final-inner{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:58px 44px 54px;border-radius:34px;
+  background:linear-gradient(168deg,rgba(255,255,255,.055),rgba(255,255,255,.015));
+  border:1px solid rgba(255,255,255,.10);box-shadow:0 34px 80px rgba(0,0,0,.5)}
+.final-orb{width:78px;height:78px;margin:0 auto 26px;border-radius:50%;background:var(--hero-grad);
+  box-shadow:0 0 54px rgba(102,51,204,.6),0 0 100px rgba(162,155,254,.3);animation:finalBreathe 14s ease-in-out infinite}
+@keyframes finalBreathe{0%,100%{transform:scale(.9)}28%{transform:scale(1.08)}42%{transform:scale(1.08)}72%{transform:scale(.9)}}
+.final h2{font-size:clamp(32px,4.4vw,48px);font-weight:800;letter-spacing:-1px;color:#fff;line-height:1.08;margin-bottom:16px}
+.final h2 em{font-family:var(--serif);font-style:italic;font-weight:400;
+  background:var(--hero-grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.final p{font-size:17.5px;color:var(--ink-3);margin-bottom:34px;line-height:1.6}
+.final .fine{margin-top:22px;font-size:12.5px;color:var(--ink-5)}
 
 /* ---------------- RESPONSIVE ---------------- */
 @media (max-width:900px){
@@ -820,6 +869,7 @@
         <h3>Streaks that forgive you</h3>
         <p>Miss a day and your rhythm holds — no broken chains, no guilt. Lotara tracks the shape of your week, not a perfect record, so consistency feels kind instead of punishing.</p>
         <p class="quote">Non-judgmental by design. You're not behind — you're becoming.</p>
+        <span class="fb-tag">Quiet by design.</span>
       </div>
     </div>
   </div>
@@ -889,9 +939,9 @@
         <div class="cmp-row"><div class="cell"><div class="fname">Unlimited Journaling</div><div class="fdesc">Text or voice, whenever you need it</div></div><div class="cell mid"><svg class="ico-yes" viewBox="0 0 24 24" role="img" aria-label="Included"><polyline points="20 6 9 17 4 12"/></svg></div><div class="cell mid"><svg class="ico-yes" viewBox="0 0 24 24" role="img" aria-label="Included"><polyline points="20 6 9 17 4 12"/></svg></div></div>
         <div class="cmp-row"><div class="cell"><div class="fname">Habit &amp; Mood Tracking</div><div class="fdesc">Build streaks, check in daily</div></div><div class="cell mid"><svg class="ico-yes" viewBox="0 0 24 24" role="img" aria-label="Included"><polyline points="20 6 9 17 4 12"/></svg></div><div class="cell mid"><svg class="ico-yes" viewBox="0 0 24 24" role="img" aria-label="Included"><polyline points="20 6 9 17 4 12"/></svg></div></div>
         <div class="cmp-row"><div class="cell"><div class="fname">Meditations, Sleep Stories &amp; Health Sync</div><div class="fdesc">The full library, challenges, and Apple Health</div></div><div class="cell mid"><svg class="ico-yes" viewBox="0 0 24 24" role="img" aria-label="Included"><polyline points="20 6 9 17 4 12"/></svg></div><div class="cell mid"><svg class="ico-yes" viewBox="0 0 24 24" role="img" aria-label="Included"><polyline points="20 6 9 17 4 12"/></svg></div></div>
-        <div class="cmp-row"><div class="cell"><div class="fname">Lotara Intelligence</div><div class="fdesc">Adaptive, pattern-based guidance</div></div><div class="cell mid"><svg class="ico-no" viewBox="0 0 24 24" role="img" aria-label="Not included"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><div class="cell mid"><svg class="ico-yes" viewBox="0 0 24 24" role="img" aria-label="Included"><polyline points="20 6 9 17 4 12"/></svg></div></div>
-        <div class="cmp-row"><div class="cell"><div class="fname">Advanced Analytics</div><div class="fdesc">Deep insight into your patterns</div></div><div class="cell mid"><svg class="ico-no" viewBox="0 0 24 24" role="img" aria-label="Not included"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><div class="cell mid"><svg class="ico-yes" viewBox="0 0 24 24" role="img" aria-label="Included"><polyline points="20 6 9 17 4 12"/></svg></div></div>
-        <div class="cmp-row"><div class="cell"><div class="fname">Data Export &amp; Reports</div><div class="fdesc">Beautiful PDF wellness reports</div></div><div class="cell mid"><svg class="ico-no" viewBox="0 0 24 24" role="img" aria-label="Not included"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><div class="cell mid"><svg class="ico-yes" viewBox="0 0 24 24" role="img" aria-label="Included"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+        <div class="cmp-row"><div class="cell"><div class="fname">Lotara Intelligence</div><div class="fdesc">Adaptive, pattern-based guidance</div></div><div class="cell mid"><span class="ico-no" role="img" aria-label="Not included"></span></div><div class="cell mid"><svg class="ico-yes" viewBox="0 0 24 24" role="img" aria-label="Included"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+        <div class="cmp-row"><div class="cell"><div class="fname">Advanced Analytics</div><div class="fdesc">Deep insight into your patterns</div></div><div class="cell mid"><span class="ico-no" role="img" aria-label="Not included"></span></div><div class="cell mid"><svg class="ico-yes" viewBox="0 0 24 24" role="img" aria-label="Included"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+        <div class="cmp-row"><div class="cell"><div class="fname">Data Export &amp; Reports</div><div class="fdesc">Beautiful PDF wellness reports</div></div><div class="cell mid"><span class="ico-no" role="img" aria-label="Not included"></span></div><div class="cell mid"><svg class="ico-yes" viewBox="0 0 24 24" role="img" aria-label="Included"><polyline points="20 6 9 17 4 12"/></svg></div></div>
       </div>
     </div>
   </div>
@@ -900,12 +950,14 @@
 <!-- ============ FINAL CTA ============ -->
 <section class="final" id="download">
   <div class="final-inner">
-    <h2>Start your transformation <em>today</em></h2>
-    <p>Try Premium free for 7 days. Cancel anytime. Your inner peace is one tap away.</p>
+    <div class="final-orb" aria-hidden="true"></div>
+    <h2>Day one starts <em>whenever you say</em></h2>
+    <p>Free to download, free to keep using. Premium is free for the first seven days if you want to try the intelligence layer.</p>
     <a href="https://apps.apple.com/us/app/lotara/id6749601041" target="_blank" rel="noopener noreferrer" class="btn btn-store" style="font-size:17px;padding:16px 30px">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
       <span class="lbl"><small>Download on the</small><b>App Store</b></span>
     </a>
+    <div class="fine">No ads. Nothing sold. You're not behind — you're becoming.</div>
   </div>
 </section>
 
@@ -919,6 +971,7 @@
           <span class="name">Lotara</span>
         </div>
         <p>Your companion for healing, growth, and mindfulness. You're not behind — you're becoming.</p>
+        <span class="fb-tag">Quiet by design.</span>
       </div>
       <div class="foot-col">
         <h4>Product</h4>
