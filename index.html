@@ -88,122 +88,134 @@
 
 /* ---------------- SECTION VISUALS (no screenshots) ---------------- */
 
-/* ---------------- POSTS ----------------
-   Taken from marketing/Lotara - Quit Habit IG Post.html in the design project.
-   The message leads, not the interface: a serif italic headline with the number
-   in gold, the reason underneath, the trend, and a line that means something.
-   Sized down from the 1080x1350 original and made fluid, but the proportions,
-   the gold-over-purple glow and the type ramp are the design's. */
-.showcase.big{grid-template-columns:1fr 1fr;gap:60px;margin-bottom:120px}
-.showcase.big .sc-media::after{display:none}
-.showcase.big .sc-copy h3{font-size:clamp(28px,3.3vw,38px)}
+/* ---------------- IMMERSIVE POSTS ----------------
+   A post used to sit in one half of a split with copy in the other, which made
+   it small and made the reader choose where to look. Now it runs the full
+   width of the column with its own interior layout, and the copy sits beneath.
+   You see the thing first, then read about it. */
+.feature{margin-bottom:130px}
+.feature:last-child{margin-bottom:0}
 
-.post{--pw:472px;position:relative;z-index:1;width:100%;max-width:var(--pw);
-  border-radius:28px;overflow:hidden;background:#08090f;color:#fff;
-  box-shadow:0 40px 90px rgba(0,0,0,.62),0 10px 26px rgba(0,0,0,.42);
-  border:1px solid rgba(255,255,255,.07)}
+.post{position:relative;width:100%;border-radius:32px;overflow:hidden;background:#08090f;color:#fff;
+  box-shadow:0 44px 100px rgba(0,0,0,.66),0 12px 30px rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.08)}
 .post .glow{position:absolute;inset:0;pointer-events:none;background:
-  radial-gradient(80% 45% at 50% 4%, rgba(232,207,154,.20) 0%, rgba(8,9,15,0) 55%),
-  radial-gradient(75% 55% at 50% 102%, rgba(102,51,204,.34) 0%, rgba(8,9,15,0) 60%);
+  radial-gradient(70% 46% at 22% 0%, rgba(232,207,154,.22) 0%, rgba(8,9,15,0) 58%),
+  radial-gradient(65% 60% at 82% 104%, rgba(102,51,204,.34) 0%, rgba(8,9,15,0) 62%);
   animation:postGlow 12s ease-in-out infinite}
-@keyframes postGlow{0%,100%{opacity:.86}50%{opacity:1}}
-.post.rose .glow{background:
-  radial-gradient(80% 45% at 50% 4%, rgba(215,166,203,.20) 0%, rgba(8,9,15,0) 55%),
-  radial-gradient(75% 55% at 50% 102%, rgba(102,51,204,.34) 0%, rgba(8,9,15,0) 60%)}
-.post.sage .glow{background:
-  radial-gradient(80% 45% at 50% 4%, rgba(156,194,173,.20) 0%, rgba(8,9,15,0) 55%),
-  radial-gradient(75% 55% at 50% 102%, rgba(102,51,204,.34) 0%, rgba(8,9,15,0) 60%)}
-.post .inner{position:relative;z-index:2;padding:38px 36px 34px;display:flex;flex-direction:column}
+@keyframes postGlow{0%,100%{opacity:.85}50%{opacity:1}}
+.post.rose .glow{background:radial-gradient(70% 46% at 22% 0%, rgba(215,166,203,.22) 0%, rgba(8,9,15,0) 58%),radial-gradient(65% 60% at 82% 104%, rgba(102,51,204,.34) 0%, rgba(8,9,15,0) 62%)}
+.post.sage .glow{background:radial-gradient(70% 46% at 22% 0%, rgba(156,194,173,.22) 0%, rgba(8,9,15,0) 58%),radial-gradient(65% 60% at 82% 104%, rgba(102,51,204,.34) 0%, rgba(8,9,15,0) 62%)}
+.post .inner{position:relative;z-index:2;padding:44px 48px 38px}
 
-/* topbar */
-.p-top{display:flex;align-items:center;gap:11px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.09);margin-bottom:30px}
-.p-top .orb{width:26px;height:26px;border-radius:50%;flex:none;
-  background:radial-gradient(circle at 35% 32%, rgba(232,207,154,.95), rgba(232,207,154,.42));
-  box-shadow:0 0 22px rgba(232,207,154,.5)}
-.post.rose .p-top .orb{background:radial-gradient(circle at 35% 32%, rgba(215,166,203,.95), rgba(215,166,203,.42));box-shadow:0 0 22px rgba(215,166,203,.5)}
-.post.sage .p-top .orb{background:radial-gradient(circle at 35% 32%, rgba(156,194,173,.95), rgba(156,194,173,.42));box-shadow:0 0 22px rgba(156,194,173,.5)}
-.p-top .wm{font-size:14px;font-weight:800;letter-spacing:.02em}
-.p-top .kick{margin-left:auto;font-size:8.5px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
+.p-top{display:flex;align-items:center;gap:12px;padding-bottom:22px;border-bottom:1px solid rgba(255,255,255,.09);margin-bottom:34px}
+.p-top .orb{width:30px;height:30px;border-radius:50%;flex:none;
+  background:radial-gradient(circle at 35% 32%, rgba(232,207,154,.95), rgba(232,207,154,.42));box-shadow:0 0 24px rgba(232,207,154,.5)}
+.post.rose .p-top .orb{background:radial-gradient(circle at 35% 32%, rgba(215,166,203,.95), rgba(215,166,203,.42));box-shadow:0 0 24px rgba(215,166,203,.5)}
+.post.sage .p-top .orb{background:radial-gradient(circle at 35% 32%, rgba(156,194,173,.95), rgba(156,194,173,.42));box-shadow:0 0 24px rgba(156,194,173,.5)}
+.post.night .p-top .orb{background:radial-gradient(circle at 35% 32%, #eef1ff, #b9c4ee);box-shadow:0 0 26px rgba(185,196,238,.6)}
+.p-top .wm{font-size:16px;font-weight:800}
+.p-top .kick{margin-left:auto;font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
 .post.rose .p-top .kick{color:var(--love)}
 .post.sage .p-top .kick{color:var(--sage)}
+.post.night .p-top .kick{color:#b9c4ee}
 
-/* the message */
-.p-eyebrow{font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.42);margin-bottom:15px}
+.p-split{display:grid;grid-template-columns:1.02fr 0.98fr;gap:52px;align-items:center}
+.p-eyebrow{font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.42);margin-bottom:16px}
 .p-head{font-family:var(--serif);font-style:italic;font-weight:300;
-  font-size:clamp(32px,3.4vw,43px);line-height:1.03;letter-spacing:-.8px;text-wrap:balance}
+  font-size:clamp(34px,3.9vw,52px);line-height:1.04;letter-spacing:-1px;text-wrap:balance}
 .p-head em{font-style:italic;color:var(--gold)}
 .post.rose .p-head em{color:var(--love)}
 .post.sage .p-head em{color:var(--sage)}
-
-.p-meta{margin-top:18px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
-.p-meta .st{display:flex;align-items:baseline;gap:5px}
-.p-meta .st b{font-size:12.5px;font-weight:800;color:#fff}
-.p-meta .st span{font-size:11px;font-weight:500;color:rgba(255,255,255,.5)}
+.post.night .p-head em{color:#c9d2f5}
+.p-meta{margin-top:22px;display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+.p-meta .st{display:flex;align-items:baseline;gap:6px}
+.p-meta .st b{font-size:15px;font-weight:800;color:#fff}
+.p-meta .st span{font-size:12.5px;font-weight:500;color:rgba(255,255,255,.5)}
 .p-meta .sep{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.25)}
-
-.p-reason{margin-top:22px;font-family:var(--serif);font-style:italic;font-size:16.5px;line-height:1.5;
-  color:rgba(255,255,255,.66);padding-left:15px;border-left:2px solid rgba(232,207,154,.5);text-wrap:pretty}
+.p-reason{margin-top:26px;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;
+  color:rgba(255,255,255,.7);padding-left:18px;border-left:2px solid rgba(232,207,154,.5);text-wrap:pretty}
 .post.rose .p-reason{border-left-color:rgba(215,166,203,.5)}
 .post.sage .p-reason{border-left-color:rgba(156,194,173,.5)}
+.post.night .p-reason{border-left-color:rgba(185,196,238,.5)}
 
-/* trend */
-.p-trend{margin-top:26px}
-.p-trend .cap{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
-.p-trend .cap .t{font-size:11px;font-weight:700;color:rgba(255,255,255,.7)}
-.p-trend .cap .n{font-size:10px;font-weight:600;color:var(--sage)}
-.p-trend svg{display:block;width:100%;height:auto}
-.p-trend .ln{stroke-dasharray:1000;stroke-dashoffset:0;transition:stroke-dashoffset 1.9s cubic-bezier(.22,.61,.36,1) .25s}
-.p-trend .ar,.p-trend .pt{opacity:1;transition:opacity 1.1s ease 1.1s}
-.reveal:not(.in) .p-trend .ln{stroke-dashoffset:1000}
-.reveal:not(.in) .p-trend .ar,.reveal:not(.in) .p-trend .pt{opacity:0}
-.p-trend .pt{transition-duration:.5s}
-.p-trend .pt:nth-of-type(1){transition-delay:1.0s}
-.p-trend .pt:nth-of-type(2){transition-delay:1.3s}
-.p-trend .pt:nth-of-type(3){transition-delay:1.6s}
+/* The chart. The old one was a four-point line with no scale and no grid,
+   which read as a placeholder. This is a real 12-week series: smooth bezier,
+   gradient area, gridlines, week labels, a glow on the stroke, and the peak
+   called out where it happens. */
+.p-chart{background:linear-gradient(170deg,rgba(255,255,255,.05),rgba(255,255,255,.015));
+  border:1px solid rgba(255,255,255,.09);border-radius:22px;padding:24px 24px 18px}
+.p-chart .ch-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.p-chart .ch-t{font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.p-chart .ch-n{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--sage);
+  background:rgba(156,194,173,.13);border:1px solid rgba(156,194,173,.32);border-radius:9999px;padding:5px 11px;flex:none}
+.p-chart .ch-big{font-family:var(--serif);font-style:italic;font-size:38px;line-height:1;color:#fff;margin:14px 0 3px}
+.p-chart .ch-sub{font-size:12.5px;color:rgba(255,255,255,.45);margin-bottom:18px}
+.p-chart svg{display:block;width:100%;height:auto;overflow:visible}
+.p-chart .grid line{stroke:rgba(255,255,255,.07);stroke-width:1}
+.p-chart .ln{fill:none;stroke:url(#lnGrad);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;
+  filter:drop-shadow(0 0 7px rgba(232,207,154,.5));
+  stroke-dasharray:1400;stroke-dashoffset:0;transition:stroke-dashoffset 2.1s cubic-bezier(.22,.61,.36,1) .2s}
+.reveal:not(.in) .p-chart .ln{stroke-dashoffset:1400}
+.p-chart .ar{fill:url(#arGrad);opacity:1;transition:opacity 1.2s ease 1.1s}
+.reveal:not(.in) .p-chart .ar{opacity:0}
+.p-chart .pk{opacity:1;transition:opacity .6s ease 1.5s}
+.reveal:not(.in) .p-chart .pk{opacity:0}
+.p-chart .pk-halo{animation:pkHalo 2.8s ease-in-out infinite}
+@keyframes pkHalo{0%,100%{r:6;opacity:.55}50%{r:13;opacity:0}}
+.p-chart .xl{font-size:10px;fill:rgba(255,255,255,.34)}
+.p-chart .pk-lab{font-size:11px;font-weight:700;fill:#fff}
 
-/* chips */
-.p-chips{margin-top:26px;display:flex;flex-wrap:wrap;gap:8px}
-.p-chips .chip{display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:9999px;
-  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);
-  font-size:11.5px;font-weight:600;color:rgba(255,255,255,.9);
+.p-chips{margin-top:30px;display:flex;flex-wrap:wrap;gap:10px}
+.p-chips .chip{display:flex;align-items:center;gap:8px;padding:11px 17px;border-radius:9999px;
+  background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.13);
+  font-size:13px;font-weight:600;color:rgba(255,255,255,.9);
   opacity:1;transform:none;transition:opacity .55s ease,transform .55s cubic-bezier(.22,.61,.36,1)}
 .reveal:not(.in) .p-chips .chip{opacity:0;transform:translateY(10px)}
 .p-chips .chip:nth-child(1){transition-delay:.5s}
 .p-chips .chip:nth-child(2){transition-delay:.64s}
 .p-chips .chip:nth-child(3){transition-delay:.78s}
-.p-chips .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold);flex:none}
-.post.rose .p-chips .dot{background:var(--love);box-shadow:0 0 10px var(--love)}
-.post.sage .p-chips .dot{background:var(--sage);box-shadow:0 0 10px var(--sage)}
+.p-chips .chip:nth-child(4){transition-delay:.92s}
+.p-chips .dot{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 11px var(--gold);flex:none}
+.post.rose .p-chips .dot{background:var(--love);box-shadow:0 0 11px var(--love)}
+.post.sage .p-chips .dot{background:var(--sage);box-shadow:0 0 11px var(--sage)}
+.post.night .p-chips .dot{background:#b9c4ee;box-shadow:0 0 11px #b9c4ee}
+.p-foot{margin-top:34px;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.p-foot .cta{font-family:var(--serif);font-style:italic;font-size:18px;color:rgba(255,255,255,.72)}
+.p-foot .handle{font-size:13.5px;font-weight:700;color:var(--gold)}
+.post.rose .p-foot .handle{color:var(--love)}
+.post.sage .p-foot .handle{color:var(--sage)}
+.post.night .p-foot .handle{color:#b9c4ee}
 
-/* rings row, for the health post */
-.p-rings{margin-top:24px;display:flex;gap:14px}
-.p-rings .rg{flex:1;text-align:center}
+/* Health dials. The sweep animates from zero via a registered custom
+   property; the final value arrives inline as --pf so the two never fight. */
 @property --p{syntax:"<number>";inherits:false;initial-value:0}
-.p-rings .dial{--p:var(--pf);width:100%;aspect-ratio:1;max-width:82px;margin:0 auto 9px;border-radius:50%;
+.p-rings{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+.p-rings .rg{text-align:center}
+.p-rings .dial{--p:var(--pf);width:104px;height:104px;margin:0 auto 12px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
-  background:conic-gradient(var(--c) 0turn calc(var(--p) * 1turn), rgba(255,255,255,.08) calc(var(--p) * 1turn) 1turn);
+  background:conic-gradient(var(--c) 0turn calc(var(--p) * 1turn), rgba(255,255,255,.09) calc(var(--p) * 1turn) 1turn);
+  box-shadow:0 0 30px color-mix(in srgb,var(--c) 34%,transparent);
   transition:--p 1.4s cubic-bezier(.22,.61,.36,1) .3s}
 .reveal:not(.in) .p-rings .dial{--p:0}
-.p-rings .dial i{width:74%;height:74%;border-radius:50%;background:#08090f;display:flex;align-items:center;justify-content:center;
-  font-style:normal;font-size:15px;font-weight:800;color:#fff}
-.p-rings .rg b{display:block;font-size:10.5px;font-weight:700;color:rgba(255,255,255,.82)}
-.p-rings .rg span{display:block;font-size:9px;color:rgba(255,255,255,.4);margin-top:2px}
+.p-rings .dial i{width:80px;height:80px;border-radius:50%;background:#0a0c16;
+  display:flex;align-items:center;justify-content:center;font-style:normal;font-size:24px;font-weight:800;color:#fff}
+.p-rings .rg b{display:block;font-size:13.5px;font-weight:700;color:rgba(255,255,255,.9)}
+.p-rings .rg span{display:block;font-size:11.5px;color:rgba(255,255,255,.42);margin-top:3px}
 
-/* Journal: a voice entry caught mid-flight, because "tap once and just talk"
-   is the part worth showing. Bar durations are deliberately incommensurate so
-   the row never visibly loops, and the caret keeps blinking after the sentence
-   so the entry reads as still being written. */
-.p-voice{display:flex;align-items:center;gap:12px;margin-top:22px;padding:13px 15px;border-radius:16px;
+/* Journal: a voice entry caught mid-flight. Bar durations are deliberately
+   incommensurate so the row never visibly loops. */
+.p-voice{display:flex;align-items:center;gap:14px;margin-top:26px;padding:15px 18px;border-radius:18px;
   background:rgba(215,166,203,.10);border:1px solid rgba(215,166,203,.30)}
-.p-voice .mic{width:34px;height:34px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;
+.p-voice .mic{width:40px;height:40px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;
   background:linear-gradient(150deg,#e0a8d4,#b877a6);animation:micPulse 2.6s ease-in-out infinite}
-@keyframes micPulse{0%,100%{box-shadow:0 0 13px rgba(215,166,203,.4)}50%{box-shadow:0 0 27px rgba(215,166,203,.8)}}
-.p-voice .mic svg{width:15px;height:15px;fill:none;stroke:#2a1626;stroke-width:2.2;stroke-linecap:round}
-.p-voice .vt b{display:block;font-size:12.5px;font-weight:700;color:#fff}
-.p-voice .vt span{display:block;font-size:10.5px;color:rgba(255,255,255,.45);margin-top:1px}
-.p-wave{display:flex;align-items:center;gap:3px;margin-left:auto;height:24px}
+@keyframes micPulse{0%,100%{box-shadow:0 0 13px rgba(215,166,203,.4)}50%{box-shadow:0 0 28px rgba(215,166,203,.8)}}
+.p-voice .mic svg{width:17px;height:17px;fill:none;stroke:#2a1626;stroke-width:2.2;stroke-linecap:round}
+.p-voice .vt b{display:block;font-size:14px;font-weight:700;color:#fff}
+.p-voice .vt span{display:block;font-size:11.5px;color:rgba(255,255,255,.45);margin-top:2px}
+.p-wave{display:flex;align-items:center;gap:3px;margin-left:auto;height:26px}
 .p-wave i{width:3px;border-radius:2px;background:#e0a8d4;animation:wav 1.5s ease-in-out infinite}
-@keyframes wav{0%,100%{height:5px;opacity:.5}50%{height:21px;opacity:1}}
+@keyframes wav{0%,100%{height:5px;opacity:.5}50%{height:23px;opacity:1}}
 .p-wave i:nth-child(1){animation-duration:1.28s}
 .p-wave i:nth-child(2){animation-duration:1.71s}
 .p-wave i:nth-child(3){animation-duration:1.05s}
@@ -215,20 +227,59 @@
   background:var(--love);animation:caret 1.1s step-end infinite}
 @keyframes caret{0%,49%{opacity:1}50%,100%{opacity:0}}
 
-/* footer */
-.p-foot{margin-top:30px;padding-top:22px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:flex-end;justify-content:space-between;gap:14px}
-.p-foot .cta{font-family:var(--serif);font-style:italic;font-size:14.5px;color:rgba(255,255,255,.7);line-height:1.4}
-.p-foot .handle{font-size:12px;font-weight:700;color:var(--gold);flex:none}
-.post.rose .p-foot .handle{color:var(--love)}
-.post.sage .p-foot .handle{color:var(--sage)}
+/* Copy beneath the post. */
+.feature-copy{max-width:960px;margin:44px auto 0;text-align:center}
+.feature-copy .badge{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;letter-spacing:0.12em;
+  text-transform:uppercase;color:var(--lavender);background:rgba(162,155,254,0.12);
+  border:1px solid rgba(162,155,254,0.28);border-radius:9999px;padding:6px 14px;margin-bottom:18px}
+.feature-copy h3{font-size:clamp(28px,3.4vw,40px);font-weight:800;letter-spacing:-0.7px;color:#fff;line-height:1.12;margin-bottom:24px}
+.fc-cols{columns:2;column-gap:46px;text-align:left;margin-bottom:24px}
+.fc-cols p{font-size:16px;color:var(--ink-3);line-height:1.7;margin-bottom:16px;break-inside:avoid}
+.feature-copy .quote{display:inline-block;font-family:var(--serif);font-style:italic;font-size:19px;color:var(--ink-2);
+  border-left:2px solid rgba(162,155,254,0.45);padding-left:18px;text-align:left;line-height:1.55}
+
+/* Sleep post: a night sky that actually drifts. Three star layers at different
+   speeds give parallax with no script at all. */
+.post.night{background:linear-gradient(168deg,#1f2a54 0%,#131c3a 46%,#0b1024 100%)}
+.post.night .glow{background:radial-gradient(60% 46% at 78% 6%, rgba(201,210,245,.20) 0%, rgba(11,16,36,0) 58%)}
+.sky{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1}
+.sky .stars{position:absolute;inset:-10% -50%}
+.sky .s1{background-image:radial-gradient(1.4px 1.4px at 20px 30px,#fff,transparent),radial-gradient(1.2px 1.2px at 130px 80px,#dfe6ff,transparent),radial-gradient(1.6px 1.6px at 220px 40px,#fff,transparent),radial-gradient(1.1px 1.1px at 310px 120px,#cfd9ff,transparent);background-size:380px 190px;animation:drift 90s linear infinite,twinkle 5.5s ease-in-out infinite}
+.sky .s2{background-image:radial-gradient(1.1px 1.1px at 60px 100px,#e8ecff,transparent),radial-gradient(1.5px 1.5px at 200px 20px,#fff,transparent),radial-gradient(1px 1px at 330px 90px,#c9d2f5,transparent);background-size:440px 230px;animation:drift 140s linear infinite,twinkle 7.5s ease-in-out infinite .8s}
+.sky .s3{background-image:radial-gradient(1px 1px at 90px 60px,#fff,transparent),radial-gradient(1.3px 1.3px at 280px 150px,#dbe3ff,transparent);background-size:520px 280px;animation:drift 210s linear infinite,twinkle 9s ease-in-out infinite 1.6s}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(-380px)}}
+@keyframes twinkle{0%,100%{opacity:.3}50%{opacity:.8}}
+.sky .mist{position:absolute;left:-60%;right:-60%;height:44%;top:24%;
+  background:linear-gradient(90deg,transparent,rgba(190,202,240,.10) 35%,rgba(190,202,240,.17) 50%,rgba(190,202,240,.10) 65%,transparent);
+  filter:blur(28px);animation:mist 46s ease-in-out infinite}
+@keyframes mist{0%,100%{transform:translateX(-8%)}50%{transform:translateX(8%)}}
+.sky .moon{position:absolute;top:38px;right:56px;width:64px;height:64px;border-radius:50%;
+  background:radial-gradient(circle at 36% 32%,#fdfdff,#dfe5fb 58%,#b9c4ee);
+  box-shadow:0 0 48px rgba(215,224,255,.5),0 0 100px rgba(160,178,240,.28);
+  animation:moonBreathe 12s ease-in-out infinite}
+@keyframes moonBreathe{0%,100%{transform:scale(.97);opacity:.9}50%{transform:scale(1.03);opacity:1}}
+.sl-row{display:flex;align-items:center;gap:15px;margin-top:26px;padding:16px 18px;border-radius:18px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)}
+.sl-row .play{width:46px;height:46px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(150deg,#dfe5fb,#a9b6e8);box-shadow:0 0 26px rgba(185,196,238,.55)}
+.sl-row .play svg{width:16px;height:16px;fill:#131c3a;margin-left:3px}
+.sl-row .st b{display:block;font-size:15px;font-weight:700;color:#fff}
+.sl-row .st span{display:block;font-size:12px;color:rgba(255,255,255,.5);margin-top:2px}
+.sl-row .len{margin-left:auto;font-size:13px;font-weight:700;color:#c9d2f5;flex:none}
+.sl-bar{margin-top:15px;height:4px;border-radius:9999px;background:rgba(255,255,255,.14);overflow:hidden}
+.sl-bar i{display:block;height:100%;width:28%;border-radius:9999px;background:linear-gradient(90deg,#c9d2f5,#8f9fdc)}
+.sl-amb{display:flex;gap:9px;margin-top:18px;flex-wrap:wrap}
+.sl-amb span{font-size:12px;font-weight:600;padding:8px 14px;border-radius:9999px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.13);color:rgba(255,255,255,.62)}
+.sl-amb span.on{color:#131c3a;background:linear-gradient(150deg,#dfe5fb,#b9c4ee);border-color:transparent;font-weight:700}
 
 @media (max-width:900px){
-  .showcase.big{grid-template-columns:1fr;gap:36px;margin-bottom:70px}
-  .showcase.big .sc-media{order:-1}
-  .post{--pw:100%}
-  .post .inner{padding:30px 26px 28px;text-align:left}
-}
-}
+  .feature{margin-bottom:74px}
+  .post .inner{padding:30px 24px 26px}
+  .p-split{grid-template-columns:1fr;gap:30px}
+  .fc-cols{columns:1}
+  .feature-copy{margin-top:32px}
+  .sky .moon{width:44px;height:44px;top:22px;right:26px}
 }
 
 .viz{position:relative;width:100%;max-width:400px;border-radius:24px;overflow:hidden}
@@ -510,22 +561,32 @@
 .cmp .ico-no::after{content:"";width:12px;height:2px;border-radius:2px;background:rgba(255,255,255,.22)}
 
 /* ---------------- FINAL CTA ----------------
-   Was bare text floating on black. Now it sits in a panel with the app's
-   breathing orb behind it, so the page closes the way it opened. */
-.final{position:relative;text-align:center;padding:110px 0;overflow:hidden}
-.final::before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:900px;height:900px;border-radius:50%;
-  background:radial-gradient(circle,rgba(162,155,254,0.17),rgba(162,155,254,0)62%);pointer-events:none}
-.final-inner{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:58px 44px 54px;border-radius:34px;
-  background:linear-gradient(168deg,rgba(255,255,255,.055),rgba(255,255,255,.015));
-  border:1px solid rgba(255,255,255,.10);box-shadow:0 34px 80px rgba(0,0,0,.5)}
-.final-orb{width:78px;height:78px;margin:0 auto 26px;border-radius:50%;background:var(--hero-grad);
-  box-shadow:0 0 54px rgba(102,51,204,.6),0 0 100px rgba(162,155,254,.3);animation:finalBreathe 14s ease-in-out infinite}
-@keyframes finalBreathe{0%,100%{transform:scale(.9)}28%{transform:scale(1.08)}42%{transform:scale(1.08)}72%{transform:scale(.9)}}
-.final h2{font-size:clamp(32px,4.4vw,48px);font-weight:800;letter-spacing:-1px;color:#fff;line-height:1.08;margin-bottom:16px}
+   The boxed panel read as another card at the end of a page full of cards.
+   This is full-bleed instead: a night field with the breathing orb behind the
+   type, no border, so the page opens out rather than closing in. */
+.final{position:relative;text-align:center;padding:150px 0 140px;overflow:hidden;
+  background:linear-gradient(180deg,#05060d 0%,#0c0e22 45%,#05060d 100%)}
+.final::before{content:"";position:absolute;inset:0;pointer-events:none;background:
+  radial-gradient(58% 42% at 50% 46%, rgba(102,51,204,.30) 0%, rgba(5,6,13,0) 62%),
+  radial-gradient(38% 30% at 50% 30%, rgba(232,207,154,.10) 0%, rgba(5,6,13,0) 60%)}
+/* A faint horizon line, the way the app's night screens are built. */
+.final::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(162,155,254,.22),transparent)}
+.final-inner{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:0 28px}
+.final-orb{position:relative;width:112px;height:112px;margin:0 auto 34px;border-radius:50%;
+  background:var(--hero-grad);box-shadow:0 0 70px rgba(102,51,204,.62),0 0 140px rgba(162,155,254,.30);
+  animation:finalBreathe 14s ease-in-out infinite}
+/* Two rings pulsing out of it, on the same 14s box-breathing cadence. */
+.final-orb::before,.final-orb::after{content:"";position:absolute;inset:-26px;border-radius:50%;
+  border:1px solid rgba(162,155,254,.30);animation:finalRing 14s ease-in-out infinite}
+.final-orb::after{inset:-52px;border-color:rgba(162,155,254,.16);animation-delay:1.6s}
+@keyframes finalBreathe{0%,100%{transform:scale(.9)}28%,42%{transform:scale(1.08)}72%{transform:scale(.9)}}
+@keyframes finalRing{0%,100%{transform:scale(.92);opacity:.5}28%,42%{transform:scale(1.06);opacity:.9}72%{transform:scale(.92);opacity:.5}}
+.final h2{font-size:clamp(36px,5vw,58px);font-weight:800;letter-spacing:-1.2px;color:#fff;line-height:1.05;margin-bottom:20px}
 .final h2 em{font-family:var(--serif);font-style:italic;font-weight:400;
   background:var(--hero-grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.final p{font-size:17.5px;color:var(--ink-3);margin-bottom:34px;line-height:1.6}
-.final .fine{margin-top:22px;font-size:12.5px;color:var(--ink-5)}
+.final p{font-size:18px;color:var(--ink-3);margin-bottom:36px;line-height:1.6;max-width:560px;margin-left:auto;margin-right:auto}
+.final .fine{margin-top:26px;font-size:13px;color:rgba(255,255,255,.34)}
 
 /* ---------------- RESPONSIVE ---------------- */
 @media (max-width:900px){
@@ -689,92 +750,172 @@
 <!-- ============ SHOWCASE ============ -->
 <section class="block" id="about" style="padding-top:20px">
   <div class="wrap">
-    <div class="showcase big">
-      <div class="sc-media">
-        <div class="post" aria-hidden="true">
-          <div class="glow"></div>
-          <div class="inner">
-      <div class="p-top"><span class="orb"></span><span class="wm">Lotara</span><span class="kick">Habits · Quiet Mode</span></div>
-            <div class="p-eyebrow">Alcohol-free</div>
-            <h2 class="p-head"><em>47 days</em> since your last drink.</h2>
-            <div class="p-meta">
-              <span class="st"><b>41</b><span>day personal best</span></span>
-              <span class="sep"></span>
-              <span class="st"><b>9pm</b><span>your peak window</span></span>
-              <span class="sep"></span>
-              <span class="st"><b>Serious</b><span>support level</span></span>
+    <article class="feature">
+      <div class="post" aria-hidden="true">
+        <div class="glow"></div>
+        <div class="inner">
+          <div class="p-top"><span class="orb"></span><span class="wm">Lotara</span><span class="kick">Habits · Quiet Mode</span></div>
+          <div class="p-split">
+            <div>
+              <div class="p-eyebrow">Alcohol-free</div>
+              <h2 class="p-head"><em>47 days</em> since your last drink.</h2>
+              <div class="p-meta">
+                <span class="st"><b>41</b><span>day personal best</span></span>
+                <span class="sep"></span>
+                <span class="st"><b>9pm</b><span>your peak window</span></span>
+                <span class="sep"></span>
+                <span class="st"><b>Serious</b><span>support level</span></span>
+              </div>
+              <p class="p-reason">To wake up clear and be fully present for the people you love.</p>
             </div>
-            <p class="p-reason">To wake up clear and be fully present for the people you love.</p>
-            <div class="p-trend">
-              <div class="cap"><span class="t">The urge, week by week</span><span class="n">&#8595; fading</span></div>
-              <svg viewBox="0 0 904 132" fill="none" preserveAspectRatio="none" aria-hidden="true">
-                <defs><linearGradient id="tf" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0" stop-color="rgba(232,207,154,0.22)"/><stop offset="1" stop-color="rgba(232,207,154,0)"/>
-                </linearGradient></defs>
-                <path class="ar" d="M10,33 L186,47 L363,63 L540,71 L717,88 L894,99 L894,132 L10,132 Z" fill="url(#tf)"/>
-                <path class="ln" d="M10,33 L186,47 L363,63 L540,71 L717,88 L894,99" stroke="#e8cf9a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle class="pt" cx="186" cy="47" r="4.5" fill="#08090f" stroke="#d7a6cb" stroke-width="2"/>
-                <circle class="pt" cx="540" cy="71" r="4.5" fill="#08090f" stroke="#d7a6cb" stroke-width="2"/>
-                <circle class="pt" cx="894" cy="99" r="6" fill="#9cc2ad" stroke="#fff" stroke-width="2"/>
+            <div class="p-chart">
+              <div class="ch-top">
+                <span class="ch-t">The urge, week by week</span>
+                <span class="ch-n">&#8595; 73% quieter</span>
+              </div>
+              <div class="ch-big">6 <span style="font-size:17px;font-style:normal;color:rgba(255,255,255,.5)">this week</span></div>
+              <div class="ch-sub">Down from 22 the week you started</div>
+              <svg viewBox="0 0 520 190" preserveAspectRatio="none" role="img" aria-label="Urges per week, declining">
+                <defs>
+                  <linearGradient id="lnGrad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0" stop-color="#d7a6cb"/><stop offset="0.55" stop-color="#e8cf9a"/><stop offset="1" stop-color="#9cc2ad"/>
+                  </linearGradient>
+                  <linearGradient id="arGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="rgba(232,207,154,0.26)"/><stop offset="1" stop-color="rgba(232,207,154,0)"/>
+                  </linearGradient>
+                </defs>
+                <g class="grid"><line x1="10" y1="10.0" x2="506" y2="10.0"/><line x1="10" y1="61.3" x2="506" y2="61.3"/><line x1="10" y1="112.7" x2="506" y2="112.7"/><line x1="10" y1="164.0" x2="506" y2="164.0"/></g>
+                <path class="ar" d="M10.0,25.4 C17.5,26.7 40.1,29.3 55.1,33.1 C70.1,37.0 85.2,47.2 100.2,48.5 C115.2,49.8 130.2,38.2 145.3,40.8 C160.3,43.4 175.3,57.5 190.4,63.9 C205.4,70.3 220.4,78.0 235.5,79.3 C250.5,80.6 265.5,67.8 280.5,71.6 C295.6,75.4 310.6,96.0 325.6,102.4 C340.7,108.8 355.7,106.2 370.7,110.1 C385.8,114.0 400.8,121.7 415.8,125.5 C430.8,129.3 445.9,129.3 460.9,133.2 C475.9,137.0 498.5,146.0 506.0,148.6 L506.0,164.0 L10.0,164.0 Z"/>
+                <path class="ln" d="M10.0,25.4 C17.5,26.7 40.1,29.3 55.1,33.1 C70.1,37.0 85.2,47.2 100.2,48.5 C115.2,49.8 130.2,38.2 145.3,40.8 C160.3,43.4 175.3,57.5 190.4,63.9 C205.4,70.3 220.4,78.0 235.5,79.3 C250.5,80.6 265.5,67.8 280.5,71.6 C295.6,75.4 310.6,96.0 325.6,102.4 C340.7,108.8 355.7,106.2 370.7,110.1 C385.8,114.0 400.8,121.7 415.8,125.5 C430.8,129.3 445.9,129.3 460.9,133.2 C475.9,137.0 498.5,146.0 506.0,148.6"/>
+                <g class="pk">
+                  <circle class="pk-halo" cx="506.0" cy="148.6" r="6" fill="#9cc2ad"/>
+                  <circle cx="506.0" cy="148.6" r="5" fill="#0b0c14" stroke="#9cc2ad" stroke-width="2.4"/>
+                </g>
+                <text class="xl" x="10.0" y="182" text-anchor="middle">wk 1</text><text class="xl" x="145.3" y="182" text-anchor="middle">4</text><text class="xl" x="280.5" y="182" text-anchor="middle">7</text><text class="xl" x="415.8" y="182" text-anchor="middle">10</text><text class="xl" x="506.0" y="182" text-anchor="middle">12</text>
               </svg>
             </div>
-            <div class="p-chips">
-              <span class="chip"><span class="dot"></span>Meets the urge with you</span>
-              <span class="chip"><span class="dot"></span>One breath, your reason</span>
-              <span class="chip"><span class="dot"></span>Locks tempting apps 9&#8211;12</span>
-            </div>
-            <div class="p-foot"><span class="cta">You don't have to fight it alone.</span><span class="handle">@lotara.app</span></div>
           </div>
+          <div class="p-chips">
+            <span class="chip"><span class="dot"></span>Meets the urge with you</span>
+            <span class="chip"><span class="dot"></span>One breath, your reason</span>
+            <span class="chip"><span class="dot"></span>Locks tempting apps 9&#8211;12</span>
+          </div>
+          <div class="p-foot"><span class="cta">You don't have to fight it alone.</span><span class="handle">@lotara.app</span></div>
         </div>
       </div>
-      <div class="sc-copy">
+      <div class="feature-copy">
         <span class="badge">Quitting</span>
         <h3>For the thing you're trying to stop</h3>
-        <p>Alcohol, vaping, doomscrolling, whatever it is — Lotara counts the days since your last and watches for the shape of the pull: which hours it clusters in, and what tends to come right before it.</p>
-        <p>That's the part most apps skip. A streak counter tells you how you've done. Lotara tells you <em>when you're about to be tested</em> — your peak window, learned from your own weeks — early enough to do something about it.</p>
-        <p>When it hits, one tap opens the moment before the slip: a breathing orb, the reason you wrote down when you were clear-headed, and the swap you rehearsed. At Serious support it can lock the tempting apps for the window too.</p>
-        <p class="quote">"You don't have to fight it alone."</p>
+        <div class="fc-cols">
+          <p>Alcohol, vaping, doomscrolling, whatever it is — Lotara counts the days since your last and watches for the shape of the pull: which hours it clusters in, and what tends to come right before it.</p>
+          <p>That's the part most apps skip. A streak counter tells you how you've done. Lotara tells you <em>when you're about to be tested</em> — your peak window, learned from your own weeks — early enough to do something about it.</p>
+          <p>When it hits, one tap opens the moment before the slip: a breathing orb, the reason you wrote down when you were clear-headed, and the swap you rehearsed.</p>
+          <p>Two honest ways out — you rode it out, or logged, not judged. Never a shaming wall. At Serious support it can lock the tempting apps for the window too.</p>
+        </div>
+        <p class="quote">"Times you gave in, per week — down 73% since you began."</p>
       </div>
-    </div>
-    <div class="showcase big flip">
-      <div class="sc-media">
-        <div class="post sage" aria-hidden="true">
-          <div class="glow"></div>
-          <div class="inner">
-      <div class="p-top"><span class="orb"></span><span class="wm">Lotara</span><span class="kick">Health · Lotara Intelligence</span></div>
-            <div class="p-eyebrow">This morning</div>
-            <h2 class="p-head">You slept <em>5h42m</em>. Go gently today.</h2>
-            <div class="p-meta">
-              <span class="st"><b>66</b><span>resting bpm</span></span>
-              <span class="sep"></span>
-              <span class="st"><b>+5</b><span>above your average</span></span>
-              <span class="sep"></span>
-              <span class="st"><b>4 of 6</b><span>pillars counted</span></span>
+    </article>
+    <article class="feature">
+      <div class="post sage" aria-hidden="true">
+        <div class="glow"></div>
+        <div class="inner">
+          <div class="p-top"><span class="orb"></span><span class="wm">Lotara</span><span class="kick">Health · Lotara Intelligence</span></div>
+          <div class="p-split">
+            <div>
+              <div class="p-eyebrow">This morning</div>
+              <h2 class="p-head">You slept <em>5h42m</em>. Go gently today.</h2>
+              <div class="p-meta">
+                <span class="st"><b>66</b><span>resting bpm</span></span>
+                <span class="sep"></span>
+                <span class="st"><b>+5</b><span>above your average</span></span>
+                <span class="sep"></span>
+                <span class="st"><b>4 of 6</b><span>pillars counted</span></span>
+              </div>
+              <p class="p-reason">A short night and a raised resting rate. Watch the evening — that's when the pull usually lands.</p>
             </div>
-            <p class="p-reason">A short night and a raised resting rate. Watch the evening — that's when the pull usually lands.</p>
             <div class="p-rings">
               <div class="rg"><div class="dial" style="--c:#a3b2e0;--pf:.62"><i>62</i></div><b>Rest</b><span>Short night</span></div>
               <div class="rg"><div class="dial" style="--c:#d7a6cb;--pf:.80"><i>80</i></div><b>Mood</b><span>Steady</span></div>
               <div class="rg"><div class="dial" style="--c:#e8cf9a;--pf:.80"><i>4/5</i></div><b>Habits</b><span>Held</span></div>
               <div class="rg"><div class="dial" style="--c:#9cc2ad;--pf:.78"><i>78</i></div><b>Score</b><span>of 100</span></div>
             </div>
-            <div class="p-chips">
-              <span class="chip"><span class="dot"></span>Reads sleep, heart, mood, journal</span>
-              <span class="chip"><span class="dot"></span>Never scores a day you didn't log</span>
-            </div>
-            <div class="p-foot"><span class="cta">It reads your day before it suggests anything.</span><span class="handle">@lotara.app</span></div>
           </div>
+          <div class="p-chips">
+            <span class="chip"><span class="dot"></span>Reads sleep, heart, mood and journal together</span>
+            <span class="chip"><span class="dot"></span>Never scores a day you didn't log</span>
+          </div>
+          <div class="p-foot"><span class="cta">It reads your day before it suggests anything.</span><span class="handle">@lotara.app</span></div>
         </div>
       </div>
-      <div class="sc-copy">
+      <div class="feature-copy">
         <span class="badge">&#10022; Health &amp; Lotara Intelligence</span>
         <h3>It reads your day before it suggests anything</h3>
-        <p>Apple Health brings in last night's sleep, your resting heart rate and your movement. Your mood check-in and what you wrote in your journal sit alongside them.</p>
-        <p>The score only counts what actually reported in — four pillars today, six on a full day. Missing data is set aside, never scored against you, so the number never punishes you for a day you didn't log.</p>
-        <p>Then Lotara reads all of it together, not one number in isolation, and says what it noticed in plain words. It never overclaims. When there isn't enough to go on, it says so.</p>
+        <div class="fc-cols">
+          <p>Apple Health brings in last night's sleep, your resting heart rate and your movement. Your mood check-in and what you wrote in your journal sit alongside them.</p>
+          <p>The score only counts what actually reported in — four pillars today, six on a full day. Missing data is set aside, never scored against you.</p>
+          <p>Then Lotara reads all of it together, not one number in isolation, and says what it noticed in plain words.</p>
+          <p>It never overclaims. When there isn't enough to go on, it says so — which is rarer and more useful than a confident guess.</p>
+        </div>
         <p class="quote">"Your resting rate was 66 bpm overnight, five above your average — a longer story gives you time to come down."</p>
       </div>
-    </div>
+    </article>
+    <article class="feature">
+      <div class="post night" aria-hidden="true">
+        <div class="sky">
+          <span class="stars s1"></span><span class="stars s2"></span><span class="stars s3"></span>
+          <span class="mist"></span><span class="moon"></span>
+        </div>
+        <div class="glow"></div>
+        <div class="inner">
+          <div class="p-top"><span class="orb"></span><span class="wm">Lotara</span><span class="kick">Sleep · 11:24 PM</span></div>
+          <div class="p-split">
+            <div>
+              <div class="p-eyebrow">Tonight, Lotara picks</div>
+              <h2 class="p-head">Something <em>long enough</em> to come down from.</h2>
+              <div class="p-meta">
+                <span class="st"><b>66</b><span>bpm overnight</span></span>
+                <span class="sep"></span>
+                <span class="st"><b>+5</b><span>above average</span></span>
+                <span class="sep"></span>
+                <span class="st"><b>11:40</b><span>your bedtime</span></span>
+              </div>
+              <p class="p-reason">Your resting rate was five above average last night — a longer story gives you time to come down.</p>
+            </div>
+            <div>
+              <div class="sl-row">
+                <span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+                <span class="st"><b>Rain on a Tin Roof</b><span>Read by Theo · rain underneath</span></span>
+                <span class="len">18 min</span>
+              </div>
+              <div class="sl-bar"><i></i></div>
+              <div class="sl-amb"><span class="on">Rain</span><span>Ocean</span><span>Wind</span><span>Off</span></div>
+              <div class="sl-row" style="margin-top:14px">
+                <span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+                <span class="st"><b>The Night Train</b><span>Read by David</span></span>
+                <span class="len">13 min</span>
+              </div>
+            </div>
+          </div>
+          <div class="p-chips">
+            <span class="chip"><span class="dot"></span>British narrators, read slow</span>
+            <span class="chip"><span class="dot"></span>Rain, ocean or wind — at your volume</span>
+            <span class="chip"><span class="dot"></span>Keeps playing when the screen goes dark</span>
+          </div>
+          <div class="p-foot"><span class="cta">It picks the night before you have to think about it.</span><span class="handle">@lotara.app</span></div>
+        </div>
+      </div>
+      <div class="feature-copy">
+        <span class="badge">Sleep</span>
+        <h3>Sleep is its own place at night</h3>
+        <div class="fc-cols">
+          <p>After dark the app changes. Sleep stops being a category in a library and becomes its own room — a night sky, a bedtime that knows your actual pattern, and a story chosen for the state you're in.</p>
+          <p>The stories are long-form and read by British narrators at a deliberately slow pace: Rain on a Tin Roof, The Night Train, The Cabin in the Snow. Rain, ocean or wind sits underneath at whatever volume you like, or none at all.</p>
+          <p>Which one you get isn't random. If your resting rate ran high or you're up past your bedtime, Lotara says so and picks accordingly — the longest one when you need time to come down, the shortest when it's already late.</p>
+          <p>It keeps playing when the screen goes dark, so nothing pulls you back out of it.</p>
+        </div>
+        <p class="quote">"You're up past your bedtime — this is the shortest one we have, at 13 min."</p>
+      </div>
+    </article>
     <div class="showcase">
       <div class="sc-media">
         <div class="viz viz-cats" aria-hidden="true">
@@ -794,43 +935,50 @@
         <p class="quote">Every session carries its own colour, so the app looks the way the practice feels.</p>
       </div>
     </div>
-    <div class="showcase big">
-      <div class="sc-media">
-        <div class="post rose" aria-hidden="true">
-          <div class="glow"></div>
-          <div class="inner">
-      <div class="p-top"><span class="orb"></span><span class="wm">Lotara</span><span class="kick">Journal · Tuesday 9:14 PM</span></div>
-            <div class="p-eyebrow">Tonight you wrote</div>
-            <h2 class="p-head">"I really wanted a drink. <em>I went for a walk instead.</em>"<span class="caret"></span></h2>
-            <div class="p-meta">
-              <span class="st"><b>3rd</b><span>evening this month</span></span>
-              <span class="sep"></span>
-              <span class="st"><b>&lt;6h</b><span>sleep each time</span></span>
+    <article class="feature">
+      <div class="post rose" aria-hidden="true">
+        <div class="glow"></div>
+        <div class="inner">
+          <div class="p-top"><span class="orb"></span><span class="wm">Lotara</span><span class="kick">Journal · Tuesday 9:14 PM</span></div>
+          <div class="p-split">
+            <div>
+              <div class="p-eyebrow">Tonight you wrote</div>
+              <h2 class="p-head">"I really wanted a drink. <em>I went for a walk instead.</em>"<span class="caret"></span></h2>
+              <div class="p-meta">
+                <span class="st"><b>3rd</b><span>evening this month</span></span>
+                <span class="sep"></span>
+                <span class="st"><b>&lt;6h</b><span>sleep each time</span></span>
+              </div>
+              <p class="p-reason">That's the third evening this month the pull followed a short night. Worth protecting your sleep first.</p>
             </div>
-            <p class="p-reason">That's the third evening this month the pull followed a short night. Worth protecting your sleep first.</p>
-            <div class="p-voice">
-              <span class="mic"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span>
-              <span class="vt"><b>Tap to speak</b><span>Voice entries transcribe themselves</span></span>
-              <span class="p-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+            <div>
+              <div class="p-voice">
+                <span class="mic"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span>
+                <span class="vt"><b>Tap to speak</b><span>Voice entries transcribe themselves</span></span>
+                <span class="p-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+              </div>
+              <div class="p-chips" style="margin-top:16px">
+                <span class="chip"><span class="dot"></span>Work</span>
+                <span class="chip"><span class="dot"></span>Evening</span>
+                <span class="chip"><span class="dot"></span>Held on</span>
+              </div>
             </div>
-            <div class="p-chips">
-              <span class="chip"><span class="dot"></span>Tap once and just talk</span>
-              <span class="chip"><span class="dot"></span>Never scored, never lectured</span>
-              <span class="chip"><span class="dot"></span>Yours alone, never sold</span>
-            </div>
-            <div class="p-foot"><span class="cta">Say it out loud. Lotara will find the pattern.</span><span class="handle">@lotara.app</span></div>
           </div>
+          <div class="p-foot"><span class="cta">Say it out loud. Lotara will find the pattern.</span><span class="handle">@lotara.app</span></div>
         </div>
       </div>
-      <div class="sc-copy">
+      <div class="feature-copy">
         <span class="badge">Journal</span>
         <h3>Write it down, and it starts connecting</h3>
-        <p>Type it, or tap once and just talk — voice entries transcribe themselves, which matters on the nights when writing is the last thing you want to do.</p>
-        <p>Lotara reads what you wrote and reflects the patterns back: which days come up heavy, what tends to precede a hard evening, what you keep returning to. It never scores you and it never lectures.</p>
-        <p>Entries stay yours, on your device and your private cloud. Nothing is sold, and nothing is shared.</p>
+        <div class="fc-cols">
+          <p>Type it, or tap once and just talk — voice entries transcribe themselves, which matters on the nights when writing is the last thing you want to do.</p>
+          <p>Lotara reads what you wrote and reflects the patterns back: which days come up heavy, what tends to precede a hard evening, what you keep returning to.</p>
+          <p>It never scores you and it never lectures. There's no streak on your journal and no word count to hit.</p>
+          <p>Entries stay yours, on your device and your private cloud. Nothing is sold, and nothing is shared.</p>
+        </div>
         <p class="quote">"That's the third evening this month the pull followed a short night."</p>
       </div>
-    </div>
+    </article>
     <div class="showcase">
       <div class="sc-media">
         <div class="viz viz-mood" aria-hidden="true">
@@ -869,7 +1017,6 @@
         <h3>Streaks that forgive you</h3>
         <p>Miss a day and your rhythm holds — no broken chains, no guilt. Lotara tracks the shape of your week, not a perfect record, so consistency feels kind instead of punishing.</p>
         <p class="quote">Non-judgmental by design. You're not behind — you're becoming.</p>
-        <span class="fb-tag">Quiet by design.</span>
       </div>
     </div>
   </div>
@@ -951,8 +1098,8 @@
 <section class="final" id="download">
   <div class="final-inner">
     <div class="final-orb" aria-hidden="true"></div>
-    <h2>Day one starts <em>whenever you say</em></h2>
-    <p>Free to download, free to keep using. Premium is free for the first seven days if you want to try the intelligence layer.</p>
+    <h2>Tonight is a fine <em>day one</em></h2>
+    <p>Free to download and free to keep using. No ads, no data sold, no streak to lose.</p>
     <a href="https://apps.apple.com/us/app/lotara/id6749601041" target="_blank" rel="noopener noreferrer" class="btn btn-store" style="font-size:17px;padding:16px 30px">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
       <span class="lbl"><small>Download on the</small><b>App Store</b></span>
