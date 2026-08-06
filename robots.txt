@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+# Leftover web-app screens from an earlier build. Real pages, but not content
+# anyone should land on from search.
+Disallow: /admin.html
+Disallow: /dashboard.html
+Disallow: /signin.html
+Disallow: /settings.html
+Disallow: /progress.html
+Disallow: /habits.html
+Disallow: /journal.html
+Disallow: /mood.html
+
+Sitemap: https://lotara.app/sitemap.xml
