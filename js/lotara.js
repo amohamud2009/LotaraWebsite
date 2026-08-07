@@ -104,114 +104,93 @@
     setTimeout(function () { targets.forEach(show); }, 3000);
   }
 
-  /* ---- Chart line: dash the path to its real length ----------
-     The stroke-dash trick only draws while the offset is between the path
-     length and 0. The CSS guessed 1400; the actual path is ~527, so the first
-     62% of the animation moved the offset from 1400 down to 527 with nothing
-     visible on screen at all — a blank chart for over a second, then a rushed
-     draw. It read as broken rather than as an animation.
+  /* ---- Scroll-linked scrub -----------------------------------
+     The card animations are tied to scroll position rather than fired once on
+     entry. As you scroll the chart draws, the rings fill and the numbers climb
+     in step with the page; scroll back and they run in reverse. This is the
+     thing that actually holds attention — the motion belongs to the reader's
+     hand rather than to a timer they can miss.
 
-     Measuring the path makes the whole duration visible drawing. Done here
-     because only the browser knows the length, and it changes if the data does. */
+     Progress is measured from where the card sits in the viewport: 0 when its
+     top is near the bottom of the screen, 1 by the time it has travelled up to
+     the reading zone. Everything on a card shares that one number, so the arc,
+     the digit and the bar can never drift apart.                     */
+  var SCRUB_START = 0.92;   // card top at 92% of viewport height -> progress 0
+  var SCRUB_END   = 0.34;   // ...and at 34% -> progress 1
+
+  function scrubProgress(el) {
+    var vh = window.innerHeight;
+    var top = el.getBoundingClientRect().top;
+    var from = vh * SCRUB_START, to = vh * SCRUB_END;
+    return Math.max(0, Math.min(1, (from - top) / (from - to)));
+  }
+
+  // easeOutCubic: keeps the tail of the scroll from feeling like it stalls.
+  function ease(t) { return 1 - Math.pow(1 - t, 3); }
+
+  var scrubCards = Array.prototype.slice.call(document.querySelectorAll('.post'));
+
+  // Measure each chart path once — the CSS can't know its length, and guessing
+  // it means part of the draw happens with nothing visible on screen.
   document.querySelectorAll('.p-chart .ln').forEach(function (ln) {
     var len = Math.ceil(ln.getTotalLength());
+    ln.dataset.len = len;
     ln.style.strokeDasharray = len;
-    if (!ln.closest('.reveal.in')) ln.style.strokeDashoffset = len;
-    // Once the card reveals, CSS drives it to 0; make sure our inline value
-    // doesn't pin it there.
-    var post = ln.closest('.post');
-    if (post) {
-      new MutationObserver(function (m, obs) {
-        if (post.classList.contains('in')) { ln.style.strokeDashoffset = '0'; obs.disconnect(); }
-      }).observe(post, { attributes: true, attributeFilter: ['class'] });
-    }
   });
 
-  /* ---- Count-up numbers -------------------------------------
-     The two posts people actually stop on lead with a number, and a number
-     that lands already-final reads as a picture. Counting it up is the
-     Fitness-rings trick: the eye follows a value in motion.
+  function applyScrub(card, p) {
+    var e = ease(p);
 
-     Driven by the same reveal pass, so a card counts when it arrives rather
-     than while it's still off screen. Uses easeOutExpo — fast out of the gate,
-     long settle — which is what makes Apple's counters feel weighted instead
-     of linear.
+    var ln = card.querySelector('.p-chart .ln');
+    if (ln) ln.style.strokeDashoffset = (+ln.dataset.len) * (1 - e);
 
-     The element's existing text IS the final value, so with JS off or reduced
-     motion on, the correct number is simply already there.            */
-  var countables = Array.prototype.slice.call(document.querySelectorAll('[data-count]'));
+    var area = card.querySelector('.p-chart .ar');
+    if (area) area.style.opacity = e;
 
-  function runCount(el) {
-    if (el.dataset.counted) return;
-    el.dataset.counted = '1';
+    card.querySelectorAll('.p-rings .arc').forEach(function (arc) {
+      var pf = parseFloat(getComputedStyle(arc.parentNode.parentNode).getPropertyValue('--pf')) || 0;
+      arc.style.strokeDashoffset = 276.5 * (1 - pf * e);
+    });
 
-    var target = parseFloat(el.dataset.count);
-    if (isNaN(target)) return;
-    var suffix = el.dataset.countSuffix || '';
-    var duration = parseInt(el.dataset.countMs || '1400', 10);
-    var delay = parseInt(el.dataset.countDelay || '0', 10);
-    var started = null;
+    var bar = card.querySelector('.sl-bar i');
+    if (bar) bar.style.width = (28 * e) + '%';
 
-    function frame(now) {
-      if (started === null) started = now;
-      var t = Math.min(1, (now - started) / duration);
-      var eased = t === 1 ? 1 : 1 - Math.pow(2, -10 * t);   // easeOutExpo
-      el.textContent = Math.round(target * eased) + suffix;
-      if (t < 1) requestAnimationFrame(frame);
-      else el.textContent = target + suffix;
-    }
-    if (delay) setTimeout(function () { requestAnimationFrame(frame); }, delay);
-    else requestAnimationFrame(frame);
+    card.querySelectorAll('[data-count]').forEach(function (el) {
+      var target = parseFloat(el.dataset.count);
+      if (isNaN(target)) return;
+      el.textContent = Math.round(target * e) + (el.dataset.countSuffix || '');
+    });
+
+    // Chips arrive across the middle of the scrub rather than all at once.
+    card.querySelectorAll('.p-chips .chip').forEach(function (chip, i) {
+      var start = 0.25 + i * 0.12;
+      var cp = Math.max(0, Math.min(1, (p - start) / 0.28));
+      chip.style.opacity = cp;
+      chip.style.transform = 'translateY(' + (10 * (1 - cp)) + 'px)';
+    });
   }
 
-  /* Set the true value with no animation. The last-resort path: a number the
-     visitor never scrolled to should still be correct if they jump there via
-     find-in-page or a deep link. */
-  function settleCount(el) {
-    if (el.dataset.counted) return;
-    el.dataset.counted = '1';
-    el.textContent = el.dataset.count + (el.dataset.countSuffix || '');
-  }
+  if (!reduced && scrubCards.length) {
+    // Hand these to the scrub — the CSS transitions would fight it, lagging a
+    // frame behind every scroll event.
+    document.documentElement.classList.add('scrub');
 
-  if (!reduced && countables.length) {
-    // Only blank once we know we can animate — otherwise the real value stays.
-    countables.forEach(function (el) { el.textContent = '0' + (el.dataset.countSuffix || ''); });
-
-    var inView = function (el) {
-      var r = el.getBoundingClientRect();
-      return r.top < window.innerHeight * 0.78 && r.bottom > 0;
-    };
-
-    if ('IntersectionObserver' in window) {
-      var countObserver = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
-          if (e.isIntersecting) { runCount(e.target); countObserver.unobserve(e.target); }
-        });
-      }, { threshold: 0.25, rootMargin: '0px 0px -22% 0px' });
-      countables.forEach(function (el) { countObserver.observe(el); });
-    }
-
-    // Backup for a dead observer — counts on scroll, but still only what is
-    // actually on screen. The previous version used a blind 3s timer, which
-    // ran every counter while the visitor was still at the top of the page:
-    // by the time they scrolled down the numbers had already finished, so the
-    // animation was real but nobody ever saw it.
-    var countTicking = false;
-    var countSweep = function () {
-      if (countTicking) return;
-      countTicking = true;
+    var scrubTicking = false;
+    var runScrub = function () {
+      if (scrubTicking) return;
+      scrubTicking = true;
       requestAnimationFrame(function () {
-        countables.forEach(function (el) { if (inView(el)) runCount(el); });
-        countTicking = false;
+        for (var i = 0; i < scrubCards.length; i++) {
+          var c = scrubCards[i], r = c.getBoundingClientRect();
+          if (r.bottom < -200 || r.top > window.innerHeight + 200) continue;  // off screen
+          applyScrub(c, scrubProgress(c));
+        }
+        scrubTicking = false;
       });
     };
-    window.addEventListener('scroll', countSweep, { passive: true });
-    window.addEventListener('resize', countSweep, { passive: true });
-    countSweep();
-
-    // Genuine last resort, long after any real visitor has scrolled: fill in
-    // the value without animating, so nothing can be stranded showing 0.
-    setTimeout(function () { countables.forEach(settleCount); }, 30000);
+    window.addEventListener('scroll', runScrub, { passive: true });
+    window.addEventListener('resize', runScrub, { passive: true });
+    runScrub();
   }
 
   /* ---- Button ripple, as the original site had ---- */

@@ -92,6 +92,30 @@
 
 /* ---------------- SECTION VISUALS (no screenshots) ---------------- */
 
+/* When the scrub engine is driving (html.scrub), it sets these properties on
+   every scroll frame. A CSS transition on top would smooth between frames and
+   leave the motion a beat behind the finger — the exact lag that makes
+   scroll-linked animation feel broken rather than direct. So the transitions
+   are handed over, and only for the properties the scrub owns.
+
+   `!important` rather than a bare declaration, because specificity alone is a
+   trap here: `.scrub .p-rings .arc` ties `.p-rings .dial .arc` at three classes
+   and loses on source order, so the ring kept its 1.6s transition (with a .25s
+   delay) and simply ate every frame the scrub wrote — the arc looked frozen
+   while the number beside it, driven by the same value, scrubbed correctly.
+   The chart line escaped only by accident of having a shorter base selector.
+   The scrub genuinely owns these properties while it is running, so saying so
+   outright beats depending on the order two rules happen to appear in. */
+.scrub .p-chart .ln,
+.scrub .p-chart .ar,
+.scrub .p-rings .arc,
+.scrub .sl-bar i,
+.scrub .p-chips .chip{transition:none!important}
+/* No override needed for the reveal gates: the scrub writes inline styles,
+   which already outrank a class rule. `inherit` was tried here and is wrong —
+   stroke-dashoffset inherits the parent's 0, i.e. fully drawn, which is the
+   opposite of the intended starting state.  */
+
 /* ---------------- IMMERSIVE POSTS ----------------
    A post used to sit in one half of a split with copy in the other, which made
    it small and made the reader choose where to look. Now it runs the full
@@ -1184,6 +1208,6 @@
   </div>
 </footer>
 
-<script src="js/lotara.js?v=3a0daa07"></script>
+<script src="js/lotara.js?v=03f4cf2b"></script>
 </body>
 </html>
