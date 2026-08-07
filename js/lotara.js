@@ -132,10 +132,23 @@
     requestAnimationFrame(frame);
   }
 
+  /* Set the true value with no animation. The last-resort path: a number the
+     visitor never scrolled to should still be correct if they jump there via
+     find-in-page or a deep link. */
+  function settleCount(el) {
+    if (el.dataset.counted) return;
+    el.dataset.counted = '1';
+    el.textContent = el.dataset.count + (el.dataset.countSuffix || '');
+  }
+
   if (!reduced && countables.length) {
-    // Blank them only once we know we can animate — otherwise the real value
-    // stays on screen untouched.
+    // Only blank once we know we can animate — otherwise the real value stays.
     countables.forEach(function (el) { el.textContent = '0' + (el.dataset.countSuffix || ''); });
+
+    var inView = function (el) {
+      var r = el.getBoundingClientRect();
+      return r.top < window.innerHeight * 0.85 && r.bottom > 0;
+    };
 
     if ('IntersectionObserver' in window) {
       var countObserver = new IntersectionObserver(function (entries) {
@@ -145,8 +158,28 @@
       }, { threshold: 0.4 });
       countables.forEach(function (el) { countObserver.observe(el); });
     }
-    // Same belt-and-braces as the reveal: nothing stays showing 0.
-    setTimeout(function () { countables.forEach(runCount); }, 3000);
+
+    // Backup for a dead observer — counts on scroll, but still only what is
+    // actually on screen. The previous version used a blind 3s timer, which
+    // ran every counter while the visitor was still at the top of the page:
+    // by the time they scrolled down the numbers had already finished, so the
+    // animation was real but nobody ever saw it.
+    var countTicking = false;
+    var countSweep = function () {
+      if (countTicking) return;
+      countTicking = true;
+      requestAnimationFrame(function () {
+        countables.forEach(function (el) { if (inView(el)) runCount(el); });
+        countTicking = false;
+      });
+    };
+    window.addEventListener('scroll', countSweep, { passive: true });
+    window.addEventListener('resize', countSweep, { passive: true });
+    countSweep();
+
+    // Genuine last resort, long after any real visitor has scrolled: fill in
+    // the value without animating, so nothing can be stranded showing 0.
+    setTimeout(function () { countables.forEach(settleCount); }, 30000);
   }
 
   /* ---- Button ripple, as the original site had ---- */
