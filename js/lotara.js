@@ -326,6 +326,20 @@
     };
     window.addEventListener('scroll', runScrub, { passive: true });
     window.addEventListener('resize', runScrub, { passive: true });
+
+    // A tab that loads in the background never runs an animation frame, so the
+    // ticking flag — set before requestAnimationFrame and cleared inside it —
+    // stays set, and every later scroll returns early. The scrub would then be
+    // dead for the rest of that page's life, long after the tab is looked at.
+    // Opening the site in a new background tab, or restoring a session, is
+    // enough to land on a page whose cards never move.
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) return;
+      scrubTicking = false;
+      lastY = window.pageYOffset;   // don't count the hidden interval as velocity
+      runScrub();
+    });
+
     runScrub();
   }
 
