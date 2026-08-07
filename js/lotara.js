@@ -156,47 +156,122 @@
     ln.style.strokeDasharray = len;
   });
 
-  function applyScrub(card, p) {
-    // The chart draws first — it is the thing the card is about.
-    var draw = stage(p, 0.00, 0.62);
-    var ln = card.querySelector('.p-chart .ln');
-    if (ln) ln.style.strokeDashoffset = (+ln.dataset.len) * (1 - draw);
+  // Progress for one group, measured from that group's OWN box.
+  //
+  // Anchoring everything to the card was the bug that made the urge chart look
+  // static. That chart sits 313px down a 916px card, so with the card's top
+  // edge driving it the line was already 58% drawn by the time it cleared the
+  // bottom of the screen and finished a third of a screen later. Most of the
+  // draw happened where nobody could see it, however slowly you scrolled.
+  //
+  // Reading from the group's own box means an animation starts as that group
+  // appears and finishes while it is being looked at, whatever else is on the
+  // card and however tall the card is.
+  function groupProgress(el) {
+    var vh = window.innerHeight, r = el.getBoundingClientRect();
+    var from = vh * 0.94;                     // group's top edge entering -> 0
+    var to   = vh * 0.40 - r.height * 0.30;   // group settled in the reading zone -> 1
+    return clamp((from - r.top) / (from - to));
+  }
 
-    var area = card.querySelector('.p-chart .ar');
-    if (area) area.style.opacity = draw;
+  // The box an element reads its progress from: the smallest one holding parts
+  // that express the same value. A dial and the digit inside it share `.p-rings`;
+  // the sleep bar and the durations beside it share the block that contains
+  // them. Parts inside one group take one number and so cannot drift apart —
+  // which is the property that has to survive this change.
+  function anchorFor(el, card) {
+    var g = el.closest('.p-chart, .p-rings, .p-chips, .p-meta');
+    if (g) return g;
+    var bar = card.querySelector('.sl-bar');
+    if (bar && bar.parentNode.contains(el)) return bar.parentNode;
+    return card;
+  }
 
-    // Rings, bar and counters deliberately share one window, so a dial and the
-    // number inside it — or the sleep bar and the duration next to it — cannot
-    // drift apart. Staging is for parts that mean different things, not for
-    // two readings of the same value.
-    var val = stage(p, 0.05, 0.68);
+  // Built once per card. Each job pairs the box an animation measures against
+  // with the write it performs, so every rect can be read before any style is
+  // set. Interleaving reads and writes inside a scroll handler forces a layout
+  // recalculation per read — with a group box per counter and per chip that is
+  // dozens of forced layouts a frame, and the usual way a scrub that measured
+  // free turns janky. Static values (--pf, path length) are resolved here too
+  // rather than re-read from computed style on every frame.
+  function buildJobs(card) {
+    var jobs = [];
 
-    card.querySelectorAll('.p-rings .arc').forEach(function (arc) {
-      var pf = parseFloat(getComputedStyle(arc.parentNode.parentNode).getPropertyValue('--pf')) || 0;
-      arc.style.strokeDashoffset = 276.5 * (1 - pf * val);
-    });
+    var chart = card.querySelector('.p-chart');
+    if (chart) {
+      var ln = chart.querySelector('.ln'), ar = chart.querySelector('.ar');
+      var len = ln ? +ln.dataset.len : 0;
+      jobs.push({ box: chart, run: function (v) {
+        if (ln) ln.style.strokeDashoffset = len * (1 - v);
+        if (ar) ar.style.opacity = v;
+      }});
+    }
+
+    var rings = card.querySelector('.p-rings');
+    if (rings) {
+      var arcs = Array.prototype.slice.call(rings.querySelectorAll('.arc'));
+      var pfs  = arcs.map(function (a) {
+        return parseFloat(getComputedStyle(a.parentNode.parentNode).getPropertyValue('--pf')) || 0;
+      });
+      jobs.push({ box: rings, run: function (v) {
+        for (var i = 0; i < arcs.length; i++) arcs[i].style.strokeDashoffset = 276.5 * (1 - pfs[i] * v);
+      }});
+    }
 
     var bar = card.querySelector('.sl-bar i');
-    if (bar) bar.style.width = (28 * val) + '%';
+    if (bar) {
+      jobs.push({ box: bar.parentNode.parentNode, run: function (v) {
+        bar.style.width = (28 * v) + '%';
+      }});
+    }
 
+    // Counters collected per anchor, so a box shared by several of them is
+    // measured once and they all move on the same number.
+    var slots = [];
     card.querySelectorAll('[data-count]').forEach(function (el) {
-      var target = parseFloat(el.dataset.count);
-      if (isNaN(target)) return;
-      el.textContent = Math.round(target * val) + (el.dataset.countSuffix || '');
+      if (isNaN(parseFloat(el.dataset.count))) return;
+      var box = anchorFor(el, card), slot = null;
+      for (var i = 0; i < slots.length; i++) if (slots[i].box === box) slot = slots[i];
+      if (!slot) { slot = { box: box, els: [] }; slots.push(slot); }
+      slot.els.push(el);
+    });
+    slots.forEach(function (slot) {
+      jobs.push({ box: slot.box, run: function (v) {
+        slot.els.forEach(function (el) {
+          el.textContent = Math.round(parseFloat(el.dataset.count) * v) + (el.dataset.countSuffix || '');
+        });
+      }});
     });
 
-    // Chips land last and one after another, once the data has resolved.
-    card.querySelectorAll('.p-chips .chip').forEach(function (chip, i) {
-      var cp = stage(p, 0.55 + i * 0.07, 0.85 + i * 0.07);
-      chip.style.opacity = cp;
-      chip.style.transform = 'translateY(' + (10 * (1 - cp)) + 'px)';
-    });
+    // Chips still stagger among themselves — sequencing belongs between parts
+    // that say different things, and each chip does.
+    var wrap = card.querySelector('.p-chips');
+    if (wrap) {
+      var chips = Array.prototype.slice.call(wrap.querySelectorAll('.chip'));
+      jobs.push({ box: wrap, raw: true, run: function (p) {
+        for (var i = 0; i < chips.length; i++) {
+          var cp = stage(p, 0.10 + i * 0.14, 0.55 + i * 0.14);
+          chips[i].style.opacity = cp;
+          chips[i].style.transform = 'translateY(' + (10 * (1 - cp)) + 'px)';
+        }
+      }});
+    }
 
-    // The light sweep across the card used to be a 1.5s keyframe on a 0.35s
-    // delay, fired on reveal. That is exactly the motion that arrives ahead of
-    // the reader — it had already finished by the time a slow scroll brought
-    // the card up. Tied to progress, the surface catches the light at the pace
-    // the reader sets, and holds if they stop.
+    return jobs;
+  }
+
+  // Vertical order now sequences a card on its own: the chart sits above the
+  // chips, so it draws first without anyone staging it to.
+  function applyScrub(card, p) {
+    var jobs = card._jobs || (card._jobs = buildJobs(card));
+    var i;
+    for (i = 0; i < jobs.length; i++) jobs[i].p = groupProgress(jobs[i].box);   // read
+    for (i = 0; i < jobs.length; i++) jobs[i].run(jobs[i].raw ? jobs[i].p : ease(jobs[i].p));  // write
+
+    // The sheen stays on the card's own progress: it is a property of the
+    // surface rather than of anything printed on it. As a 1.5s keyframe on a
+    // .35s delay it had usually finished before a slow reader got the card into
+    // view — motion arriving ahead of the hand driving it.
     card.style.setProperty('--sheen', (p * 340).toFixed(1) + '%');
     card.style.setProperty('--sheen-o', Math.sin(p * Math.PI).toFixed(3));
   }
