@@ -104,6 +104,29 @@
     setTimeout(function () { targets.forEach(show); }, 3000);
   }
 
+  /* ---- Chart line: dash the path to its real length ----------
+     The stroke-dash trick only draws while the offset is between the path
+     length and 0. The CSS guessed 1400; the actual path is ~527, so the first
+     62% of the animation moved the offset from 1400 down to 527 with nothing
+     visible on screen at all — a blank chart for over a second, then a rushed
+     draw. It read as broken rather than as an animation.
+
+     Measuring the path makes the whole duration visible drawing. Done here
+     because only the browser knows the length, and it changes if the data does. */
+  document.querySelectorAll('.p-chart .ln').forEach(function (ln) {
+    var len = Math.ceil(ln.getTotalLength());
+    ln.style.strokeDasharray = len;
+    if (!ln.closest('.reveal.in')) ln.style.strokeDashoffset = len;
+    // Once the card reveals, CSS drives it to 0; make sure our inline value
+    // doesn't pin it there.
+    var post = ln.closest('.post');
+    if (post) {
+      new MutationObserver(function (m, obs) {
+        if (post.classList.contains('in')) { ln.style.strokeDashoffset = '0'; obs.disconnect(); }
+      }).observe(post, { attributes: true, attributeFilter: ['class'] });
+    }
+  });
+
   /* ---- Count-up numbers -------------------------------------
      The two posts people actually stop on lead with a number, and a number
      that lands already-final reads as a picture. Counting it up is the
@@ -126,6 +149,7 @@
     if (isNaN(target)) return;
     var suffix = el.dataset.countSuffix || '';
     var duration = parseInt(el.dataset.countMs || '1400', 10);
+    var delay = parseInt(el.dataset.countDelay || '0', 10);
     var started = null;
 
     function frame(now) {
@@ -136,7 +160,8 @@
       if (t < 1) requestAnimationFrame(frame);
       else el.textContent = target + suffix;
     }
-    requestAnimationFrame(frame);
+    if (delay) setTimeout(function () { requestAnimationFrame(frame); }, delay);
+    else requestAnimationFrame(frame);
   }
 
   /* Set the true value with no animation. The last-resort path: a number the

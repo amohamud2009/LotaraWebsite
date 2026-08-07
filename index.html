@@ -212,15 +212,25 @@
 
 /* Health dials. The sweep animates from zero via a registered custom
    property; the final value arrives inline as --pf so the two never fight. */
-@property --p{syntax:"<number>";inherits:false;initial-value:0}
 .p-rings{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
 .p-rings .rg{text-align:center}
-.p-rings .dial{--p:var(--pf);width:104px;height:104px;margin:0 auto 12px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  background:conic-gradient(var(--c) 0turn calc(var(--p) * 1turn), rgba(255,255,255,.09) calc(var(--p) * 1turn) 1turn);
-  box-shadow:0 0 30px color-mix(in srgb,var(--c) 34%,transparent);
-  transition:--p 1.4s cubic-bezier(.22,.61,.36,1) .3s}
-.reveal:not(.in) .p-rings .dial{--p:0}
+/* SVG ring rather than a conic-gradient driven by a custom property. Custom
+   properties need @property registration to animate at all, and even then the
+   transition is unreliable — the arc jumped straight to its final value while
+   the number counted beside it, which looked worse than no animation. A
+   stroke-dashoffset on a circle animates everywhere, and shares its duration
+   and easing with the counter so the arc and the digit move as one. */
+.p-rings .dial{position:relative;width:104px;height:104px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center}
+.p-rings .dial svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.p-rings .dial .trk{fill:none;stroke:rgba(255,255,255,.09);stroke-width:8}
+.p-rings .dial .arc{fill:none;stroke:var(--c);stroke-width:8;stroke-linecap:round;
+  stroke-dasharray:276.5;stroke-dashoffset:calc(276.5px * (1 - var(--pf)));
+  filter:drop-shadow(0 0 6px color-mix(in srgb,var(--c) 55%,transparent));
+  transition:stroke-dashoffset 1.6s cubic-bezier(.22,.61,.36,1) .25s}
+.reveal:not(.in) .p-rings .dial .arc{stroke-dashoffset:276.5px}
+.p-rings .dial i{position:relative;z-index:1;font-style:normal;font-size:24px;font-weight:800;color:#fff}
+.p-rings .rg b{display:block;font-size:13.5px;font-weight:700;color:rgba(255,255,255,.9)}
+.p-rings .rg span{display:block;font-size:11.5px;color:rgba(255,255,255,.42);margin-top:3px}
 .p-rings .dial i{width:80px;height:80px;border-radius:50%;background:#0a0c16;
   display:flex;align-items:center;justify-content:center;font-style:normal;font-size:24px;font-weight:800;color:#fff}
 .p-rings .rg b{display:block;font-size:13.5px;font-weight:700;color:rgba(255,255,255,.9)}
@@ -784,9 +794,9 @@
           <div class="p-split">
             <div>
               <div class="p-eyebrow">Alcohol-free</div>
-              <h2 class="p-head"><em><span data-count="47" data-count-ms="1700">47</span> days</em> since your last drink.</h2>
+              <h2 class="p-head"><em>47 days</em> since your last drink.</h2>
               <div class="p-meta">
-                <span class="st"><b data-count="41" data-count-ms="1100">41</b><span>day personal best</span></span>
+                <span class="st"><b>41</b><span>day personal best</span></span>
                 <span class="sep"></span>
                 <span class="st"><b>9pm</b><span>your peak window</span></span>
                 <span class="sep"></span>
@@ -860,10 +870,10 @@
               <p class="p-reason">A short night and a raised resting rate. Watch the evening — that's when the pull usually lands.</p>
             </div>
             <div class="p-rings">
-              <div class="rg"><div class="dial" style="--c:#a3b2e0;--pf:.62"><i data-count="62" data-count-ms="1500">62</i></div><b>Rest</b><span>Short night</span></div>
-              <div class="rg"><div class="dial" style="--c:#d7a6cb;--pf:.80"><i data-count="80" data-count-ms="1500">80</i></div><b>Mood</b><span>Steady</span></div>
-              <div class="rg"><div class="dial" style="--c:#e8cf9a;--pf:.80"><i>4/5</i></div><b>Habits</b><span>Held</span></div>
-              <div class="rg"><div class="dial" style="--c:#9cc2ad;--pf:.78"><i data-count="78" data-count-ms="1500">78</i></div><b>Score</b><span>of 100</span></div>
+              <div class="rg"><div class="dial" style="--c:#a3b2e0;--pf:.62"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="trk" cx="50" cy="50" r="44"/><circle class="arc" cx="50" cy="50" r="44"/></svg><i data-count="62" data-count-ms="1600" data-count-delay="250">62</i></div><b>Rest</b><span>Short night</span></div>
+              <div class="rg"><div class="dial" style="--c:#d7a6cb;--pf:.80"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="trk" cx="50" cy="50" r="44"/><circle class="arc" cx="50" cy="50" r="44"/></svg><i data-count="80" data-count-ms="1600" data-count-delay="250">80</i></div><b>Mood</b><span>Steady</span></div>
+              <div class="rg"><div class="dial" style="--c:#e8cf9a;--pf:.80"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="trk" cx="50" cy="50" r="44"/><circle class="arc" cx="50" cy="50" r="44"/></svg><i>4/5</i></div><b>Habits</b><span>Held</span></div>
+              <div class="rg"><div class="dial" style="--c:#9cc2ad;--pf:.78"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="trk" cx="50" cy="50" r="44"/><circle class="arc" cx="50" cy="50" r="44"/></svg><i data-count="78" data-count-ms="1600" data-count-delay="250">78</i></div><b>Score</b><span>of 100</span></div>
             </div>
           </div>
           <div class="p-chips">
@@ -1174,6 +1184,6 @@
   </div>
 </footer>
 
-<script src="js/lotara.js?v=7e859f54"></script>
+<script src="js/lotara.js?v=235284d5"></script>
 </body>
 </html>
