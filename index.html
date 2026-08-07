@@ -107,6 +107,25 @@
   radial-gradient(65% 60% at 82% 104%, rgba(102,51,204,.34) 0%, rgba(8,9,15,0) 62%);
   animation:postGlow 12s ease-in-out infinite}
 @keyframes postGlow{0%,100%{opacity:.85}50%{opacity:1}}
+
+/* A single light sweep across the card as it arrives — the Apple product-page
+   move. Fires once on reveal rather than looping, because a card that keeps
+   glinting reads as an ad; one pass reads as the surface catching the light. */
+.post::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:45%;pointer-events:none;z-index:3;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.09) 45%,rgba(255,255,255,.14) 50%,rgba(255,255,255,.09) 55%,transparent);
+  transform:translateX(0);opacity:0}
+.reveal.in .post::after{animation:postSheen 1.5s cubic-bezier(.22,.61,.36,1) .35s 1 both}
+@keyframes postSheen{0%{transform:translateX(0);opacity:0}12%{opacity:1}100%{transform:translateX(340%);opacity:0}}
+
+/* The counting numbers get a faint glow while they run, so the eye is pulled
+   to the value rather than the card edge. */
+.p-since b,.ch-big,.p-rings .dial i{transition:text-shadow .6s ease}
+.reveal.in .ch-big{text-shadow:0 0 24px rgba(232,207,154,.30)}
+.reveal.in .p-rings .dial i{text-shadow:0 0 18px rgba(255,255,255,.22)}
+
+/* The peak marker on the urge chart keeps breathing after the line draws —
+   it is the one thing on that card worth looking at twice. */
+.p-chart .pk-halo{animation:pkHalo 2.8s ease-in-out infinite}
 .post.rose .glow{background:radial-gradient(70% 46% at 22% 0%, rgba(215,166,203,.22) 0%, rgba(8,9,15,0) 58%),radial-gradient(65% 60% at 82% 104%, rgba(102,51,204,.34) 0%, rgba(8,9,15,0) 62%)}
 .post.sage .glow{background:radial-gradient(70% 46% at 22% 0%, rgba(156,194,173,.22) 0%, rgba(8,9,15,0) 58%),radial-gradient(65% 60% at 82% 104%, rgba(102,51,204,.34) 0%, rgba(8,9,15,0) 62%)}
 .post .inner{position:relative;z-index:2;padding:44px 48px 38px}
@@ -762,9 +781,9 @@
           <div class="p-split">
             <div>
               <div class="p-eyebrow">Alcohol-free</div>
-              <h2 class="p-head"><em>47 days</em> since your last drink.</h2>
+              <h2 class="p-head"><em><span data-count="47" data-count-ms="1700">47</span> days</em> since your last drink.</h2>
               <div class="p-meta">
-                <span class="st"><b>41</b><span>day personal best</span></span>
+                <span class="st"><b data-count="41" data-count-ms="1100">41</b><span>day personal best</span></span>
                 <span class="sep"></span>
                 <span class="st"><b>9pm</b><span>your peak window</span></span>
                 <span class="sep"></span>
@@ -777,7 +796,7 @@
                 <span class="ch-t">The urge, week by week</span>
                 <span class="ch-n">&#8595; 73% quieter</span>
               </div>
-              <div class="ch-big">6 <span style="font-size:17px;font-style:normal;color:rgba(255,255,255,.5)">this week</span></div>
+              <div class="ch-big"><span data-count="6" data-count-ms="1200">6</span> <span style="font-size:17px;font-style:normal;color:rgba(255,255,255,.5)">this week</span></div>
               <div class="ch-sub">Down from 22 the week you started</div>
               <svg viewBox="0 0 520 190" preserveAspectRatio="none" role="img" aria-label="Urges per week, declining">
                 <defs>
@@ -829,7 +848,7 @@
               <div class="p-eyebrow">This morning</div>
               <h2 class="p-head">You slept <em>5h42m</em>. Go gently today.</h2>
               <div class="p-meta">
-                <span class="st"><b>66</b><span>resting bpm</span></span>
+                <span class="st"><b data-count="66" data-count-ms="1100">66</b><span>resting bpm</span></span>
                 <span class="sep"></span>
                 <span class="st"><b>+5</b><span>above your average</span></span>
                 <span class="sep"></span>
@@ -838,10 +857,10 @@
               <p class="p-reason">A short night and a raised resting rate. Watch the evening — that's when the pull usually lands.</p>
             </div>
             <div class="p-rings">
-              <div class="rg"><div class="dial" style="--c:#a3b2e0;--pf:.62"><i>62</i></div><b>Rest</b><span>Short night</span></div>
-              <div class="rg"><div class="dial" style="--c:#d7a6cb;--pf:.80"><i>80</i></div><b>Mood</b><span>Steady</span></div>
+              <div class="rg"><div class="dial" style="--c:#a3b2e0;--pf:.62"><i data-count="62" data-count-ms="1500">62</i></div><b>Rest</b><span>Short night</span></div>
+              <div class="rg"><div class="dial" style="--c:#d7a6cb;--pf:.80"><i data-count="80" data-count-ms="1500">80</i></div><b>Mood</b><span>Steady</span></div>
               <div class="rg"><div class="dial" style="--c:#e8cf9a;--pf:.80"><i>4/5</i></div><b>Habits</b><span>Held</span></div>
-              <div class="rg"><div class="dial" style="--c:#9cc2ad;--pf:.78"><i>78</i></div><b>Score</b><span>of 100</span></div>
+              <div class="rg"><div class="dial" style="--c:#9cc2ad;--pf:.78"><i data-count="78" data-count-ms="1500">78</i></div><b>Score</b><span>of 100</span></div>
             </div>
           </div>
           <div class="p-chips">

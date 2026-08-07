@@ -97,6 +97,58 @@
     setTimeout(function () { targets.forEach(show); }, 3000);
   }
 
+  /* ---- Count-up numbers -------------------------------------
+     The two posts people actually stop on lead with a number, and a number
+     that lands already-final reads as a picture. Counting it up is the
+     Fitness-rings trick: the eye follows a value in motion.
+
+     Driven by the same reveal pass, so a card counts when it arrives rather
+     than while it's still off screen. Uses easeOutExpo — fast out of the gate,
+     long settle — which is what makes Apple's counters feel weighted instead
+     of linear.
+
+     The element's existing text IS the final value, so with JS off or reduced
+     motion on, the correct number is simply already there.            */
+  var countables = Array.prototype.slice.call(document.querySelectorAll('[data-count]'));
+
+  function runCount(el) {
+    if (el.dataset.counted) return;
+    el.dataset.counted = '1';
+
+    var target = parseFloat(el.dataset.count);
+    if (isNaN(target)) return;
+    var suffix = el.dataset.countSuffix || '';
+    var duration = parseInt(el.dataset.countMs || '1400', 10);
+    var started = null;
+
+    function frame(now) {
+      if (started === null) started = now;
+      var t = Math.min(1, (now - started) / duration);
+      var eased = t === 1 ? 1 : 1 - Math.pow(2, -10 * t);   // easeOutExpo
+      el.textContent = Math.round(target * eased) + suffix;
+      if (t < 1) requestAnimationFrame(frame);
+      else el.textContent = target + suffix;
+    }
+    requestAnimationFrame(frame);
+  }
+
+  if (!reduced && countables.length) {
+    // Blank them only once we know we can animate — otherwise the real value
+    // stays on screen untouched.
+    countables.forEach(function (el) { el.textContent = '0' + (el.dataset.countSuffix || ''); });
+
+    if ('IntersectionObserver' in window) {
+      var countObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { runCount(e.target); countObserver.unobserve(e.target); }
+        });
+      }, { threshold: 0.4 });
+      countables.forEach(function (el) { countObserver.observe(el); });
+    }
+    // Same belt-and-braces as the reveal: nothing stays showing 0.
+    setTimeout(function () { countables.forEach(runCount); }, 3000);
+  }
+
   /* ---- Button ripple, as the original site had ---- */
   document.querySelectorAll('.btn').forEach(function (btn) {
     btn.addEventListener('click', function (e) {
