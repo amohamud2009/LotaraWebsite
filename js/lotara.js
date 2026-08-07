@@ -114,19 +114,37 @@
      Progress is measured from where the card sits in the viewport: 0 when its
      top is near the bottom of the screen, 1 by the time it has travelled up to
      the reading zone. Everything on a card shares that one number, so the arc,
-     the digit and the bar can never drift apart.                     */
-  var SCRUB_START = 0.92;   // card top at 92% of viewport height -> progress 0
-  var SCRUB_END   = 0.34;   // ...and at 34% -> progress 1
+     the digit and the bar can never drift apart.
 
+     Pinning the card would buy more runway, the way Apple's product pages do,
+     but it pays for it in page length — and on a page whose job is to convert a
+     stranger, length is the one budget not worth spending. It also isn't
+     necessary. A card is on screen for about 1.9 viewports of scroll and the
+     first version of this used 0.58 of that, so more than half the runway was
+     already sitting there unused. What follows spends it instead of buying more.
+                                                                            */
+  function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+
+  // Measured from the card's own box rather than a fixed slice of the viewport.
+  // A tall card and a short one then behave the same, and — the reason it is
+  // written this way — the parts low inside a tall card are no longer still
+  // animating after the card's top has already left the reading zone.
   function scrubProgress(el) {
-    var vh = window.innerHeight;
-    var top = el.getBoundingClientRect().top;
-    var from = vh * SCRUB_START, to = vh * SCRUB_END;
-    return Math.max(0, Math.min(1, (from - top) / (from - to)));
+    var vh = window.innerHeight, r = el.getBoundingClientRect();
+    var from = vh * 0.98;                     // top edge entering from below -> 0
+    var to   = vh * 0.50 - r.height * 0.55;   // card settled in the reading zone -> 1
+    return clamp((from - r.top) / (from - to));
   }
 
-  // easeOutCubic: keeps the tail of the scroll from feeling like it stalls.
-  function ease(t) { return 1 - Math.pow(1 - t, 3); }
+  // smoothstep, not easeOutCubic. The cubic reached 98.5% of its travel after
+  // 76% of the scroll, so the last quarter of every card moved by almost
+  // nothing — a short runway made shorter still. This one spends the middle.
+  function ease(t) { return t * t * (3 - 2 * t); }
+
+  // A sub-window of the card's progress, so the parts arrive in an order rather
+  // than all together. This is the difference between motion that is merely
+  // tied to scroll and motion that reads as choreographed.
+  function stage(p, a, b) { return ease(clamp((p - a) / (b - a))); }
 
   var scrubCards = Array.prototype.slice.call(document.querySelectorAll('.post'));
 
@@ -139,35 +157,48 @@
   });
 
   function applyScrub(card, p) {
-    var e = ease(p);
-
+    // The chart draws first — it is the thing the card is about.
+    var draw = stage(p, 0.00, 0.62);
     var ln = card.querySelector('.p-chart .ln');
-    if (ln) ln.style.strokeDashoffset = (+ln.dataset.len) * (1 - e);
+    if (ln) ln.style.strokeDashoffset = (+ln.dataset.len) * (1 - draw);
 
     var area = card.querySelector('.p-chart .ar');
-    if (area) area.style.opacity = e;
+    if (area) area.style.opacity = draw;
+
+    // Rings, bar and counters deliberately share one window, so a dial and the
+    // number inside it — or the sleep bar and the duration next to it — cannot
+    // drift apart. Staging is for parts that mean different things, not for
+    // two readings of the same value.
+    var val = stage(p, 0.05, 0.68);
 
     card.querySelectorAll('.p-rings .arc').forEach(function (arc) {
       var pf = parseFloat(getComputedStyle(arc.parentNode.parentNode).getPropertyValue('--pf')) || 0;
-      arc.style.strokeDashoffset = 276.5 * (1 - pf * e);
+      arc.style.strokeDashoffset = 276.5 * (1 - pf * val);
     });
 
     var bar = card.querySelector('.sl-bar i');
-    if (bar) bar.style.width = (28 * e) + '%';
+    if (bar) bar.style.width = (28 * val) + '%';
 
     card.querySelectorAll('[data-count]').forEach(function (el) {
       var target = parseFloat(el.dataset.count);
       if (isNaN(target)) return;
-      el.textContent = Math.round(target * e) + (el.dataset.countSuffix || '');
+      el.textContent = Math.round(target * val) + (el.dataset.countSuffix || '');
     });
 
-    // Chips arrive across the middle of the scrub rather than all at once.
+    // Chips land last and one after another, once the data has resolved.
     card.querySelectorAll('.p-chips .chip').forEach(function (chip, i) {
-      var start = 0.25 + i * 0.12;
-      var cp = Math.max(0, Math.min(1, (p - start) / 0.28));
+      var cp = stage(p, 0.55 + i * 0.07, 0.85 + i * 0.07);
       chip.style.opacity = cp;
       chip.style.transform = 'translateY(' + (10 * (1 - cp)) + 'px)';
     });
+
+    // The light sweep across the card used to be a 1.5s keyframe on a 0.35s
+    // delay, fired on reveal. That is exactly the motion that arrives ahead of
+    // the reader — it had already finished by the time a slow scroll brought
+    // the card up. Tied to progress, the surface catches the light at the pace
+    // the reader sets, and holds if they stop.
+    card.style.setProperty('--sheen', (p * 340).toFixed(1) + '%');
+    card.style.setProperty('--sheen-o', Math.sin(p * Math.PI).toFixed(3));
   }
 
   if (!reduced && scrubCards.length) {
@@ -175,17 +206,47 @@
     // frame behind every scroll event.
     document.documentElement.classList.add('scrub');
 
-    var scrubTicking = false;
+    var scrubTicking = false, settling = false;
+    var lastY = window.pageYOffset, vel = 0;
+
+    function paint() {
+      var vh = window.innerHeight;
+      for (var i = 0; i < scrubCards.length; i++) {
+        var c = scrubCards[i], r = c.getBoundingClientRect();
+        if (r.bottom < -200 || r.top > vh + 200) continue;  // off screen
+        applyScrub(c, scrubProgress(c));
+
+        // Depth and lag run off the card's whole time on screen rather than the
+        // window the data animates in. That leftover dwell — roughly a viewport
+        // of it per card — is what a pinned layout would have charged page
+        // length for; here it costs nothing and the card still feels alive
+        // before its numbers start and after they finish.
+        c.style.setProperty('--depth', (((vh * 0.5) - (r.top + r.height * 0.5)) / vh).toFixed(3));
+        c.style.setProperty('--vel', vel.toFixed(3));
+      }
+    }
+
+    // Scroll speed feeds a few pixels of lag into the card's inner layer, which
+    // is most of what makes a surface read as having mass. It has to decay under
+    // its own power: scroll events stop the instant the finger does, so without
+    // this the last velocity would stay frozen into the layout.
+    function settle() {
+      vel *= 0.86;
+      if (Math.abs(vel) < 0.004) { vel = 0; settling = false; paint(); return; }
+      paint();
+      requestAnimationFrame(settle);
+    }
+
     var runScrub = function () {
+      var y = window.pageYOffset;
+      vel = Math.max(-1, Math.min(1, (y - lastY) / 34));
+      lastY = y;
       if (scrubTicking) return;
       scrubTicking = true;
       requestAnimationFrame(function () {
-        for (var i = 0; i < scrubCards.length; i++) {
-          var c = scrubCards[i], r = c.getBoundingClientRect();
-          if (r.bottom < -200 || r.top > window.innerHeight + 200) continue;  // off screen
-          applyScrub(c, scrubProgress(c));
-        }
+        paint();
         scrubTicking = false;
+        if (!settling && vel !== 0) { settling = true; requestAnimationFrame(settle); }
       });
     };
     window.addEventListener('scroll', runScrub, { passive: true });

@@ -111,6 +111,25 @@
 .scrub .p-rings .arc,
 .scrub .sl-bar i,
 .scrub .p-chips .chip{transition:none!important}
+
+/* Depth, driven by where the card sits on screen rather than by a timer. The
+   glow moves against the content instead of with it, so the card reads as
+   layered rather than printed flat, and the inner layer lags a few pixels
+   behind fast scrolling before settling — the small cue that says a surface
+   has mass. Both are transforms and nothing else, which is the reason this
+   whole engine still measures zero dropped frames.
+
+   These use the card's entire time on screen, not just the window its numbers
+   animate in. Pinning would have bought that runway with page length; this
+   spends the dwell the reader was already giving the card. */
+.scrub .post .glow{transform:translate3d(0,calc(var(--depth,0) * -24px),0) scale(1.07)}
+.scrub .post .inner{transform:translate3d(0,calc(var(--vel,0) * 7px),0)}
+
+/* The sheen hands over from its keyframe to the scroll. As a 1.5s animation on
+   a .35s delay it had usually finished before a slow reader ever got the card
+   into view — motion running ahead of the hand driving it. */
+.scrub .reveal.in .post::after{animation:none!important}
+.scrub .post::after{transform:translateX(var(--sheen,0));opacity:var(--sheen-o,0)}
 /* No override needed for the reveal gates: the scrub writes inline styles,
    which already outrank a class rule. `inherit` was tried here and is wrong —
    stroke-dashoffset inherits the parent's 0, i.e. fully drawn, which is the
@@ -1208,6 +1227,6 @@
   </div>
 </footer>
 
-<script src="js/lotara.js?v=03f4cf2b"></script>
+<script src="js/lotara.js?v=d684cb87"></script>
 </body>
 </html>
