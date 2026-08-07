@@ -122,7 +122,12 @@
    These use the card's entire time on screen, not just the window its numbers
    animate in. Pinning would have bought that runway with page length; this
    spends the dwell the reader was already giving the card. */
-.scrub .post .glow{transform:translate3d(0,calc(var(--depth,0) * -24px),0) scale(1.07)}
+/* The glow used to parallax against the content here, for depth. It is static
+   again: it is a light source, and a light source that slides as you scroll
+   reads as a reflection cast over the card rather than as depth — the same
+   complaint the sheen earned, in a quieter form. Nothing that emits light on a
+   post moves with the scroll now. The inner layer still lags on fast scrolling,
+   which is content shifting rather than light, and does not read that way. */
 .scrub .post .inner{transform:translate3d(0,calc(var(--vel,0) * 7px),0)}
 
 /* No override needed for the reveal gates: the scrub writes inline styles,
@@ -1219,6 +1224,6 @@
   </div>
 </footer>
 
-<script src="js/lotara.js?v=21865155"></script>
+<script src="js/lotara.js?v=6da72f2b"></script>
 </body>
 </html>

@@ -287,12 +287,11 @@
         if (r.bottom < -200 || r.top > vh + 200) continue;  // off screen
         applyScrub(c);
 
-        // Depth and lag run off the card's whole time on screen rather than the
-        // window the data animates in. That leftover dwell — roughly a viewport
-        // of it per card — is what a pinned layout would have charged page
-        // length for; here it costs nothing and the card still feels alive
-        // before its numbers start and after they finish.
-        c.style.setProperty('--depth', (((vh * 0.5) - (r.top + r.height * 0.5)) / vh).toFixed(3));
+        // Only the lag is left. --depth used to drive a parallax on the card's
+        // glow; a light source that slides as you scroll reads as a reflection
+        // cast over the card rather than as depth, so it is gone and so is the
+        // per-frame write that fed it. Content lagging is not light, so this
+        // stays: it is what gives the surface a sense of mass.
         c.style.setProperty('--vel', vel.toFixed(3));
       }
     }
