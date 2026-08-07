@@ -290,7 +290,10 @@
 .sl-row .st span{display:block;font-size:12px;color:rgba(255,255,255,.5);margin-top:2px}
 .sl-row .len{margin-left:auto;font-size:13px;font-weight:700;color:#c9d2f5;flex:none}
 .sl-bar{margin-top:15px;height:4px;border-radius:9999px;background:rgba(255,255,255,.14);overflow:hidden}
-.sl-bar i{display:block;height:100%;width:28%;border-radius:9999px;background:linear-gradient(90deg,#c9d2f5,#8f9fdc)}
+.sl-bar i{display:block;height:100%;width:var(--fill,28%);border-radius:9999px;background:linear-gradient(90deg,#c9d2f5,#8f9fdc);transition:width 1.5s cubic-bezier(.22,.61,.36,1) .2s}
+/* Bar and durations share one duration and one easing, so the track
+   filling and the minutes climbing read as a single motion. */
+.reveal:not(.in) .sl-bar i{width:0}
 .sl-amb{display:flex;gap:9px;margin-top:18px;flex-wrap:wrap}
 .sl-amb span{font-size:12px;font-weight:600;padding:8px 14px;border-radius:9999px;
   background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.13);color:rgba(255,255,255,.62)}
@@ -796,7 +799,7 @@
                 <span class="ch-t">The urge, week by week</span>
                 <span class="ch-n">&#8595; 73% quieter</span>
               </div>
-              <div class="ch-big"><span data-count="6" data-count-ms="1200">6</span> <span style="font-size:17px;font-style:normal;color:rgba(255,255,255,.5)">this week</span></div>
+              <div class="ch-big">6 <span style="font-size:17px;font-style:normal;color:rgba(255,255,255,.5)">this week</span></div>
               <div class="ch-sub">Down from 22 the week you started</div>
               <svg viewBox="0 0 520 190" preserveAspectRatio="none" role="img" aria-label="Urges per week, declining">
                 <defs>
@@ -896,7 +899,7 @@
               <div class="p-eyebrow">Tonight, Lotara picks</div>
               <h2 class="p-head">Something <em>long enough</em> to come down from.</h2>
               <div class="p-meta">
-                <span class="st"><b>66</b><span>bpm overnight</span></span>
+                <span class="st"><b data-count="66" data-count-ms="1500">66</b><span>bpm overnight</span></span>
                 <span class="sep"></span>
                 <span class="st"><b>+5</b><span>above average</span></span>
                 <span class="sep"></span>
@@ -908,14 +911,14 @@
               <div class="sl-row">
                 <span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
                 <span class="st"><b>Rain on a Tin Roof</b><span>Read by Theo · rain underneath</span></span>
-                <span class="len">18 min</span>
+                <span class="len"><span data-count="18" data-count-ms="1500" data-count-suffix=" min">18 min</span></span>
               </div>
-              <div class="sl-bar"><i></i></div>
+              <div class="sl-bar"><i style="--fill:28%"></i></div>
               <div class="sl-amb"><span class="on">Rain</span><span>Ocean</span><span>Wind</span><span>Off</span></div>
               <div class="sl-row" style="margin-top:14px">
                 <span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
                 <span class="st"><b>The Night Train</b><span>Read by David</span></span>
-                <span class="len">13 min</span>
+                <span class="len"><span data-count="13" data-count-ms="1500" data-count-suffix=" min">13 min</span></span>
               </div>
             </div>
           </div>
@@ -1171,6 +1174,6 @@
   </div>
 </footer>
 
-<script src="js/lotara.js?v=5eee35c0"></script>
+<script src="js/lotara.js?v=7e859f54"></script>
 </body>
 </html>

@@ -37,6 +37,13 @@
       ['.showcase:not(.flip) .sc-copy', 0, 'reveal-right'],
       ['.showcase.flip .sc-media', 0, 'reveal-right'],
       ['.showcase.flip .sc-copy', 0, 'reveal-left'],
+      // The immersive posts. Everything animated inside them — the chart line
+      // drawing, the health dials sweeping, the chips staggering, the sheen —
+      // is gated on an ancestor carrying .reveal.in. When the layout moved from
+      // .showcase to .feature these stopped matching anything, so all of it was
+      // silently dead while still looking correct in a screenshot.
+      ['.post', 0, ''],
+      ['.feature-copy', 0, ''],
       ['.stat', 80, ''],
       ['.pf', 60, ''],
       ['.cmp-body .cmp-row', 45, ''],
