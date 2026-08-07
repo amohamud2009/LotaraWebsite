@@ -38,8 +38,8 @@
       ['.showcase.flip .sc-media', 0, 'reveal-right'],
       ['.showcase.flip .sc-copy', 0, 'reveal-left'],
       // The immersive posts. Everything animated inside them — the chart line
-      // drawing, the health dials sweeping, the chips staggering, the sheen —
-      // is gated on an ancestor carrying .reveal.in. When the layout moved from
+      // drawing, the health dials sweeping, the chips staggering — is gated on
+      // an ancestor carrying .reveal.in. When the layout moved from
       // .showcase to .feature these stopped matching anything, so all of it was
       // silently dead while still looking correct in a screenshot.
       ['.post', 0, ''],
@@ -125,17 +125,6 @@
                                                                             */
   function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
 
-  // Measured from the card's own box rather than a fixed slice of the viewport.
-  // A tall card and a short one then behave the same, and — the reason it is
-  // written this way — the parts low inside a tall card are no longer still
-  // animating after the card's top has already left the reading zone.
-  function scrubProgress(el) {
-    var vh = window.innerHeight, r = el.getBoundingClientRect();
-    var from = vh * 0.98;                     // top edge entering from below -> 0
-    var to   = vh * 0.50 - r.height * 0.55;   // card settled in the reading zone -> 1
-    return clamp((from - r.top) / (from - to));
-  }
-
   // smoothstep, not easeOutCubic. The cubic reached 98.5% of its travel after
   // 76% of the scroll, so the last quarter of every card moved by almost
   // nothing — a short runway made shorter still. This one spends the middle.
@@ -167,10 +156,17 @@
   // Reading from the group's own box means an animation starts as that group
   // appears and finishes while it is being looked at, whatever else is on the
   // card and however tall the card is.
+  //
+  // The window ends where the post comes to rest, not where it leaves. Ending
+  // high up the screen meant that stopping on a card — which is exactly what a
+  // reader does when something catches them — left the last few percent of
+  // every animation unspent, so the card sat there very nearly, but visibly not
+  // quite, complete. Landing on the resting position makes coming to a stop on
+  // a post the moment it finishes, which is the only moment that matters.
   function groupProgress(el) {
     var vh = window.innerHeight, r = el.getBoundingClientRect();
-    var from = vh * 0.94;                     // group's top edge entering -> 0
-    var to   = vh * 0.40 - r.height * 0.30;   // group settled in the reading zone -> 1
+    var from = vh * 0.98;                     // group's top edge entering -> 0
+    var to   = vh * 0.55 - r.height * 0.25;   // group at rest in the viewport -> 1
     return clamp((from - r.top) / (from - to));
   }
 
@@ -245,12 +241,19 @@
 
     // Chips still stagger among themselves — sequencing belongs between parts
     // that say different things, and each chip does.
+    //
+    // The stagger is kept short deliberately. The chips sit low in the card, so
+    // their box is the last to reach its window, and a wide stagger on top of
+    // that left the final chip at half opacity on a card the reader had already
+    // stopped on: 53% with the card resting near the top of the screen. Every
+    // chip is now finished within the first half of the group's runway, which
+    // still reads as one arriving after another.
     var wrap = card.querySelector('.p-chips');
     if (wrap) {
       var chips = Array.prototype.slice.call(wrap.querySelectorAll('.chip'));
       jobs.push({ box: wrap, raw: true, run: function (p) {
         for (var i = 0; i < chips.length; i++) {
-          var cp = stage(p, 0.10 + i * 0.14, 0.55 + i * 0.14);
+          var cp = stage(p, 0.05 + i * 0.08, 0.40 + i * 0.08);
           chips[i].style.opacity = cp;
           chips[i].style.transform = 'translateY(' + (10 * (1 - cp)) + 'px)';
         }
@@ -262,18 +265,11 @@
 
   // Vertical order now sequences a card on its own: the chart sits above the
   // chips, so it draws first without anyone staging it to.
-  function applyScrub(card, p) {
+  function applyScrub(card) {
     var jobs = card._jobs || (card._jobs = buildJobs(card));
     var i;
     for (i = 0; i < jobs.length; i++) jobs[i].p = groupProgress(jobs[i].box);   // read
     for (i = 0; i < jobs.length; i++) jobs[i].run(jobs[i].raw ? jobs[i].p : ease(jobs[i].p));  // write
-
-    // The sheen stays on the card's own progress: it is a property of the
-    // surface rather than of anything printed on it. As a 1.5s keyframe on a
-    // .35s delay it had usually finished before a slow reader got the card into
-    // view — motion arriving ahead of the hand driving it.
-    card.style.setProperty('--sheen', (p * 340).toFixed(1) + '%');
-    card.style.setProperty('--sheen-o', Math.sin(p * Math.PI).toFixed(3));
   }
 
   if (!reduced && scrubCards.length) {
@@ -289,7 +285,7 @@
       for (var i = 0; i < scrubCards.length; i++) {
         var c = scrubCards[i], r = c.getBoundingClientRect();
         if (r.bottom < -200 || r.top > vh + 200) continue;  // off screen
-        applyScrub(c, scrubProgress(c));
+        applyScrub(c);
 
         // Depth and lag run off the card's whole time on screen rather than the
         // window the data animates in. That leftover dwell — roughly a viewport

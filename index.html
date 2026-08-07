@@ -125,11 +125,6 @@
 .scrub .post .glow{transform:translate3d(0,calc(var(--depth,0) * -24px),0) scale(1.07)}
 .scrub .post .inner{transform:translate3d(0,calc(var(--vel,0) * 7px),0)}
 
-/* The sheen hands over from its keyframe to the scroll. As a 1.5s animation on
-   a .35s delay it had usually finished before a slow reader ever got the card
-   into view — motion running ahead of the hand driving it. */
-.scrub .reveal.in .post::after{animation:none!important}
-.scrub .post::after{transform:translateX(var(--sheen,0));opacity:var(--sheen-o,0)}
 /* No override needed for the reveal gates: the scrub writes inline styles,
    which already outrank a class rule. `inherit` was tried here and is wrong —
    stroke-dashoffset inherits the parent's 0, i.e. fully drawn, which is the
@@ -151,14 +146,11 @@
   animation:postGlow 12s ease-in-out infinite}
 @keyframes postGlow{0%,100%{opacity:.85}50%{opacity:1}}
 
-/* A single light sweep across the card as it arrives — the Apple product-page
-   move. Fires once on reveal rather than looping, because a card that keeps
-   glinting reads as an ad; one pass reads as the surface catching the light. */
-.post::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:45%;pointer-events:none;z-index:3;
-  background:linear-gradient(100deg,transparent,rgba(255,255,255,.09) 45%,rgba(255,255,255,.14) 50%,rgba(255,255,255,.09) 55%,transparent);
-  transform:translateX(0);opacity:0}
-.reveal.in .post::after{animation:postSheen 1.5s cubic-bezier(.22,.61,.36,1) .35s 1 both}
-@keyframes postSheen{0%{transform:translateX(0);opacity:0}12%{opacity:1}100%{transform:translateX(340%);opacity:0}}
+/* There used to be a light sweep across the card here — the Apple product-page
+   glint. It is gone on purpose. Tied to the scroll it swept whenever the reader
+   moved, which turned a one-off flourish into a reflection sliding over the card
+   the whole way past it, competing with the data for the eye. The card is what
+   is worth looking at, so nothing now moves across the surface. */
 
 /* The counting numbers get a faint glow while they run, so the eye is pulled
    to the value rather than the card edge. */
@@ -1227,6 +1219,6 @@
   </div>
 </footer>
 
-<script src="js/lotara.js?v=84f30500"></script>
+<script src="js/lotara.js?v=21865155"></script>
 </body>
 </html>
