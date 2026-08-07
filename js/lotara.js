@@ -78,7 +78,7 @@
         var el = targets[i];
         if (el.classList.contains('in')) continue;
         var r = el.getBoundingClientRect();
-        if (r.top < h - 60 && r.bottom > 0) show(el);
+        if (r.top < h * 0.76 && r.bottom > 0) show(el);
       }
     };
 
@@ -87,7 +87,7 @@
         entries.forEach(function (e) {
           if (e.isIntersecting) { show(e.target); io.unobserve(e.target); }
         });
-      }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+      }, { threshold: 0.1, rootMargin: '0px 0px -24% 0px' });
       targets.forEach(function (el) { io.observe(el); });
     }
 
@@ -179,7 +179,7 @@
 
     var inView = function (el) {
       var r = el.getBoundingClientRect();
-      return r.top < window.innerHeight * 0.85 && r.bottom > 0;
+      return r.top < window.innerHeight * 0.78 && r.bottom > 0;
     };
 
     if ('IntersectionObserver' in window) {
@@ -187,7 +187,7 @@
         entries.forEach(function (e) {
           if (e.isIntersecting) { runCount(e.target); countObserver.unobserve(e.target); }
         });
-      }, { threshold: 0.4 });
+      }, { threshold: 0.25, rootMargin: '0px 0px -22% 0px' });
       countables.forEach(function (el) { countObserver.observe(el); });
     }
 
