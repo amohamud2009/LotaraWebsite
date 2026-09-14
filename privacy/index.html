@@ -107,7 +107,7 @@
         <div class="lcard">
           <div class="ic" style="background:rgba(162,155,254,.12)"><svg viewBox="0 0 24 24" style="stroke:var(--lavender)"><path d="M12 3v2M12 19v2M5 12H3M21 12h-2M6.3 6.3 4.9 4.9M19.1 19.1l-1.4-1.4M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"/><circle cx="12" cy="12" r="3.4"/></svg></div>
           <h3>AI transparency</h3>
-          <p>AI is used only to give you insights. Your private entries are never used to train external models or shared with third parties.</p>
+          <p>Lotara Intelligence is optional and stays off until you turn it on. It uses a named third-party model provider as a processor, and your content is never used to train any AI model.</p>
         </div>
         <div class="lcard">
           <div class="ic" style="background:rgba(162,155,254,.12)"><svg viewBox="0 0 24 24" style="stroke:var(--lavender)"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></div>
@@ -160,13 +160,28 @@
         <div class="col no">
           <h4>What AI never does</h4>
           <ul>
-            <li><b>Never trains external models</b> — your private journal entries are never used to train external AI models or shared with third-party AI companies.</li>
+            <li><b>Never trains any model</b> — your content is never used to train an AI model, by us or by our processor.</li>
             <li><b>Never sold or shared</b> — AI insights are generated solely for your personal use.</li>
-            <li><b>Never leaves our system</b> — all AI processing happens within our secure Firebase infrastructure.</li>
+            <li><b>Never without your say-so</b> — nothing is sent until you enable Lotara Intelligence, and you can withdraw consent any time in Profile › AI &amp; Privacy.</li>
             <li><b>Never used for advertising</b> — your data is never used to target you with ads or build marketing profiles.</li>
           </ul>
         </div>
       </div>
+
+      <h3>How Lotara Intelligence works</h3>
+      <p>Lotara Intelligence is our own feature. What it notices, the context it draws on and the way it speaks to you are built by Lotara. To generate its responses it uses a third-party model provider as a processor: <b>OpenAI</b>. Requests travel through our own authenticated Firebase Cloud Functions before reaching OpenAI — your device never contacts OpenAI directly.</p>
+
+      <h3>What is sent when you use Lotara Intelligence</h3>
+      <ul>
+        <li>Messages you write to Lotara Intelligence.</li>
+        <li>Craving and habit data.</li>
+        <li>Mood and check-in data.</li>
+        <li>Journal content, when you use the AI journal features such as insights, writing prompts and sentiment analysis.</li>
+        <li>Sleep averages, including nights read from Apple Health.</li>
+      </ul>
+      <p>Lotara Intelligence is <b>off by default</b>. Nothing is sent until you turn it on and accept a consent screen that names OpenAI and itemises exactly what is shared. You can withdraw that consent at any time in Profile › AI &amp; Privacy, after which nothing further is sent.</p>
+      <p>Under our agreement with OpenAI, content sent through their API is not used to train their models, and they are required to provide protections equivalent to those described in this policy.</p>
+      <p>Apps you choose for focus and blocking features are never transmitted. Apple’s Screen Time framework hands us opaque tokens that stay on your device and cannot be read by us or anyone else.</p>
 
       <h2 id="sharing">How we share your information</h2>
       <h3>We do not sell your data</h3>
