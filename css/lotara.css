@@ -10,7 +10,7 @@
   --lavender:#a29bfe; --purple:#6633CC; --rose:#e0a8d4; --sage:#9cc2ad;
   --gold:#e8cf9a; --calm:#9bb1de; --wisdom:#a3b2e0; --focus:#b3a8f0; --love:#d7a6cb;
   --ink:rgba(255,255,255,1); --ink-2:rgba(255,255,255,0.72); --ink-3:rgba(255,255,255,0.52);
-  --ink-4:rgba(255,255,255,0.38); --ink-5:rgba(255,255,255,0.20);
+  --ink-4:rgba(255,255,255,0.46); --ink-5:rgba(255,255,255,0.20);
   --surface:rgba(255,255,255,0.05); --surface-2:rgba(255,255,255,0.035); --border:rgba(255,255,255,0.08);
   --hero-grad:linear-gradient(135deg,#6f5cd6 0%,#8a6fd0 45%,#c98fd8 100%);
   --font:'Nunito',-apple-system,BlinkMacSystemFont,'SF Pro Rounded',sans-serif;
@@ -137,7 +137,7 @@ section.block{position:relative;padding:100px 0}
 .toc ol{list-style:none;counter-reset:t;columns:2;column-gap:28px}
 .toc li{counter-increment:t;margin-bottom:9px;break-inside:avoid}
 .toc a{font-size:14.5px;color:var(--ink-3)}
-.toc a::before{content:counter(t) ". ";color:var(--ink-5);font-weight:700}
+.toc a::before{content:counter(t) ". ";color:var(--ink-4);font-weight:700}
 .toc a:hover{color:#fff}
 
 /* Accordion for help. Uses <details> so it works with JS disabled. */
@@ -157,6 +157,10 @@ section.block{position:relative;padding:100px 0}
   *{animation-duration:.001s!important;animation-iteration-count:1!important}
 }
 
+/* --ink-4 was 0.38, which measured 3.47:1 on --page and failed WCAG AA (4.5:1)
+   on the 11-13.5px text it colours: pricing descriptions, footer, policy dates.
+   0.46 is the lowest value that passes on --page, --navy-2 and --navy-3 alike,
+   so it stays visibly quieter than --ink-3 (0.52). */
 /* ---------------- RESPONSIVE ---------------- */
 @media (max-width:900px){
   .foot-grid{grid-template-columns:1fr 1fr;gap:32px}
