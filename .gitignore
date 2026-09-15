@@ -1,0 +1,3 @@
+
+# Local browse-tool session state. Holds a terminal token — never commit.
+.gstack/
