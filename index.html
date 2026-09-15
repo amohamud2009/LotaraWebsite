@@ -692,7 +692,18 @@
   .nav-links .lnk{display:none}
   .features-grid,.pf-grid,.impact-grid{grid-template-columns:1fr}
   .awards-inner{gap:28px}
-  .cmp-row{grid-template-columns:1.4fr 0.8fr 0.8fr}
+  /* Phone widths. Two problems had one cause: every cell carried 22px of side
+     padding, so "Meditations," (87px), "Free/Forever" (41px) and "Premium"
+     (73px) plus padding came to 322px — wider than the table on any phone up
+     to 375px. The grid overflowed and .cmp clipped the Premium column, and the
+     .cmp::before lane, sized at 24.5% instead of following the grid, began
+     25-35px inside that column so its edge ran through "7 days free".
+     Tighter side padding makes the columns fit down to 320px, and fixed
+     trailing widths let the lane match the Premium column exactly. */
+  .cmp-row{grid-template-columns:minmax(0,1fr) 60px 92px}
+  .cmp::before{width:92px}
+  .cmp .cell:first-child{padding-left:18px;padding-right:10px}
+  .cmp .cell:not(:first-child){padding-left:8px;padding-right:8px}
   .cmp .fdesc{display:none}
   .premium-wrap{padding:38px 24px}
   .foot-grid{grid-template-columns:1fr 1fr}
