@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mood — Lotara</title>
-    <link rel="stylesheet" href="css/styles.css?v=9">
-    <link rel="stylesheet" href="css/portal.css?v=9">
-</head>
-<body>
+    <link rel="stylesheet" href="css/styles.css?v=430df41a4e">
+    <link rel="stylesheet" href="css/portal.css?v=2184e80c8e">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"><link rel="icon" href="/assets/lotara-icon.png"><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="/portal-theme.css?v=6bb9cd668d"></head>
+<body class="portal-page portal-mood"><a class="portal-skip" href="#portal-main">Skip to content</a>
 
-<main class="main">
+<main class="main" id="portal-main">
     <div id="topbar-mount"></div>
 
     <div class="content">
         <div class="page-header">
-            <div class="page-title">Mood</div>
+            <h1 class="page-title">Mood</h1>
             <div class="page-sub">How you've been feeling over time</div>
         </div>
 
@@ -53,10 +53,10 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="js/firebase-config.js?v=9"></script>
-<script src="js/auth.js?v=9"></script>
-<script src="js/portal-shell.js?v=9"></script>
-<script src="js/portal-data.js?v=9"></script>
+<script src="js/firebase-config.js?v=3f9647317b"></script>
+<script src="js/auth.js?v=bca677c3f1"></script>
+<script src="js/portal-shell.js?v=427f5e5a58"></script>
+<script src="js/portal-data.js?v=110392bc6a"></script>
 <script>
 firebase.initializeApp(FIREBASE_CONFIG);
 const db = firebase.firestore();
@@ -146,21 +146,21 @@ requireAuth('/signin.html').then(async user => {
         svg.innerHTML = `
             <defs>
                 <linearGradient id="mg-area-soft" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%"   stop-color="#a78bfa" stop-opacity="0.30"/>
-                    <stop offset="100%" stop-color="#a78bfa" stop-opacity="0"/>
+                    <stop offset="0%"   stop-color="#8864a4" stop-opacity="0.30"/>
+                    <stop offset="100%" stop-color="#8864a4" stop-opacity="0"/>
                 </linearGradient>
             </defs>
             <path d="${areaPath}" fill="url(#mg-area-soft)" opacity="0">
                 <animate attributeName="opacity" from="0" to="1" dur="1.0s" begin="0.1s" fill="freeze"/>
             </path>
-            <path d="${linePath}" fill="none" stroke="#a78bfa" stroke-width="2"
+            <path d="${linePath}" fill="none" stroke="#8864a4" stroke-width="2"
                   stroke-linecap="round" stroke-linejoin="round"
                   pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" opacity="0.95">
                 <animate attributeName="stroke-dashoffset" from="1" to="0" dur="1.4s" begin="0s" fill="freeze"/>
             </path>`;
     } else {
         svg.innerHTML = `<text x="400" y="70" text-anchor="middle"
-            fill="rgba(255,255,255,0.3)" font-size="13" font-family="system-ui">
+            fill="rgba(62,47,72,0.3)" font-size="13" font-family="system-ui">
             Track moods daily to see your trend</text>`;
     }
 
@@ -184,12 +184,12 @@ requireAuth('/signin.html').then(async user => {
 
     const fmt = v => v === null ? '—' : (Number.isInteger(v) ? String(v) : v.toFixed(1));
     const tiles = [
-        { val: fmt(avg),   lbl: 'Avg this month',  accent: avg !== null ? moodColor(avg) : 'rgba(255,255,255,0.4)' },
+        { val: fmt(avg),   lbl: 'Avg this month',  accent: avg !== null ? moodColor(avg) : 'rgba(62,47,72,0.4)' },
         { val: delta === null ? '—' : (delta > 0 ? '+' : '') + delta,
           lbl: 'vs last month',
-          accent: delta === null ? 'rgba(255,255,255,0.4)' : delta > 0 ? '#4ade80' : delta < 0 ? '#74c0fc' : 'rgba(255,255,255,0.4)' },
-        { val: fmt(best),  lbl: 'Best day',        accent: best !== null ? moodColor(best) : 'rgba(255,255,255,0.4)' },
-        { val: fmt(worst), lbl: 'Lowest day',      accent: worst !== null ? moodColor(worst) : 'rgba(255,255,255,0.4)' },
+          accent: delta === null ? 'rgba(62,47,72,0.4)' : delta > 0 ? '#648364' : delta < 0 ? '#6686a1' : 'rgba(62,47,72,0.4)' },
+        { val: fmt(best),  lbl: 'Best day',        accent: best !== null ? moodColor(best) : 'rgba(62,47,72,0.4)' },
+        { val: fmt(worst), lbl: 'Lowest day',      accent: worst !== null ? moodColor(worst) : 'rgba(62,47,72,0.4)' },
     ];
     document.getElementById('mood-stats').innerHTML = tiles.map(t => `
         <div class="mood-trend-stat">
@@ -242,5 +242,5 @@ requireAuth('/signin.html').then(async user => {
     }).join('');
 });
 </script>
-</body>
+<script src="/portal-theme.js?v=5056e4bd03"></script></body>
 </html>

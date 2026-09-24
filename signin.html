@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Sign in to your Lotara wellness portal">
     <title>Sign In — Lotara</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles.css?v=430df41a4e">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -398,8 +398,8 @@
             .site-nav .nav-links a:not(.btn-primary) { display: none; }
         }
     </style>
-</head>
-<body>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"><link rel="icon" href="/assets/lotara-icon.png"><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="/portal-theme.css?v=6bb9cd668d"></head>
+<body class="portal-page portal-signin"><a class="portal-skip" href="#portal-main">Skip to content</a>
 
 <!-- Ambient orbs matching lotara.app hero -->
 <div class="orb orb-1"></div>
@@ -413,24 +413,24 @@
 <nav class="site-nav" id="site-nav">
     <div class="nav-container">
         <a href="/" class="nav-logo">
-            <img src="assets/images/lotara-logo.png" alt="Lotara">
+            <img src="/assets/lotara-icon.png" alt="" width="32" height="32"><span>Lotara</span>
         </a>
         <div class="nav-links">
-            <a href="/#features">Features</a>
-            <a href="/#premium">Premium</a>
+            <a href="/#explore-lotara">Features</a>
+            <a href="/#more-support">Support</a>
             <a href="about/">About</a>
             <a href="https://apps.apple.com/us/app/lotara/id6749601041" class="btn-primary" target="_blank" rel="noopener">Download Free</a>
         </div>
     </div>
 </nav>
 
-<div class="page">
+<main class="page" id="portal-main">
 
     <!-- ── Left panel ── -->
     <div class="left-panel">
 
         <div class="brand-logo">
-            <img src="assets/images/lotara-logo.png" alt="Lotara">
+            <img src="/assets/lotara-icon.png" alt="" width="32" height="32"><span>Lotara</span>
         </div>
 
         <h1 class="left-headline">Your wellness<br>journey, continued.</h1>
@@ -520,7 +520,7 @@
 
     </div>
 
-</div>
+</main>
 
 <!-- Nav scroll effect -->
 <script>
@@ -551,8 +551,8 @@
 <!-- Firebase SDK v9 compat (CDN — no Vercel, no bundler) -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="js/firebase-config.js"></script>
-<script src="js/auth.js"></script>
+<script src="js/firebase-config.js?v=3f9647317b"></script>
+<script src="js/auth.js?v=bca677c3f1"></script>
 <script>
     firebase.initializeApp(FIREBASE_CONFIG);
 
@@ -624,5 +624,5 @@
     });
 </script>
 
-</body>
+<script src="/portal-theme.js?v=5056e4bd03"></script></body>
 </html>

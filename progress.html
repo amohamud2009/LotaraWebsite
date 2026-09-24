@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Progress — Lotara</title>
-    <link rel="stylesheet" href="css/styles.css?v=9">
-    <link rel="stylesheet" href="css/portal.css?v=9">
-</head>
-<body>
+    <link rel="stylesheet" href="css/styles.css?v=430df41a4e">
+    <link rel="stylesheet" href="css/portal.css?v=2184e80c8e">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"><link rel="icon" href="/assets/lotara-icon.png"><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="/portal-theme.css?v=6bb9cd668d"></head>
+<body class="portal-page portal-progress"><a class="portal-skip" href="#portal-main">Skip to content</a>
 
-<main class="main">
+<main class="main" id="portal-main">
     <div id="topbar-mount"></div>
 
     <div class="content">
         <div class="page-header">
-            <div class="page-title">Progress</div>
+            <h1 class="page-title">Progress</h1>
             <div class="page-sub">Your wellness journey at a glance</div>
         </div>
 
@@ -52,10 +52,10 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="js/firebase-config.js?v=9"></script>
-<script src="js/auth.js?v=9"></script>
-<script src="js/portal-shell.js?v=9"></script>
-<script src="js/portal-data.js?v=9"></script>
+<script src="js/firebase-config.js?v=3f9647317b"></script>
+<script src="js/auth.js?v=bca677c3f1"></script>
+<script src="js/portal-shell.js?v=427f5e5a58"></script>
+<script src="js/portal-data.js?v=110392bc6a"></script>
 <script>
 firebase.initializeApp(FIREBASE_CONFIG);
 const db = firebase.firestore();
@@ -125,21 +125,21 @@ requireAuth('/signin.html').then(async user => {
 
     // Stat row
     document.getElementById('stat-row').innerHTML = [
-        { icon: ICONS.calendar, val: daysOnLotara || '—', lbl: 'Days on Lotara', color: '#a78bfa' },
-        { icon: ICONS.flame,    val: longestStreak,        lbl: 'Longest streak',  color: '#ffd43b' },
-        { icon: ICONS.feather,  val: journals.length,      lbl: 'Total entries',   color: '#ff8cc8' },
-        { icon: ICONS.target,   val: habits.length,        lbl: 'Active habits',   color: '#4ade80' },
+        { icon: ICONS.calendar, val: daysOnLotara || '—', lbl: 'Days on Lotara', color: '#8864a4' },
+        { icon: ICONS.flame,    val: longestStreak,        lbl: 'Longest streak',  color: '#9b783c' },
+        { icon: ICONS.feather,  val: journals.length,      lbl: 'Total entries',   color: '#a16d8a' },
+        { icon: ICONS.target,   val: habits.length,        lbl: 'Active habits',   color: '#648364' },
     ].map(s => `<div class="card">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;color:${s.color}">${s.icon}<span style="font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;text-transform:uppercase">${s.lbl}</span></div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;color:${s.color}">${s.icon}<span style="font-size:11px;color:rgba(62,47,72,0.5);letter-spacing:0.05em;text-transform:uppercase">${s.lbl}</span></div>
         <div class="stat-value" style="color:${s.color}">${s.val}</div>
     </div>`).join('');
 
     // Activity bars
     const bars = [
-        { label: 'Journal entries this month', val: monthJ,    max: Math.max(monthJ, 30),    color: '#ff8cc8' },
-        { label: 'Habit completion rate',       val: rate,      max: 100,                     color: '#a78bfa', suffix: '%' },
-        { label: 'Meditation sessions',         val: monthMed,  max: Math.max(monthMed, 10),  color: '#74c0fc' },
-        { label: 'Mood check-ins',              val: monthMood, max: Math.max(monthMood, 30), color: '#4ade80' },
+        { label: 'Journal entries this month', val: monthJ,    max: Math.max(monthJ, 30),    color: '#a16d8a' },
+        { label: 'Habit completion rate',       val: rate,      max: 100,                     color: '#8864a4', suffix: '%' },
+        { label: 'Meditation sessions',         val: monthMed,  max: Math.max(monthMed, 10),  color: '#6686a1' },
+        { label: 'Mood check-ins',              val: monthMood, max: Math.max(monthMood, 30), color: '#648364' },
     ];
     document.getElementById('activity-bars').innerHTML = bars.map(b => {
         const pct = b.max > 0 ? Math.round((b.val / b.max) * 100) : 0;
@@ -157,12 +157,12 @@ requireAuth('/signin.html').then(async user => {
     // Milestones — SVG icons only, no emojis
     const totalJ = journals.length, totalMed = meditations.length;
     const MILESTONES = [
-        { icon: ICONS.flame,    title: '7-day streak',      target: 7,   current: longestStreak, unit: 'streak days',         color: '#ffd43b' },
-        { icon: ICONS.zap,      title: '30-day streak',     target: 30,  current: longestStreak, unit: 'streak days',         color: '#a78bfa' },
-        { icon: ICONS.feather,  title: 'First 10 journals', target: 10,  current: totalJ,        unit: 'journal entries',     color: '#ff8cc8' },
-        { icon: ICONS.heart,    title: '10 meditations',    target: 10,  current: totalMed,      unit: 'meditation sessions', color: '#74c0fc' },
-        { icon: ICONS.book,     title: '50 journal entries',target: 50,  current: totalJ,        unit: 'journal entries',     color: '#ff8cc8' },
-        { icon: ICONS.award,    title: '100 days on Lotara',target: 100, current: daysOnLotara,  unit: 'days',                color: '#4ade80' },
+        { icon: ICONS.flame,    title: '7-day streak',      target: 7,   current: longestStreak, unit: 'streak days',         color: '#9b783c' },
+        { icon: ICONS.zap,      title: '30-day streak',     target: 30,  current: longestStreak, unit: 'streak days',         color: '#8864a4' },
+        { icon: ICONS.feather,  title: 'First 10 journals', target: 10,  current: totalJ,        unit: 'journal entries',     color: '#a16d8a' },
+        { icon: ICONS.heart,    title: '10 meditations',    target: 10,  current: totalMed,      unit: 'meditation sessions', color: '#6686a1' },
+        { icon: ICONS.book,     title: '50 journal entries',target: 50,  current: totalJ,        unit: 'journal entries',     color: '#a16d8a' },
+        { icon: ICONS.award,    title: '100 days on Lotara',target: 100, current: daysOnLotara,  unit: 'days',                color: '#648364' },
     ];
     document.getElementById('milestones-list').innerHTML = MILESTONES.map(m => {
         const done  = m.current >= m.target;
@@ -181,5 +181,5 @@ requireAuth('/signin.html').then(async user => {
     }).join('');
 });
 </script>
-</body>
+<script src="/portal-theme.js?v=5056e4bd03"></script></body>
 </html>

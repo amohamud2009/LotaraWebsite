@@ -103,7 +103,7 @@ function habitRingSVG(pct, color, size = 40) {
     const r = 14, circ = 2 * Math.PI * r;
     const dash = (pct / 100) * circ;
     return `<svg width="${size}" height="${size}" viewBox="0 0 36 36" style="display:block;flex-shrink:0">
-        <circle cx="18" cy="18" r="${r}" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="3"/>
+        <circle cx="18" cy="18" r="${r}" fill="none" stroke="rgba(62,47,72,0.1)" stroke-width="3"/>
         <circle cx="18" cy="18" r="${r}" fill="none" stroke="${color}" stroke-width="3"
             stroke-dasharray="${dash.toFixed(1)} ${circ.toFixed(1)}"
             stroke-linecap="round" transform="rotate(-90 18 18)"/>
@@ -121,8 +121,8 @@ function moodColor(score) {
     if (score <= 2) return '#ff5959';
     if (score <= 4) return '#cc8866';
     if (score <= 6) return '#a3b8b8';
-    if (score <= 8) return '#74c0fc';
-    return '#ff8cc8';
+    if (score <= 8) return '#6686a1';
+    return '#a16d8a';
 }
 
 function moodLabel(score) {
@@ -159,7 +159,7 @@ function renderMoodSVG(svgId, scores) {
     if (!svg) return;
     if (!scores || scores.length < 2) {
         svg.innerHTML = `<text x="100" y="40" text-anchor="middle"
-            fill="rgba(255,255,255,0.25)" font-size="11" font-family="system-ui">Not enough data yet</text>`;
+            fill="rgba(62,47,72,0.25)" font-size="11" font-family="system-ui">Not enough data yet</text>`;
         return;
     }
     const W = 200, H = 72, pad = 8;
@@ -174,12 +174,12 @@ function renderMoodSVG(svgId, scores) {
     svg.innerHTML = `
         <defs>
             <linearGradient id="mg-${svgId}" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.4"/>
-                <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+                <stop offset="0%" stop-color="#795893" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#795893" stop-opacity="0"/>
             </linearGradient>
         </defs>
         <path d="${areaD}" fill="url(#mg-${svgId})"/>
-        <polyline points="${linePts}" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+        <polyline points="${linePts}" fill="none" stroke="#8864a4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
 }
 
 // ── Sidebar user setup ──
@@ -213,4 +213,4 @@ function setupTopbar(user) {
 }
 
 // ── Colors per habit index ──
-const HABIT_COLORS = ['#a78bfa','#74c0fc','#ff8cc8','#4ade80','#ffd43b','#748ffc','#fb923c'];
+const HABIT_COLORS = ['#8864a4','#6686a1','#a16d8a','#648364','#9b783c','#777aa7','#fb923c'];

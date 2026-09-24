@@ -4,28 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard — Lotara</title>
-    <link rel="stylesheet" href="css/styles.css?v=9">
-    <link rel="stylesheet" href="css/portal.css?v=9">
-</head>
-<body>
+    <link rel="stylesheet" href="css/styles.css?v=430df41a4e">
+    <link rel="stylesheet" href="css/portal.css?v=2184e80c8e">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"><link rel="icon" href="/assets/lotara-icon.png"><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="/portal-theme.css?v=6bb9cd668d"></head>
+<body class="portal-page portal-dashboard"><a class="portal-skip" href="#portal-main">Skip to content</a>
 
-<main class="main">
+<main class="main" id="portal-main">
     <div id="topbar-mount"></div>
 
     <div class="content">
 
-        <!-- Momentum -->
+        <section class="portal-welcome"><div><span>YOUR SPACE, AT YOUR PACE</span><h1>Come back to you.</h1><p>Small steps, honest reflections, and room to keep going.</p><a href="journal.html">Visit your journal <span aria-hidden="true">↗</span></a></div><div class="welcome-note" aria-hidden="true"><span>A LITTLE REMINDER</span><strong>You’re more<br>than one day.</strong><i>Keep the bigger picture.</i></div></section><!-- Momentum -->
         <div class="momentum-bar">
             <div class="momentum-cell">
-                <div class="momentum-val" id="m-streak" style="color:#a78bfa">—</div>
+                <div class="momentum-val" id="m-streak" style="color:#8864a4">—</div>
                 <div class="momentum-lbl">Day streak</div>
             </div>
             <div class="momentum-cell">
-                <div class="momentum-val" id="m-days" style="color:#ffd43b">—</div>
+                <div class="momentum-val" id="m-days" style="color:#9b783c">—</div>
                 <div class="momentum-lbl">Days active this month</div>
             </div>
             <div class="momentum-cell">
-                <div class="momentum-val" id="m-rate" style="color:#4ade80">—%</div>
+                <div class="momentum-val" id="m-rate" style="color:#648364">—%</div>
                 <div class="momentum-lbl">Habit completion rate</div>
             </div>
         </div>
@@ -77,10 +77,10 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="js/firebase-config.js?v=9"></script>
-<script src="js/auth.js?v=9"></script>
-<script src="js/portal-shell.js?v=9"></script>
-<script src="js/portal-data.js?v=9"></script>
+<script src="js/firebase-config.js?v=3f9647317b"></script>
+<script src="js/auth.js?v=bca677c3f1"></script>
+<script src="js/portal-shell.js?v=427f5e5a58"></script>
+<script src="js/portal-data.js?v=110392bc6a"></script>
 <script>
 firebase.initializeApp(FIREBASE_CONFIG);
 const db = firebase.firestore();
@@ -182,9 +182,9 @@ requireAuth('/signin.html').then(async user => {
     const tEl = document.getElementById('mood-trend');
     if (moodScores.length >= 2) {
         const slope = moodScores[moodScores.length-1] - moodScores[0];
-        if (slope > 1)       tEl.innerHTML = ICONS.arrowUp + '<span style="color:#4ade80">Trending up</span>';
-        else if (slope < -1) tEl.innerHTML = ICONS.arrowDown + '<span style="color:#74c0fc">Trending down</span>';
-        else                  tEl.innerHTML = ICONS.minus + '<span style="color:rgba(255,255,255,0.5)">Stable</span>';
+        if (slope > 1)       tEl.innerHTML = ICONS.arrowUp + '<span style="color:#648364">Trending up</span>';
+        else if (slope < -1) tEl.innerHTML = ICONS.arrowDown + '<span style="color:#6686a1">Trending down</span>';
+        else                  tEl.innerHTML = ICONS.minus + '<span style="color:rgba(62,47,72,0.5)">Stable</span>';
     } else {
         tEl.innerHTML = '';
     }
@@ -215,5 +215,5 @@ requireAuth('/signin.html').then(async user => {
     }
 });
 </script>
-</body>
+<script src="/portal-theme.js?v=5056e4bd03"></script></body>
 </html>

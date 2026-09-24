@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Habits — Lotara</title>
-    <link rel="stylesheet" href="css/styles.css?v=9">
-    <link rel="stylesheet" href="css/portal.css?v=9">
-</head>
-<body>
+    <link rel="stylesheet" href="css/styles.css?v=430df41a4e">
+    <link rel="stylesheet" href="css/portal.css?v=2184e80c8e">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"><link rel="icon" href="/assets/lotara-icon.png"><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="/portal-theme.css?v=6bb9cd668d"></head>
+<body class="portal-page portal-habits"><a class="portal-skip" href="#portal-main">Skip to content</a>
 
-<main class="main">
+<main class="main" id="portal-main">
     <div id="topbar-mount"></div>
 
     <div class="content">
 
         <div class="page-header">
-            <div class="page-title">Your habits</div>
+            <h1 class="page-title">Your habits</h1>
             <div class="page-sub">Track what matters and build momentum</div>
         </div>
 
@@ -40,10 +40,10 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="js/firebase-config.js?v=9"></script>
-<script src="js/auth.js?v=9"></script>
-<script src="js/portal-shell.js?v=9"></script>
-<script src="js/portal-data.js?v=9"></script>
+<script src="js/firebase-config.js?v=3f9647317b"></script>
+<script src="js/auth.js?v=bca677c3f1"></script>
+<script src="js/portal-shell.js?v=427f5e5a58"></script>
+<script src="js/portal-data.js?v=110392bc6a"></script>
 <script>
 firebase.initializeApp(FIREBASE_CONFIG);
 const db = firebase.firestore();
@@ -81,18 +81,18 @@ requireAuth('/signin.html').then(async user => {
     // Stats
     document.getElementById('stat-row').innerHTML = `
         <div class="card">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;color:#a78bfa">${ICONS.activity}<span style="font-size:12px;color:rgba(255,255,255,0.5)">Completion</span></div>
-            <div class="stat-value" style="color:#a78bfa">${rate}%</div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;color:#8864a4">${ICONS.activity}<span style="font-size:12px;color:rgba(62,47,72,0.5)">Completion</span></div>
+            <div class="stat-value" style="color:#8864a4">${rate}%</div>
             <div class="stat-label">This month</div>
         </div>
         <div class="card">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;color:#ffd43b">${ICONS.flame}<span style="font-size:12px;color:rgba(255,255,255,0.5)">Best streak</span></div>
-            <div class="stat-value" style="color:#ffd43b">${bestStreak}d</div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;color:#9b783c">${ICONS.flame}<span style="font-size:12px;color:rgba(62,47,72,0.5)">Best streak</span></div>
+            <div class="stat-value" style="color:#9b783c">${bestStreak}d</div>
             <div class="stat-label">Current</div>
         </div>
         <div class="card">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;color:#4ade80">${ICONS.target}<span style="font-size:12px;color:rgba(255,255,255,0.5)">Habits</span></div>
-            <div class="stat-value" style="color:#4ade80">${habits.length}</div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;color:#648364">${ICONS.target}<span style="font-size:12px;color:rgba(62,47,72,0.5)">Habits</span></div>
+            <div class="stat-value" style="color:#648364">${habits.length}</div>
             <div class="stat-label">Active</div>
         </div>`;
 
@@ -134,5 +134,5 @@ requireAuth('/signin.html').then(async user => {
     }).join('');
 });
 </script>
-</body>
+<script src="/portal-theme.js?v=5056e4bd03"></script></body>
 </html>

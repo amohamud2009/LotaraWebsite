@@ -4,25 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings — Lotara</title>
-    <link rel="stylesheet" href="css/styles.css?v=9">
-    <link rel="stylesheet" href="css/portal.css?v=9">
+    <link rel="stylesheet" href="css/styles.css?v=430df41a4e">
+    <link rel="stylesheet" href="css/portal.css?v=2184e80c8e">
     <style>
         .set-row {
             display: flex; align-items: center; justify-content: space-between;
             padding: 14px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(62,47,72,0.05);
             font-size: 14px; font-weight: 300;
         }
         .set-row:last-child { border-bottom: none; }
         .set-row-label { color: var(--white); display: flex; align-items: center; gap: 10px; }
-        .set-row-label svg { width: 16px; height: 16px; stroke: rgba(255,255,255,0.5); fill: none; stroke-width: 1.7; }
-        .set-row-value { color: rgba(255,255,255,0.45); font-size: 13px; }
+        .set-row-label svg { width: 16px; height: 16px; stroke: rgba(62,47,72,0.5); fill: none; stroke-width: 1.7; }
+        .set-row-value { color: rgba(62,47,72,0.45); font-size: 13px; }
         .set-row a { color: var(--purple-lt); font-size: 13px; text-decoration: none; display: flex; align-items: center; gap: 4px; transition: gap 0.2s; }
         .set-row a svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; }
         .set-row a:hover { gap: 6px; }
         .set-section-title {
             font-size: 10px; font-weight: 600; letter-spacing: 0.12em;
-            text-transform: uppercase; color: rgba(255,255,255,0.45);
+            text-transform: uppercase; color: rgba(62,47,72,0.45);
             margin: 22px 0 4px; display: flex; align-items: center; gap: 8px;
         }
         .set-section-title svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; }
@@ -32,21 +32,21 @@
             background: rgba(239,68,68,0.08);
             border: 1px solid rgba(239,68,68,0.22);
             border-radius: 14px; font-size: 14px; font-weight: 400;
-            color: #fca5a5; cursor: pointer; font-family: var(--font);
+            color: #a45d65; cursor: pointer; font-family: var(--font);
             transition: all 0.2s;
         }
         .btn-danger:hover { background: rgba(239,68,68,0.14); border-color: rgba(239,68,68,0.4); }
     </style>
-</head>
-<body>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"><link rel="icon" href="/assets/lotara-icon.png"><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="/portal-theme.css?v=6bb9cd668d"></head>
+<body class="portal-page portal-settings"><a class="portal-skip" href="#portal-main">Skip to content</a>
 
-<main class="main">
+<main class="main" id="portal-main">
     <div id="topbar-mount"></div>
 
     <div class="content" style="max-width:600px">
 
         <div class="page-header">
-            <div class="page-title">Settings</div>
+            <h1 class="page-title">Settings</h1>
             <div class="page-sub">Manage your account and preferences</div>
         </div>
 
@@ -62,7 +62,7 @@
             </div>
             <div class="set-row">
                 <span class="set-row-label">Plan</span>
-                <span style="background:rgba(167,139,250,0.14);color:#a78bfa;border:1px solid rgba(167,139,250,0.3);padding:3px 12px;border-radius:999px;font-size:12px;font-weight:500">Premium</span>
+                <span style="background:rgba(167,139,250,0.14);color:#8864a4;border:1px solid rgba(167,139,250,0.3);padding:3px 12px;border-radius:999px;font-size:12px;font-weight:500">Premium</span>
             </div>
         </div>
 
@@ -96,10 +96,10 @@
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="js/firebase-config.js?v=9"></script>
-<script src="js/auth.js?v=9"></script>
-<script src="js/portal-shell.js?v=9"></script>
-<script src="js/portal-data.js?v=9"></script>
+<script src="js/firebase-config.js?v=3f9647317b"></script>
+<script src="js/auth.js?v=bca677c3f1"></script>
+<script src="js/portal-shell.js?v=427f5e5a58"></script>
+<script src="js/portal-data.js?v=110392bc6a"></script>
 <script>
 firebase.initializeApp(FIREBASE_CONFIG);
 
@@ -120,5 +120,5 @@ requireAuth('/signin.html').then(user => {
     });
 });
 </script>
-</body>
+<script src="/portal-theme.js?v=5056e4bd03"></script></body>
 </html>

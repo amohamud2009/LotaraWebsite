@@ -51,14 +51,14 @@ const ICONS = {
 // ── Mood scale matching iOS CalmMoodTrackerView exactly ──
 //    Score → { iconKey, label, color }
 const MOOD_SCALE = {
-    10: { iconKey: 'moodSparkles', label: 'Joyful',     color: '#ff8cc8' },
-    9:  { iconKey: 'moodSun',      label: 'Great',      color: '#4ade80' },
-    8:  { iconKey: 'moodSmile',    label: 'Happy',      color: '#74c0fc' },
-    7:  { iconKey: 'moodHeart',    label: 'Good',       color: '#ff8cc8' },
+    10: { iconKey: 'moodSparkles', label: 'Joyful',     color: '#a16d8a' },
+    9:  { iconKey: 'moodSun',      label: 'Great',      color: '#648364' },
+    8:  { iconKey: 'moodSmile',    label: 'Happy',      color: '#6686a1' },
+    7:  { iconKey: 'moodHeart',    label: 'Good',       color: '#a16d8a' },
     6:  { iconKey: 'moodMinus',    label: 'Okay',       color: '#a3b8b8' },
     5:  { iconKey: 'moodCircle',   label: 'Meh',        color: '#b39d9d' },
     4:  { iconKey: 'moodCloud',    label: 'Low',        color: '#cc8866' },
-    3:  { iconKey: 'moodRain',     label: 'Sad',        color: '#748ffc' },
+    3:  { iconKey: 'moodRain',     label: 'Sad',        color: '#777aa7' },
     2:  { iconKey: 'moodAlert',    label: 'Anxious',    color: '#e69140' },
     1:  { iconKey: 'moodX',        label: 'Struggling', color: '#ff5959' },
 };
@@ -108,7 +108,7 @@ function renderSidebar(activePage) {
     const html = `
         <aside class="sidebar">
             <div class="sb-logo">
-                <a href="/"><img src="assets/images/lotara-logo.png" alt="Lotara"></a>
+                <a href="/" class="portal-brand"><img src="/assets/lotara-icon.png" width="32" height="32" alt=""><span>Lotara</span></a>
             </div>
             <div class="sb-user">
                 <div class="sb-avatar" id="sb-avatar">?</div>
@@ -117,9 +117,9 @@ function renderSidebar(activePage) {
                     <div class="sb-plan">Premium</div>
                 </div>
             </div>
-            <nav class="sb-nav">
+            <nav class="sb-nav" aria-label="Dashboard navigation">
                 ${items.map(it => `
-                    <a href="${it.href}" class="nav-item${it.key === activePage ? ' active' : ''}">
+                    <a href="${it.href}" class="nav-item${it.key === activePage ? ' active' : ''}" ${it.key === activePage ? 'aria-current="page"' : ''}>
                         ${it.icon}
                         ${it.label}
                     </a>`).join('')}
@@ -152,6 +152,6 @@ function renderTopbar(opts = {}) {
 
 // ── Bootstrap a page (call once on load) ──
 function bootPortal({ active, title }) {
-    injectAmbience();
+    // The light theme uses the product itself as the visual focus.
     renderSidebar(active);
 }
