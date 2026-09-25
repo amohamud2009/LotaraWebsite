@@ -1,0 +1,81 @@
+/* Sleep preview: actual Lotara cover art, an adapted interactive app view. */
+.life-journal{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:36px;padding:40px 40px 0}
+.life-journal .life-copy{padding-bottom:40px}
+.life-journal .journal-art{margin-top:0}
+.sleep-experience{grid-column:1/-1;position:relative;isolation:isolate;overflow:hidden;border-radius:28px;background:#101220;color:#faf7f0;display:grid;grid-template-columns:1fr 1fr;gap:40px;padding:72px 70px 48px;scroll-margin-top:96px}
+.sleep-atmosphere{position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse at 78% 38%,#75624d40,transparent 60%),radial-gradient(ellipse at 10% 0%,#72648222,transparent 60%);pointer-events:none}
+.sleep-editorial{align-self:center;max-width:390px;padding-bottom:32px}
+.sleep-experience .feature-kicker{color:#beb1cf;font-size:11px;letter-spacing:2px}
+.sleep-experience h3{font-size:clamp(44px,5vw,68px);line-height:1.04;letter-spacing:-3px;font-weight:500;margin:26px 0}
+.sleep-experience h3 em{font-family:Georgia,serif;font-weight:400;color:#d7c7a9;letter-spacing:-2.5px}
+.sleep-intro{font-size:15px;line-height:1.9;color:#b9b7c6;max-width:330px;margin:0 0 30px}
+.sleep-picker{display:grid;gap:0;border-top:1px solid #ffffff16;max-width:340px}
+.sleep-picker button{display:flex;align-items:center;gap:16px;min-height:54px;border:0;border-bottom:1px solid #ffffff16;background:transparent;color:#a7a4b8;font:500 14px Manrope,sans-serif;text-align:left;padding:10px 8px;cursor:pointer;transition:color .25s,background .25s,padding .25s}
+.sleep-picker button>span{font-size:10px;color:#797789;font-variant-numeric:tabular-nums}
+.sleep-picker button svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.5;margin-left:auto;opacity:0;transform:translateX(-5px);transition:transform .25s,opacity .25s}
+.sleep-picker button[aria-pressed=true]{color:#f8edda;background:linear-gradient(90deg,#d2b88c10,transparent);padding-left:16px}
+.sleep-picker button[aria-pressed=true] svg{opacity:1;transform:none}
+.sleep-picker button:hover{color:#fff;background:#ffffff08}
+.sleep-experience :is(button,a):focus-visible{outline:2px solid #dcc39b;outline-offset:4px}
+.sleep-invitation{font-size:12px;line-height:1.8;color:#d2c6b4;margin:25px 0 13px;min-height:44px;max-width:320px}
+.sleep-disclosure{font-size:10px;color:#9390a5;line-height:1.7;display:block}
+.sleep-stage{display:flex;align-items:center;flex-direction:column;justify-content:center;min-width:0;perspective:1000px}
+.sleep-device{width:326px;max-width:100%;height:640px;padding:6px;position:relative;border-radius:46px;background:linear-gradient(145deg,#64616a,#1c1d29 35%,#55505a);box-shadow:0 30px 65px #0008,0 0 0 1px #ffffff20;display:flex;flex-direction:column;overflow:hidden;transform:rotate(2deg);transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.sleep-stage:hover .sleep-device,.sleep-stage:focus-within .sleep-device{transform:rotate(0)}
+.sleep-status{display:flex;align-items:center;justify-content:space-between;height:43px;flex-shrink:0;background:#12142f;border-radius:40px 40px 0 0;padding:9px 24px 0;font:600 11px -apple-system,BlinkMacSystemFont,sans-serif;position:relative}
+.sleep-status i{position:absolute;left:50%;transform:translateX(-50%);top:9px;width:88px;height:23px;background:#080910;border-radius:20px}
+.sleep-status svg{width:33px;height:12px;fill:currentColor}
+.sleep-screen{flex:1;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#ffffff22 transparent;background:radial-gradient(ellipse at 25% 5%,#8880ba14,transparent 65%),linear-gradient(#12142f,#0a0b1c);padding:14px 19px 18px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#f7f5fb}
+.sleep-screen::-webkit-scrollbar{width:3px}.sleep-screen::-webkit-scrollbar-thumb{background:#ffffff22;border-radius:5px}
+.sleep-home{height:22px;flex-shrink:0;background:#0a0b1c;border-radius:0 0 40px 40px;display:grid;place-items:center}
+.sleep-home::after{content:'';height:4px;width:98px;border-radius:4px;background:#e8e5efad}
+.sleep-device-caption{color:#9390a5;font-size:9px;letter-spacing:2px;margin-top:26px}
+.sleep-screen h4{font:400 29px Georgia,serif;letter-spacing:-.5px;margin:0 0 17px}
+.sleep-tonight{font-size:8px;letter-spacing:1.8px;color:#c4b2dd}
+.sleep-screen .sleep-greeting{font:400 27px Georgia,serif;letter-spacing:-.5px;margin:8px 0 6px}
+.sleep-greeting-note{font-size:11px;line-height:1.5;color:#a9a5c0;margin:0 0 23px}
+.sleep-shelf-title{font:400 19px Georgia,serif;margin:0 0 12px}
+.sleep-cover{position:relative;border:1px solid #ffffff12;isolation:isolate;overflow:hidden;border-radius:15px;min-width:0;color:#fff;background:#242336;cursor:pointer;padding:0;text-align:left;width:100%;display:flex;flex-direction:column;justify-content:end;transition:transform .3s,border-color .3s;font:inherit}
+.sleep-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform .6s}
+.sleep-cover::after{content:'';position:absolute;inset:0;background:linear-gradient(transparent 10%,#080b1b25 25%,#090c1fd9 100%);z-index:-1}
+.sleep-cover:hover img{transform:scale(1.05)}
+.sleep-cover:hover{border-color:#cfb68a80}
+.sleep-cover-featured{height:182px;padding:16px;margin-bottom:12px}
+.sleep-cover-featured .sleep-cover-title{font:400 22px/1.1 Georgia,serif;max-width:220px}
+.sleep-cover-tag{font-size:8px;letter-spacing:1.6px;text-transform:uppercase;color:#f5dfb9;margin-bottom:8px}
+.sleep-cover-title{font:400 16px/1.2 Georgia,serif;display:block;text-wrap:balance}
+.sleep-cover-meta{display:block;font-size:9px;line-height:1.4;color:#dfdbe8;margin-top:8px}
+.sleep-cover-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.sleep-cover-grid .sleep-cover{height:157px;padding:12px}
+.sleep-shelf-note{font-size:9px;color:#aba4bb;margin:13px 0 0;line-height:1.5}
+.sleep-content-enter{animation:sleep-content-in .42s cubic-bezier(.2,.7,.2,1) both}
+@keyframes sleep-content-in{from{opacity:.25;transform:translateY(9px)}to{opacity:1;transform:none}}
+.sleep-back{border:0;padding:4px 0 10px;min-height:34px;background:none;display:flex;align-items:center;gap:5px;font:12px -apple-system,BlinkMacSystemFont,sans-serif;color:#cfbddf;cursor:pointer;margin-bottom:10px}
+.sleep-back svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.6}
+.sleep-detail-art{width:100%;height:181px;object-fit:cover;border-radius:17px;margin-bottom:20px}
+.sleep-detail h4{font-size:27px;line-height:1.12;margin:8px 0 10px;outline-offset:4px}
+.sleep-detail-meta{font-size:11px;color:#c6b8d7;line-height:1.5;margin:0 0 16px}
+.sleep-detail-description{font:14px/1.75 Georgia,serif;color:#c2bbd2;margin:0 0 22px}
+.sleep-listen-link{display:block;text-align:center;text-decoration:none;border:1px solid #d5c4eb33;background:#d5c4eb17;border-radius:22px;color:#ede5f8;font:500 12px/1.4 -apple-system,BlinkMacSystemFont,sans-serif;padding:13px 10px}
+.sleep-detail-footnote{font-size:9px;color:#a9a1bd;text-align:center;margin:12px 0;line-height:1.6}
+.sleep-sound-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sleep-sound{border:1px solid #ffffff15;border-radius:17px;background:#ffffff06;padding:20px 10px 17px;color:#e5deed;cursor:pointer;text-align:center;min-height:105px;transition:background .25s}
+.sleep-sound:hover,.sleep-session:hover{background:#ffffff10}
+.sleep-sound svg,.sleep-session svg{width:24px;height:24px;fill:none;stroke:#b7a3d1;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round;display:block;margin:0 auto 13px}
+.sleep-sound strong{font-size:12px;font-weight:500;display:block}
+.sleep-sound-art{height:166px;display:grid;place-items:center;background:radial-gradient(ellipse,#aa8adc20,transparent 70%);margin-bottom:12px}
+.sleep-sound-art svg{width:76px;height:76px;stroke:#c5afd8;fill:none;stroke-width:.65;stroke-linecap:round;stroke-linejoin:round}
+.sleep-session{width:100%;display:flex;align-items:center;gap:14px;min-height:78px;margin:0 0 12px;padding:16px 13px;text-align:left;border:1px solid #ffffff17;border-radius:18px;background:#ffffff08;color:#eee9f6;cursor:pointer}
+.sleep-session svg{width:23px;height:23px;margin:0;flex-shrink:0}
+.sleep-session strong{display:block;font:16px Georgia,serif}.sleep-session small{font-size:10px;color:#b1a5c5;display:block;line-height:1.6;margin-top:6px}
+.sleep-session-tag{font-size:8px;text-transform:uppercase;letter-spacing:1.2px;color:#b8a4cb;margin-top:12px;display:block}
+.sleep-announcement{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.sleep-fallback img{max-width:100%;height:auto;border-radius:18px}.sleep-fallback a{color:#e4d4ff}
+@media(min-width:1000px){.sleep-experience{gap:65px}}
+@media(max-width:1000px){.sleep-experience{padding:54px 40px 38px;gap:28px}.sleep-device{width:302px}.sleep-experience h3{font-size:55px}}
+@media(max-width:760px){.life-journal{display:block;padding:32px 28px 0}.life-journal .life-copy{padding-bottom:30px}.sleep-experience{grid-template-columns:1fr;padding:40px 25px 32px;gap:28px;border-radius:24px}.sleep-editorial{max-width:none;padding:0}.sleep-experience h3{font-size:55px;margin:22px 0}.sleep-intro{max-width:420px;margin-bottom:24px}.sleep-picker{grid-template-columns:1fr 1fr;max-width:none;border:1px solid #ffffff20;border-radius:16px;overflow:hidden;gap:1px;background:#ffffff10}.sleep-picker button{border:0;padding:13px 10px;min-height:52px;background:#141626;gap:7px;font-size:11px}.sleep-picker button[aria-pressed=true]{padding-left:10px;background:#343043}.sleep-picker button svg{display:none}.sleep-picker button>span{font-size:8px}.sleep-invitation{min-height:0;margin:19px 0 8px;max-width:none}.sleep-disclosure{font-size:9px}.sleep-disclosure br{display:none}.sleep-stage{padding-top:5px}.sleep-device{transform:none;width:310px;height:633px}.sleep-device-caption{margin-top:22px}}
+@media(max-width:370px){.sleep-experience{padding:32px 17px 26px}.sleep-experience h3{font-size:48px;letter-spacing:-2px}.sleep-screen{padding-left:14px;padding-right:14px}.sleep-picker button{font-size:10px;gap:5px}.sleep-device{border-radius:39px}.sleep-cover-title{font-size:15px}.sleep-cover-featured .sleep-cover-title{font-size:21px}.sleep-cover-grid .sleep-cover{padding:10px}.sleep-status{padding-left:17px;padding-right:17px}}
+.sleep-stage-arriving{animation:sleep-stage-in 1s cubic-bezier(.2,.7,.2,1) both}
+@keyframes sleep-stage-in{from{transform:translateY(26px)}to{transform:none}}
+@media(prefers-reduced-motion:reduce){.sleep-experience *{animation:none!important;transition:none!important}.sleep-device{transform:none}}
+body.paused .sleep-experience *{animation:none!important;transition:none!important}body.paused .sleep-device{transform:none}

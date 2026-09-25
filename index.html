@@ -48,6 +48,7 @@
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "name": "Free to download" }
 }
 </script>
+<link rel="stylesheet" href="sleep-preview.css?v=4b508b56ed">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -88,10 +89,30 @@
           <div class="life-copy"><span class="feature-kicker">02 / REFLECTION</span><h3 id="journal-title">Less in your head.<br>More on the page.</h3><p>You don’t need the perfect words.<br>Just somewhere to begin.</p></div>
           <div class="journal-art"><div class="journal-topline"><span>A LITTLE ROOM FOR YOU</span><span aria-hidden="true">✳</span></div><p id="reflection-prompt" aria-live="polite">What did you need<br>in that moment?</p><div class="journal-lines" aria-hidden="true"><i></i><i></i></div><div class="journal-bottom"><span>A moment to reflect</span><button type="button" id="next-prompt" aria-controls="reflection-prompt">Another prompt <span aria-hidden="true"><svg class="ui-icon ui-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></span></button></div></div>
         </article>
-        <article class="life-feature life-sleep" aria-labelledby="sleep-title">
-          <div class="life-copy"><span class="feature-kicker">03 / WIND DOWN</span><h3 id="sleep-title">Let the day<br>be done.</h3><p>Sleep stories and ambient sounds<br>for your evening wind-down.</p></div>
-          <div class="night-art" aria-hidden="true"><div class="night-moon"></div><div class="night-star star-one"></div><div class="night-star star-two"></div><div class="night-star star-three"></div><div class="night-contour contour-back"></div><div class="night-contour contour-mid"></div><div class="night-contour contour-front"></div></div>
-          <div class="night-caption"><span class="sound-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><div><strong>A quieter kind of evening.</strong><span>STORIES · SOUNDS · SPACE TO UNWIND</span></div></div>
+        <article class="sleep-experience" id="wind-down" aria-labelledby="sleep-title">
+          <div class="sleep-atmosphere" aria-hidden="true"></div>
+          <div class="sleep-editorial">
+            <span class="feature-kicker">03 / WIND DOWN</span>
+            <h3 id="sleep-title">Let the day<br><em>be done.</em></h3>
+            <p class="sleep-intro">A quieter kind of evening. A story to get lost in. A familiar sound. A little room to let go.</p>
+            <div class="sleep-picker" role="group" aria-label="Explore the Sleep library" hidden>
+              <button type="button" data-sleep-shelf="originals" aria-pressed="true" aria-controls="sleep-screen"><span>01</span>Lotara Originals<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+              <button type="button" data-sleep-shelf="stories" aria-pressed="false" aria-controls="sleep-screen"><span>02</span>Sleep Stories<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+              <button type="button" data-sleep-shelf="sounds" aria-pressed="false" aria-controls="sleep-screen"><span>03</span>Soundscapes<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+              <button type="button" data-sleep-shelf="winddown" aria-pressed="false" aria-controls="sleep-screen"><span>04</span>Wind-down<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+            </div>
+            <p class="sleep-invitation" id="sleep-invitation">Choose a shelf. Open a story. Find your evening.</p>
+            <span class="sleep-disclosure">Interactive preview adapted from the app.<br> Listen to the full sessions in Lotara.</span>
+          </div>
+          <div class="sleep-stage">
+            <div class="sleep-device" aria-label="Lotara Sleep library preview">
+              <div class="sleep-status" aria-hidden="true"><span>9:41</span><i></i><svg viewBox="0 0 40 14"><path d="M1 11V8m4 3V5m4 6V2" stroke="currentColor" stroke-width="2"/><rect x="19" y="2" width="17" height="10" rx="2" fill="none" stroke="currentColor"/><rect x="21" y="4" width="13" height="6" rx="1"/><path d="M38 5v4" stroke="currentColor"/></svg></div>
+              <div class="sleep-screen" id="sleep-screen"><div class="sleep-fallback"><h4>Sleep</h4><img src="assets/sleep/aldarune.jpg" width="563" height="240" alt="A golden evening over the city of Aldarune"><h5>The Last Evening of Aldarune</h5><p>Adam Stone · 7 min</p><a href="https://apps.apple.com/us/app/lotara/id6749601041">Explore Sleep in Lotara</a></div></div>
+              <div class="sleep-home" aria-hidden="true"></div>
+            </div>
+            <span class="sleep-device-caption">MEDITATION / SLEEP</span>
+          </div>
+          <span class="sleep-announcement" role="status" aria-live="polite"></span>
         </article>
       </div>
       <p class="gallery-note">Illustrative feature previews. Reflection prompts and personal notes are examples.</p>
@@ -102,6 +123,7 @@
   <footer class="site-footer"><div class="footer-lead"><a class="site-brand" href="/"><img src="/assets/lotara-icon.png" width="32" height="32" alt="">Lotara</a><p>A little space.<br>A different next step.</p><span>Quiet by design. Yours by nature.</span></div><div class="footer-column"><h2>Explore</h2><a href="/#moment">How it helps</a><a href="/about/">About Lotara</a><a href="https://apps.apple.com/us/app/lotara/id6749601041">Get the app <svg class="ui-icon ui-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></a><a href="/signin.html">Web dashboard</a></div><div class="footer-column"><h2>Here for you</h2><a href="/help/">Help centre</a><a href="/contact/">Contact</a><a href="/privacy/">Privacy policy</a><a href="/terms/">Terms of service</a><button type="button" data-motion-toggle aria-pressed="false">Pause animations</button></div><div class="footer-bottom"><span>© 2026 Lotara LLC</span><span>Made with care for your everyday.</span></div></footer>
   <script src="cinema.js?v=d4ca130bb1"></script>
   <script src="direction-v2.js?v=d864f05d1c"></script>
+<script src="sleep-preview.js?v=263934faa7"></script>
 <script src="/site.js?v=d618556455"></script>
 </body>
 </html>
