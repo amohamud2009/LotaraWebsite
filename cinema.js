@@ -6,10 +6,9 @@
   const panels = ['copy', 'app-screen', 'callout'].map(key => [...story.querySelectorAll(`[data-${key}]`)]);
   const toggle = document.getElementById('motion-toggle');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const shortScreen = matchMedia('(max-height: 700px)');
   let phase = 0, queued = false, start = 0, distance = 1;
   const paused = () => document.body.classList.contains('paused');
-  const isStatic = () => reduced.matches || shortScreen.matches;
+  const isStatic = () => reduced.matches;
   function show(next) {
     if (next === phase) return;
     phase = next;
@@ -63,11 +62,12 @@
     document.body.classList.toggle('paused', reduced.matches);
     syncMotion();
   });
-  shortScreen.addEventListener('change', syncMotion);
   new MutationObserver(syncMotion).observe(document.body, {attributes:true, attributeFilter:['class']});
   addEventListener('scroll', schedule, {passive:true});
   addEventListener('resize', () => { measure(); schedule(); });
   addEventListener('load', () => { measure(); schedule(); });
+  window.visualViewport?.addEventListener('resize', () => { measure(); schedule(); });
+  if ('ResizeObserver' in window) new ResizeObserver(() => { measure(); schedule(); }).observe(pin);
   document.fonts?.ready.then(() => { measure(); schedule(); });
   story.querySelectorAll('[data-outcome]').forEach(button => button.addEventListener('click', () => {
     const slip = button.dataset.outcome === 'slip';

@@ -18,3 +18,24 @@ body.paused .cinema-device{transform:none}body.paused .window-lock,body.paused .
 .cinema-offscreen .cinema-breath *,.cinema-offscreen .breath-wave i{animation-play-state:paused}
 @media(max-width:700px){.habit-cinema{scroll-margin-top:-30px}}
 @media(max-height:700px) and (min-width:701px){.cinema-static .cinema-pin{min-height:640px}}
+
+/* Short viewports still tell the scroll story; fit the pinned stage instead of disabling it. */
+@media(max-height:740px){
+ .habit-cinema:not(.cinema-static) .cinema-pin{min-height:0}
+}
+@media(max-height:740px) and (max-width:700px){
+ .habit-cinema:not(.cinema-static) .cinema-pin{padding-top:12px;padding-bottom:10px}
+ .habit-cinema:not(.cinema-static) .cinema-grid{padding-top:12px}
+ .habit-cinema:not(.cinema-static) .cinema-narrative{min-height:110px}
+ .habit-cinema:not(.cinema-static) .cinema-copy h3{font-size:28px;margin:8px 0}
+ .habit-cinema:not(.cinema-static) .cinema-device{width:min(200px,calc((100svh - 320px)*.484))}
+ .habit-cinema:not(.cinema-static) .cinema-bottom{margin-top:0;gap:3px}
+ .habit-cinema:not(.cinema-static) .cinema-callout{top:28%;max-width:140px;padding:11px}
+}
+@media(max-height:740px) and (min-width:701px){
+ .habit-cinema:not(.cinema-static) .cinema-device{width:min(240px,calc((100svh - 180px)*.484))}
+ .habit-cinema:not(.cinema-static) .cinema-copy h3{font-size:clamp(28px,3.4vw,42px)}
+ .habit-cinema:not(.cinema-static) .cinema-copy p{font-size:12px;line-height:1.65}
+ .habit-cinema:not(.cinema-static) .cinema-evidence{margin-top:14px}
+ .habit-cinema:not(.cinema-static) .cinema-callout{max-width:190px;padding:16px}
+}
