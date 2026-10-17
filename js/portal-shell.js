@@ -108,7 +108,7 @@ function renderSidebar(activePage) {
     const html = `
         <aside class="sidebar">
             <div class="sb-logo">
-                <a href="/" class="portal-brand"><img src="/assets/lotara-icon.png" width="32" height="32" alt=""><span>Lotara</span></a>
+                <a href="/" class="portal-brand"><img src="/assets/lotara-icon.png?v=fa114a1033" width="32" height="32" alt=""><span>Lotara</span></a>
             </div>
             <div class="sb-user">
                 <div class="sb-avatar" id="sb-avatar">?</div>
