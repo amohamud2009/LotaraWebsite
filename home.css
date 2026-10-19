@@ -165,7 +165,7 @@ h1 span, h2 span { display: block; color: var(--accent, var(--lav)); }
 .foot .legal { grid-column: 1 / -1; display: flex; justify-content: space-between; padding-top: 30px; border-top: 1px solid var(--line); font-size: 13px; }
 
 /* reveal */
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s cubic-bezier(.2, .7, .2, 1); }
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity 1s ease, transform 1.1s cubic-bezier(.16, 1, .3, 1); }
 .reveal.in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
 
@@ -214,45 +214,35 @@ h1 span, h2 span { display: block; color: var(--accent, var(--lav)); }
   .foot .legal { flex-direction: column; gap: 6px; }
 }
 
-/* ---------- motion (transform and opacity only, so scrolling stays smooth) ---------- */
-@keyframes rise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
-@keyframes phoneInA { from { opacity: 0; transform: translateY(90px) rotate(-12deg); } to { opacity: 1; transform: rotate(-6deg); } }
-@keyframes phoneInB { from { opacity: 0; transform: translateY(120px) rotate(12deg); } to { opacity: 1; transform: rotate(5deg); } }
-@keyframes floatA { 0%, 100% { transform: rotate(-6deg) translateY(0); } 50% { transform: rotate(-5deg) translateY(-14px); } }
-@keyframes floatB { 0%, 100% { transform: rotate(5deg) translateY(0); } 50% { transform: rotate(4deg) translateY(-10px); } }
-@keyframes pop { from { opacity: 0; transform: translateY(14px) scale(.92); } to { opacity: 1; transform: none; } }
-@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-@keyframes glow { 0%, 100% { opacity: .8; transform: scale(1); } 50% { opacity: 1; transform: scale(1.06); } }
+/* ---------- motion: calm and brief. Things settle into place once, then stay still. ---------- */
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes phoneInA { from { opacity: 0; transform: translateY(36px) rotate(-6deg); } to { opacity: 1; transform: rotate(-6deg); } }
+@keyframes phoneInB { from { opacity: 0; transform: translateY(48px) rotate(5deg); } to { opacity: 1; transform: rotate(5deg); } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
 
-.hero .pill { animation: rise .8s cubic-bezier(.2, .7, .2, 1) .05s both; }
-.hero h1 { animation: rise .9s cubic-bezier(.2, .7, .2, 1) .15s both; }
-.hero h1 span { animation: rise .9s cubic-bezier(.2, .7, .2, 1) .3s both; }
-.hero .lead { animation: rise .9s cubic-bezier(.2, .7, .2, 1) .42s both; }
-.hero .cta-row { animation: rise .9s cubic-bezier(.2, .7, .2, 1) .54s both; }
-.hero-art .a { animation: phoneInA 1.2s cubic-bezier(.2, .8, .2, 1) .25s both, floatA 7s ease-in-out 1.5s infinite; }
-.hero-art .b { animation: phoneInB 1.2s cubic-bezier(.2, .8, .2, 1) .4s both, floatB 8s ease-in-out 1.7s infinite; }
-.hero-art .chip { animation: pop .7s cubic-bezier(.2, .9, .3, 1.2) 1.15s both, bob 5s ease-in-out 2s infinite; }
-.hero::before { animation: glow 9s ease-in-out infinite; }
+.hero .pill, .hero h1, .hero .lead, .hero .cta-row { animation: rise 1s cubic-bezier(.16, 1, .3, 1) both; }
+.hero h1 { animation-delay: .08s; }
+.hero .lead { animation-delay: .18s; }
+.hero .cta-row { animation-delay: .26s; }
+.hero-art .a { animation: phoneInA 1.4s cubic-bezier(.16, 1, .3, 1) .2s both; }
+.hero-art .b { animation: phoneInB 1.4s cubic-bezier(.16, 1, .3, 1) .32s both; }
+.hero-art .chip { animation: fade .8s ease .9s both; }
 
-/* parallax: the script sets --py on art blocks while they're on screen */
-.hero-art, .art, .trio { transform: translate3d(0, var(--py, 0px), 0); will-change: transform; }
+/* a light parallax on the device art while it's on screen */
+.hero-art, .art, .trio { transform: translate3d(0, var(--py, 0px), 0); }
 
-/* section phones slide up into place */
-.art img, .trio img { transition: opacity 1s ease, translate 1.1s cubic-bezier(.2, .8, .2, 1); transition-delay: var(--d, 0s); }
-.art:not(.in) img, .trio:not(.in) img { opacity: 0; translate: 0 90px; }
-.art:not(.in) .w1 { translate: 60px 20px; }
+/* section phones settle up into place */
+.art img, .trio img { transition: opacity 1.1s ease, translate 1.3s cubic-bezier(.16, 1, .3, 1); transition-delay: var(--d, 0s); }
+.art:not(.in) img, .trio:not(.in) img { opacity: 0; translate: 0 40px; }
 
-/* staggered reveals */
 .reveal { transition-delay: var(--d, 0s); }
-.watches figure { transition: opacity .8s ease, translate .9s cubic-bezier(.2, .8, .2, 1); transition-delay: var(--d, 0s); }
-.watches:not(.in) figure { opacity: 0; translate: 0 40px; }
-.card .tag { transition: opacity .6s ease, translate .7s cubic-bezier(.2, .9, .3, 1.2); transition-delay: calc(var(--d, 0s) + .45s); }
-.card:not(.in) .tag { opacity: 0; translate: 0 16px; }
-.closing .icon { animation: bob 6s ease-in-out infinite; }
+.watches figure { transition: opacity 1s ease, translate 1.2s cubic-bezier(.16, 1, .3, 1); transition-delay: var(--d, 0s); }
+.watches:not(.in) figure { opacity: 0; translate: 0 20px; }
+.card .tag { transition: opacity .8s ease; transition-delay: calc(var(--d, 0s) + .35s); }
+.card:not(.in) .tag { opacity: 0; }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero *, .hero::before, .closing .icon { animation: none !important; }
-  .hero-art .a { transform: rotate(-6deg); } .hero-art .b { transform: rotate(5deg); }
+  .hero *, .hero-art * { animation: none !important; }
   .hero-art, .art, .trio { transform: none !important; }
   .art img, .trio img, .watches figure, .card .tag { opacity: 1 !important; translate: none !important; transition: none !important; }
 }

@@ -30,7 +30,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/home.css?v=10">
+  <link rel="stylesheet" href="/home.css?v=11">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -233,7 +233,7 @@
       var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       // Stagger siblings: cards, proof tiles, watches and section phones arrive one after another.
       document.querySelectorAll('.cards, .proof .wrap, .watches, .art, .trio').forEach(function (g) {
-        [].forEach.call(g.children, function (c, i) { c.style.setProperty('--d', (i * 0.12) + 's'); });
+        [].forEach.call(g.children, function (c, i) { c.style.setProperty('--d', (i * 0.08) + 's'); });
       });
       var els = document.querySelectorAll('.reveal, .reveal-art');
       if (still || !('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('in'); }); return; }
@@ -263,7 +263,7 @@
         art.forEach(function (a) {
           var r = a.getBoundingClientRect();
           if (r.bottom < 0 || r.top > vh) return;
-          var off = (r.top + r.height / 2 - vh / 2) * -0.06;
+          var off = (r.top + r.height / 2 - vh / 2) * -0.025;
           a.style.setProperty('--py', off.toFixed(1) + 'px');
         });
         ticking = false;
