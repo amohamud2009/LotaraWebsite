@@ -30,7 +30,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/home.css?v=8">
+  <link rel="stylesheet" href="/home.css?v=10">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -82,7 +82,7 @@
 
     <section class="proof" aria-label="At a glance">
       <div class="wrap">
-        <div class="reveal"><strong>400+ exercises</strong><span>Each one drawn, with a how-to.</span></div>
+        <div class="reveal"><strong><span data-count="400">400</span>+ exercises</strong><span>Each one drawn, with a how-to.</span></div>
         <div class="reveal"><strong>One photo</strong><span>Calories, protein, carbs and fat.</span></div>
         <div class="reveal"><strong>One picture</strong><span>Sleep, food and training, together.</span></div>
       </div>
@@ -117,7 +117,7 @@
             <li><b>Log sets as you go.</b> Lotara suggests your weights and times your rests, right on your Lock Screen.</li>
           </ul>
         </div>
-        <div class="art" aria-hidden="true">
+        <div class="art reveal-art" aria-hidden="true">
           <img class="p1" src="/assets/v5/phone-lift.webp" alt="" loading="lazy" width="636" height="1334">
           <img class="w1" src="/assets/v5/watch-log-set.webp?v=2" alt="" loading="lazy" width="440" height="495">
         </div>
@@ -136,7 +136,7 @@
             <li><b>Eat for the day you're having.</b> Training day or rest day, your targets move with you.</li>
           </ul>
         </div>
-        <div class="art" aria-hidden="true">
+        <div class="art reveal-art" aria-hidden="true">
           <img class="p1" src="/assets/v5/phone-meal.webp" alt="" loading="lazy" width="636" height="1334">
           <img class="p2" src="/assets/v5/phone-fuelday.webp" alt="" loading="lazy" width="636" height="1334">
         </div>
@@ -155,7 +155,7 @@
             <li><b>Ask anything.</b> "Why am I so tired?" gets an answer drawn from your own sleep, heart and training.</li>
           </ul>
         </div>
-        <div class="trio" aria-hidden="true">
+        <div class="trio reveal-art" aria-hidden="true">
           <img src="/assets/v5/phone-sleep.webp" alt="" loading="lazy" width="636" height="1334">
           <img src="/assets/v5/phone-connected.webp" alt="" loading="lazy" width="636" height="1334">
           <img src="/assets/v5/phone-goal.webp" alt="" loading="lazy" width="636" height="1334">
@@ -175,7 +175,7 @@
             <li><b>Someone to talk to,</b> any hour, who already knows your week.</li>
           </ul>
         </div>
-        <div class="art" aria-hidden="true">
+        <div class="art reveal-art" aria-hidden="true">
           <img class="p1" src="/assets/v5/phone-urge.webp" alt="" loading="lazy" width="636" height="1334">
           <img class="p2" src="/assets/v5/phone-answer.webp" alt="" loading="lazy" width="636" height="1334">
         </div>
@@ -187,7 +187,7 @@
         <p class="eyebrow">Apple Watch</p>
         <h2>On your wrist,<span>between sets.</span></h2>
         <p class="lead">Log a set, add 30 seconds or skip a rest without reaching for your phone. Then see last night's sleep at a glance.</p>
-        <div class="watches">
+        <div class="watches reveal-art">
           <figure><img src="/assets/v5/watch-today.webp?v=2" alt="Lotara on Apple Watch showing today's wellness score" loading="lazy" width="440" height="495"><figcaption>Your day</figcaption></figure>
           <figure><img src="/assets/v5/watch-log-set.webp?v=2" alt="Logging a back squat set on Apple Watch" loading="lazy" width="440" height="495"><figcaption>Log set</figcaption></figure>
           <figure><img src="/assets/v5/watch-rest.webp?v=2" alt="Rest timer on Apple Watch" loading="lazy" width="440" height="495"><figcaption>Rest timer</figcaption></figure>
@@ -230,12 +230,46 @@
 
   <script>
     (function () {
-      var els = document.querySelectorAll('.reveal');
-      if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('in'); }); return; }
+      var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      // Stagger siblings: cards, proof tiles, watches and section phones arrive one after another.
+      document.querySelectorAll('.cards, .proof .wrap, .watches, .art, .trio').forEach(function (g) {
+        [].forEach.call(g.children, function (c, i) { c.style.setProperty('--d', (i * 0.12) + 's'); });
+      });
+      var els = document.querySelectorAll('.reveal, .reveal-art');
+      if (still || !('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('in'); }); return; }
       var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-      }, { rootMargin: '0px 0px -10% 0px' });
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          e.target.classList.add('in'); io.unobserve(e.target);
+          var n = e.target.querySelector('[data-count]');
+          if (n) countUp(n);
+        });
+      }, { rootMargin: '0px 0px -12% 0px' });
       els.forEach(function (e) { io.observe(e); });
+
+      function countUp(el) {
+        var to = +el.dataset.count, t0 = performance.now();
+        (function tick(t) {
+          var k = Math.min(1, (t - t0) / 1200), e = 1 - Math.pow(1 - k, 3);
+          el.textContent = Math.round(to * e);
+          if (k < 1) requestAnimationFrame(tick);
+        })(t0);
+      }
+
+      // Gentle parallax on the device art, only for blocks on screen.
+      var art = [].slice.call(document.querySelectorAll('.hero-art, .art, .trio')), ticking = false;
+      function frame() {
+        var vh = innerHeight;
+        art.forEach(function (a) {
+          var r = a.getBoundingClientRect();
+          if (r.bottom < 0 || r.top > vh) return;
+          var off = (r.top + r.height / 2 - vh / 2) * -0.06;
+          a.style.setProperty('--py', off.toFixed(1) + 'px');
+        });
+        ticking = false;
+      }
+      addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }, { passive: true });
+      frame();
     })();
   </script>
 </body>
