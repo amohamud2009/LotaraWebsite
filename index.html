@@ -30,7 +30,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/home.css?v=11">
+  <link rel="stylesheet" href="/home.css?v=12">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -73,9 +73,10 @@
           </div>
         </div>
         <div class="hero-art" aria-hidden="true">
-          <img class="a" src="/assets/v5/phone-scan.webp" alt="" width="636" height="1334">
+          <img class="a" src="/assets/v5/phone-lift.webp" alt="" width="636" height="1334">
           <img class="b" src="/assets/v5/phone-meal.webp" alt="" width="636" height="1334">
-          <div class="chip"><i style="background:#fdeee3">🔥</i><div><strong>620 cal · 42 g protein</strong>Read from one photo</div></div>
+          <div class="chip sleep"><i style="background:#ece6fb">🌙</i><div><strong>7h 52m last night</strong>Legs ready to train</div></div>
+          <div class="chip food"><i style="background:#fdeee3">🔥</i><div><strong>620 cal · 42 g protein</strong>Read from one photo</div></div>
         </div>
       </div>
     </section>
@@ -128,10 +129,10 @@
       <div class="inner">
         <div class="copy reveal">
           <p class="eyebrow">Fuel</p>
-          <h2>Snap your plate.<span>Get every number.</span></h2>
+          <h2>Snap your plate.<span>Track your macros.</span></h2>
           <p class="lead">No weighing, no searching. Point your camera and Lotara reads the meal.</p>
           <ul>
-            <li><b>Calories, protein, carbs and fat</b> from a single photo, and you can adjust anything it reads.</li>
+            <li><b>Calories, protein, carbs and fat</b> estimated from a single photo, and you can adjust anything it reads.</li>
             <li><b>Barcodes and food labels</b> too, or just say what you ate.</li>
             <li><b>Eat for the day you're having.</b> Training day or rest day, your targets move with you.</li>
           </ul>
@@ -155,6 +156,18 @@
             <li><b>Ask anything.</b> "Why am I so tired?" gets an answer drawn from your own sleep, heart and training.</li>
           </ul>
         </div>
+        <figure class="connect reveal" aria-label="An example of Lotara connecting sleep, food and training">
+          <div class="inputs">
+            <div class="in"><i>🌙</i><span><small>Last night</small><strong>7h 52m of sleep</strong></span></div>
+            <div class="in"><i>🥗</i><span><small>Lunch, 12:40</small><strong>Poke bowl · 64 g carbs</strong></span></div>
+            <div class="in"><i>🏋️</i><span><small>Tonight, 6:00</small><strong>Lower A · squats first</strong></span></div>
+          </div>
+          <div class="out">
+            <img src="/assets/lotara-icon.png?v=fa114a1033" alt="" width="40" height="40">
+            <span><small>Lotara, this afternoon</small><strong>Rested and fuelled. Your squats will run on lunch's carbs, so go for the top set tonight, then get about 40 g of protein after.</strong></span>
+          </div>
+          <figcaption>Example</figcaption>
+        </figure>
         <div class="trio reveal-art" aria-hidden="true">
           <img src="/assets/v5/phone-sleep.webp" alt="" loading="lazy" width="636" height="1334">
           <img src="/assets/v5/phone-connected.webp" alt="" loading="lazy" width="636" height="1334">
@@ -233,7 +246,7 @@
       var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       // Stagger siblings: cards, proof tiles, watches and section phones arrive one after another.
       document.querySelectorAll('.cards, .proof .wrap, .watches, .art, .trio').forEach(function (g) {
-        [].forEach.call(g.children, function (c, i) { c.style.setProperty('--d', (i * 0.08) + 's'); });
+        [].forEach.call(g.children, function (c, i) { c.style.setProperty('--d', (i * 0.05) + 's'); });
       });
       var els = document.querySelectorAll('.reveal, .reveal-art');
       if (still || !('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('in'); }); return; }
@@ -244,7 +257,7 @@
           var n = e.target.querySelector('[data-count]');
           if (n) countUp(n);
         });
-      }, { rootMargin: '0px 0px -12% 0px' });
+      }, { rootMargin: '0px 0px 20% 0px' });
       els.forEach(function (e) { io.observe(e); });
 
       function countUp(el) {
