@@ -30,7 +30,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/home.css?v=15">
+  <link rel="stylesheet" href="/home.css?v=16">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -151,7 +151,7 @@
           <h2>Sleep, food, training,<span>finally in one place.</span></h2>
           <p class="lead">Lotara reads your nights, meals and workouts together, and tells you the one thing worth doing next.</p>
         </div>
-        <figure class="connect reveal" aria-label="An example of Lotara connecting sleep, food and training">
+        <figure class="connect reveal-art" aria-label="An example of Lotara connecting sleep, food and training">
           <div class="inputs">
             <div class="in"><i>🌙</i><span><small>Last night</small><strong>7h 52m of sleep</strong></span></div>
             <div class="in"><i>🥗</i><span><small>Lunch, 12:40</small><strong>Poke bowl · 64 g carbs</strong></span></div>
@@ -246,7 +246,7 @@
       var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       // Stagger siblings: cards, proof tiles, watches and section phones arrive one after another.
       document.querySelectorAll('.cards, .proof .wrap, .watches, .art, .trio').forEach(function (g) {
-        [].forEach.call(g.children, function (c, i) { c.style.setProperty('--d', (i * 0.05) + 's'); });
+        [].forEach.call(g.children, function (c, i) { c.style.setProperty('--d', (i * 0.1) + 's'); });
       });
       var els = document.querySelectorAll('.reveal, .reveal-art');
       if (still || !('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('in'); }); return; }
@@ -257,7 +257,7 @@
           var n = e.target.querySelector('[data-count]');
           if (n) countUp(n);
         });
-      }, { rootMargin: '0px 0px 20% 0px' });
+      }, { rootMargin: '0px 0px -6% 0px' });
       els.forEach(function (e) { io.observe(e); });
 
       function countUp(el) {
