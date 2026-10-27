@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Open Lotara</title>
+  <meta name="robots" content="noindex">
+  <meta name="color-scheme" content="light dark">
+  <!-- Email buttons land here. With the app installed, iOS opens it straight away
+       (universal link); otherwise this page hands off to lotara:// or the App Store. -->
+  <meta name="apple-itunes-app" content="app-id=6749601041, app-argument=lotara://open">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <style>
+    :root { --bg: #FFFFFF; --ink: #0B0A18; --text: #3A3550; --muted: #8A86A0; --accent: #7A5BE0; --lav: #7A5BE0; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0B0A18; --ink: #FFFFFF; --text: #D9D4EC; --muted: #8B85A8; --lav: #C9B8F2; }
+    }
+    html, body { margin: 0; height: 100%; background: var(--bg); }
+    body { display: flex; align-items: center; justify-content: center; padding: 0 24px;
+           font: 16px/1.6 -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, "Helvetica Neue", Arial, sans-serif; color: var(--text); }
+    main { text-align: center; max-width: 360px; }
+    img { width: 88px; height: 88px; border-radius: 22px; display: block; margin: 0 auto 28px; }
+    h1 { margin: 0; color: var(--ink); font-size: 32px; line-height: 1.1; letter-spacing: -0.6px; font-weight: 700; }
+    h2 { margin: 4px 0 28px; color: var(--lav); font: italic 400 27px/1.2 ui-serif, "New York", Georgia, serif; }
+    .btn { display: inline-block; padding: 15px 34px; border-radius: 14px; background: var(--accent); color: #fff;
+           font-weight: 600; text-decoration: none; }
+    p { margin: 22px 0 0; font-size: 14px; color: var(--muted); }
+    p a { color: var(--muted); }
+  </style>
+</head>
+<body>
+  <main>
+    <img src="/open/icon.png" alt="Lotara">
+    <h1>Opening Lotara.</h1>
+    <h2>All of you, coming together.</h2>
+    <a class="btn" id="open" href="lotara://open">Open Lotara</a>
+    <p>Don't have it yet? <a href="https://apps.apple.com/us/app/lotara/id6749601041">Get Lotara on the App Store</a></p>
+  </main>
+  <script>
+    // Coming through the email's click tracker, iOS lands here in Safari, so hand
+    // straight to the app. Elsewhere (desktop, Android) the page simply stays.
+    if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+      setTimeout(function () { location.href = 'lotara://open'; }, 150);
+    }
+  </script>
+</body>
+</html>

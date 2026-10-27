@@ -1,0 +1,13 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["9L7B437J92.Wellness.WellnessFinal"],
+        "components": [
+          { "/": "/open", "comment": "Email buttons: open the app" },
+          { "/": "/open/*" }
+        ]
+      }
+    ]
+  }
+}
